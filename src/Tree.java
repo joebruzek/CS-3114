@@ -22,7 +22,9 @@ public class Tree {
 			root = new LNode(k);
 			return root;
 		}
-		
+		if (node.isLeaf()) {
+			node.add()
+		}
 		return null;
 	}
 	

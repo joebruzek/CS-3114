@@ -3,19 +3,15 @@
  * @author jbruzek, sucram20
  *
  */
-public class LNode implements TTNode<KVPair> {
+public class LNode extends TTNode<KVPair> {
 	
 	private LNode next;
-	private int recs = 0;
-	private KVPair leftVal;
-	private KVPair rightVal;
 	
 	/**
 	 * constructor for the leaf node
 	 */
 	public LNode() {
-		leftVal = null;
-		rightVal = null;
+		this.keys = new KVPair[3];
 		next = null;
 	}
 	
@@ -24,8 +20,6 @@ public class LNode implements TTNode<KVPair> {
 	 * @param l the KVPair
 	 */
 	public LNode(KVPair l) {
-		leftVal = l;
-		rightVal = null;
 		next = null;
 	}
 	
@@ -56,30 +50,109 @@ public class LNode implements TTNode<KVPair> {
 	}
 
 	/**
-	 * get the number of records in this node
-	 * @return the number of records.
+	 * search for the KVPair and return the index
+	 * @param k the KVPair to search for
+	 * @return the index, -1 if the KVPair doesn't exist
 	 */
 	@Override
-	public int numrecs() {
-		return recs;
+	public int search(KVPair k) {
+		for (int i = 0; i < this.numRecs(); ++i) {
+			if (this.getValue(i) == null) {
+				return -1;
+			}
+			int cmp = this.getValue(i).compareTo(k);
+			if (cmp == 0) {
+				return i;
+			}
+		}
+		
+		return -1;
+	}
+	
+	/**
+	 * insert a KVPair into the node
+	 * @param k the KVPair to insert
+	 */
+	public void insert(KVPair k) {
+		//find the index to insert into
+		int index = 0;
+		while (index < this.numRecs() && this.getValue(index).compareTo(k) < 0)
+			++index;
+		
+		// move space for the new key
+		for (int i = this.numRecs() - 1; i >= index; --i) {
+			this.setKey(i + 1, this.getValue(i));
+		}
+		
+		this.setKey(index, k);
+		this.recs++;
 	}
 
 	/**
-	 * get the left KVPair
-	 * @return the left val
+	 * get the left child
+	 * @return null because leaves have no children
 	 */
 	@Override
-	public KVPair leftVal() {
-		return leftVal;
+	public TTNode<KVPair> left() {
+		return null;
 	}
 
 	/**
-	 * get the right KVPair
-	 * @return the right val
+	 * get the center child
+	 * @return null because leaves have no children
 	 */
 	@Override
-	public KVPair rightVal() {
-		return rightVal;
+	public TTNode<KVPair> center() {
+		return null;
+	}
+
+	/**
+	 * get the right child
+	 * @return null because leaves have no children
+	 */
+	@Override
+	public TTNode<KVPair> right() {
+		return null;
+	}
+
+	/**
+	 * split the node into two, when it has more than 2 recs
+	 * 
+	 * @return the new node that has been split from this one
+	 */
+	@Override
+	public TTNode<KVPair> split() {
+		LNode node = new LNode();
+		node.insert(this.keys[1]);
+		this.keys[1] = null;
+		node.insert(this.keys[2]);
+		this.keys[2] = null;
+		this.recs = 1;
+		node.recs = 2;
+		
+		if (this.next != null) {
+			LNode temp = this.next();
+			this.next = node;
+			node.setNext(temp);
+		} else {
+			this.next = node;
+		}
+		
+		
+		
+		int midIndex = this.getKeyCount() / 2;
+		
+		TTNode<TKey, TValue> newRNode = new TTNode<TKey, TValue>();
+		for (int i = midIndex; i < this.getKeyCount(); ++i) {
+			newRNode.setKey(i - midIndex, this.getKey(i));
+			newRNode.setValue(i - midIndex, this.getValue(i));
+			this.setKey(i, null);
+			this.setValue(i, null);
+		}
+		newRNode.keyCount = this.getKeyCount() - midIndex;
+		this.keyCount = midIndex;
+		
+		return newRNode;
 	}
 
 }

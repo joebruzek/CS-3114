@@ -3,7 +3,7 @@
  * @author jbruzek, sucram20
  *
  */
-public class INode implements TTNode<KVPair> {
+public class INode extends TTNode<KVPair> {
 	
 	private TTNode<KVPair> left;
 	private TTNode<KVPair> center;
