@@ -131,5 +131,7 @@ public class INode extends TTNode<KVPair> {
 	public KVPair rightVal() {
 		return rightVal;
 	}
+	
+	public void promote(TTNode<?> temp, )
 
 }

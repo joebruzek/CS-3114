@@ -16,16 +16,40 @@ public class Tree {
 	
 	/**
 	 * insert a value into the tree
+	 * @param k the KVPair to insert
 	 */
-	public TTNode<KVPair> insert(TTNode<KVPair> node, KVPair k) {
+	public void insert(TTNode<?> node, KVPair k) {
+		//base case
 		if (node == null) {
-			root = new LNode(k);
-			return root;
+			node = new LNode(k);
 		}
 		if (node.isLeaf()) {
 			((LNode) node).insert(k);
 		}
-		return null;
+		
+		// recursive case, if root's an internal node
+		else {
+			if (k.key().compareTo((MemHandle)node.getKey(0)) <= 0) {
+				this.insert(node.getChild(0), k);
+			} 
+			else if (node.getKey(1) == null || k.key().compareTo((MemHandle)node.getKey(1)) < 0) {
+				this.insert(node.getChild(1), k);
+			} 
+			else {
+				this.insert(node.getChild(2), k);
+			}
+		}
+		
+		//handle splitting
+		if (!node.isLeaf()) {
+			for (int i = 0; i < 3; i++) {
+				if (node.getChild(i) != null && node.getChild(i).isFull()) {
+					TTNode<?> temp = node.getChild(i).split();
+					
+					node.promote(temp);
+				}
+			}
+		}
 	}
 	
 	/**
@@ -45,16 +69,16 @@ public class Tree {
 			return true;
 		}
 		if (k.compareTo(node.getKey(0)) < 0) {
-			return search(node.left(), k);
+			return search(node.getChild(0), k);
 		}
 		else if (node.getKey(1) == null) {
-			return search(node.center(), k);
+			return search(node.getChild(1), k);
 		}
 		else if (k.compareTo(node.getKey(1)) < 0) {
-			return (search(node.center(), k));
+			return (search(node.getChild(1), k));
 		}
 		else {
-			return (search(node.right(), k));
+			return (search(node.getChild(2), k));
 		}
 	}
 }
