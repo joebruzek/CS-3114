@@ -7,6 +7,7 @@
  */
 abstract class TTNode<E> {
 	protected E[] keys;
+	protected TTNode<E>[] children;
 	protected int recs;
 	
 	protected TTNode() {
@@ -65,24 +66,24 @@ abstract class TTNode<E> {
 	 * @return a TTNode
 	 */
 	public abstract TTNode<E> split();
+
+	/**
+	 * set the child at an index
+	 * @param i the index to set the child at
+	 * @param c the new child
+	 */
+	public void setChild(int i, TTNode<E> c) {
+		this.children[i] = c;
+	}
 	
 	/**
-	 * get the left node
-	 * @return the left
+	 * get the child at an index
+	 * @param i the index to get from
+	 * @return the child at the index
 	 */
-	public abstract TTNode<E> left();
-	
-	/**
-	 * get the center node
-	 * @return the center
-	 */
-	public abstract TTNode<E> center();
-	
-	/**
-	 * get the right child
-	 * @return the right
-	 */
-	public abstract TTNode<E> right();
+	public TTNode<E> getChild(int i) {
+		return this.children[i];
+	}
 	
 	/**
 	 * is the number of recs too damn high?
