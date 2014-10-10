@@ -89,33 +89,6 @@ public class LNode extends TTNode<KVPair> {
 	}
 
 	/**
-	 * get the left child
-	 * @return null because leaves have no children
-	 */
-	@Override
-	public TTNode<KVPair> left() {
-		return null;
-	}
-
-	/**
-	 * get the center child
-	 * @return null because leaves have no children
-	 */
-	@Override
-	public TTNode<KVPair> center() {
-		return null;
-	}
-
-	/**
-	 * get the right child
-	 * @return null because leaves have no children
-	 */
-	@Override
-	public TTNode<KVPair> right() {
-		return null;
-	}
-
-	/**
 	 * split the node into two, when it has more than 2 recs
 	 * 
 	 * @return the new node that has been split from this one
@@ -140,5 +113,29 @@ public class LNode extends TTNode<KVPair> {
 		
 		return node;
 	}
+
+	/**
+	 * set the Child.
+	 * Throws an UnsupportedOperationException
+	 * @param i the index
+	 * @param c the child
+	 */
+	@Override
+	public void setChild(int i, TTNode<KVPair> c) {
+		throw new UnsupportedOperationException("Leaf nodes have no children");
+	}
+
+	/**
+	 * get the child
+	 * Throws UnsupportedOperationException
+	 * @param i the index
+	 * @return the child
+	 */
+	@Override
+	public TTNode<KVPair> getChild(int i) {
+		throw new UnsupportedOperationException("Leaf nodes have no children");
+	}
+	
+	
 
 }
