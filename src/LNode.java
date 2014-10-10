@@ -57,10 +57,10 @@ public class LNode extends TTNode<KVPair> {
 	@Override
 	public int search(KVPair k) {
 		for (int i = 0; i < this.numRecs(); ++i) {
-			if (this.getValue(i) == null) {
+			if (this.getKey(i) == null) {
 				return -1;
 			}
-			int cmp = this.getValue(i).compareTo(k);
+			int cmp = this.getKey(i).compareTo(k);
 			if (cmp == 0) {
 				return i;
 			}
@@ -71,17 +71,17 @@ public class LNode extends TTNode<KVPair> {
 	
 	/**
 	 * insert a KVPair into the node
-	 * @param k the KVPair to insert
+	 * @param k the E to insert
 	 */
 	public void insert(KVPair k) {
 		//find the index to insert into
 		int index = 0;
-		while (index < this.numRecs() && this.getValue(index).compareTo(k) < 0)
+		while (index < this.numRecs() && this.getKey(index).compareTo(k) < 0)
 			++index;
 		
 		// move space for the new key
 		for (int i = this.numRecs() - 1; i >= index; --i) {
-			this.setKey(i + 1, this.getValue(i));
+			this.setKey(i + 1, this.getKey(i));
 		}
 		
 		this.setKey(index, k);
@@ -138,21 +138,7 @@ public class LNode extends TTNode<KVPair> {
 			this.next = node;
 		}
 		
-		
-		
-		int midIndex = this.getKeyCount() / 2;
-		
-		TTNode<TKey, TValue> newRNode = new TTNode<TKey, TValue>();
-		for (int i = midIndex; i < this.getKeyCount(); ++i) {
-			newRNode.setKey(i - midIndex, this.getKey(i));
-			newRNode.setValue(i - midIndex, this.getValue(i));
-			this.setKey(i, null);
-			this.setValue(i, null);
-		}
-		newRNode.keyCount = this.getKeyCount() - midIndex;
-		this.keyCount = midIndex;
-		
-		return newRNode;
+		return node;
 	}
 
 }

@@ -23,7 +23,7 @@ public class Tree {
 			return root;
 		}
 		if (node.isLeaf()) {
-			node.add()
+			((LNode) node).insert(k);
 		}
 		return null;
 	}
@@ -38,19 +38,19 @@ public class Tree {
 		if (node == null) {
 			return false;
 		}
-		if (k.compareTo(node.leftVal()) == 0) {
+		if (k.compareTo(node.getKey(0)) == 0) {
 			return true;
 		}
-		if (node.rightVal() != null && k.compareTo(node.rightVal()) == 0) {
+		if (node.getKey(1) != null && k.compareTo(node.getKey(1)) == 0) {
 			return true;
 		}
-		if (k.compareTo(node.leftVal()) < 0) {
+		if (k.compareTo(node.getKey(0)) < 0) {
 			return search(node.left(), k);
 		}
-		else if (node.rightVal() == null) {
+		else if (node.getKey(1) == null) {
 			return search(node.center(), k);
 		}
-		else if (k.compareTo(node.rightVal()) < 0) {
+		else if (k.compareTo(node.getKey(1)) < 0) {
 			return (search(node.center(), k));
 		}
 		else {

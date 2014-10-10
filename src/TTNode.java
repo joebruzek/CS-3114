@@ -8,11 +8,9 @@
 abstract class TTNode<E> {
 	protected E[] keys;
 	protected int recs;
-	protected TTNode<E> parent;
 	
 	protected TTNode() {
 		this.recs = 0;
-		parent = null;
 	}
 	
 	/**
@@ -42,7 +40,7 @@ abstract class TTNode<E> {
 	 * @param index the index
 	 * @return the E
 	 */
-	public E getValue(int index) {
+	public E getKey(int index) {
 		return (E)this.keys[index];
 	}
 	
@@ -69,22 +67,6 @@ abstract class TTNode<E> {
 	public abstract TTNode<E> split();
 	
 	/**
-	 * get the parent node
-	 * @return the parents
-	 */
-	public TTNode<E> parent() {
-		return this.parent;
-	}
-	
-	/**
-	 * set the parent node
-	 * @param p the new parent
-	 */
-	public void setParent(TTNode<E> p) {
-		this.parent = p;
-	}
-	
-	/**
 	 * get the left node
 	 * @return the left
 	 */
@@ -101,4 +83,12 @@ abstract class TTNode<E> {
 	 * @return the right
 	 */
 	public abstract TTNode<E> right();
+	
+	/**
+	 * is the number of recs too damn high?
+	 * @return too many recs
+	 */
+	public boolean isFull() {
+		return (this.numRecs() == 3);
+	}
 }
