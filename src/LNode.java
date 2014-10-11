@@ -3,14 +3,17 @@
  * @author jbruzek, sucram20
  *
  */
-public class LNode extends TTNode<KVPair> {
+public class LNode implements TTNode {
 	
 	private LNode next;
+	private int recs;
+	private KVPair[] keys;
 	
 	/**
 	 * constructor for the leaf node
 	 */
 	public LNode() {
+		this.recs = 0;
 		this.keys = new KVPair[3];
 		next = null;
 	}
@@ -54,13 +57,12 @@ public class LNode extends TTNode<KVPair> {
 	 * @param k the KVPair to search for
 	 * @return the index, -1 if the KVPair doesn't exist
 	 */
-	@Override
 	public int search(KVPair k) {
 		for (int i = 0; i < this.numRecs(); ++i) {
-			if (this.getKey(i) == null) {
+			if (this.getKeyV(i) == null) {
 				return -1;
 			}
-			int cmp = this.getKey(i).compareTo(k);
+			int cmp = this.getKeyV(i).compareTo(k);
 			if (cmp == 0) {
 				return i;
 			}
@@ -76,12 +78,12 @@ public class LNode extends TTNode<KVPair> {
 	public void insert(KVPair k) {
 		//find the index to insert into
 		int index = 0;
-		while (index < this.numRecs() && this.getKey(index).compareTo(k) < 0)
+		while (index < this.numRecs() && this.getKeyV(index).compareTo(k) < 0)
 			++index;
 		
 		// move space for the new key
 		for (int i = this.numRecs() - 1; i >= index; --i) {
-			this.setKey(i + 1, this.getKey(i));
+			this.setKey(i + 1, this.getKeyV(i));
 		}
 		
 		this.setKey(index, k);
@@ -94,7 +96,7 @@ public class LNode extends TTNode<KVPair> {
 	 * @return the new node that has been split from this one
 	 */
 	@Override
-	public TTNode<KVPair> split() {
+	public TTNode split() {
 		LNode node = new LNode();
 		node.insert(this.keys[1]);
 		this.keys[1] = null;
@@ -121,7 +123,7 @@ public class LNode extends TTNode<KVPair> {
 	 * @param c the child
 	 */
 	@Override
-	public void setChild(int i, TTNode<KVPair> c) {
+	public void setChild(int i, TTNode c) {
 		throw new UnsupportedOperationException("Leaf nodes have no children");
 	}
 
@@ -132,10 +134,65 @@ public class LNode extends TTNode<KVPair> {
 	 * @return the child
 	 */
 	@Override
-	public TTNode<KVPair> getChild(int i) {
+	public TTNode getChild(int i) {
 		throw new UnsupportedOperationException("Leaf nodes have no children");
 	}
-	
-	
 
+	/**
+	 * get the number of records in this node
+	 * @return the number of recs
+	 */
+	@Override
+	public int numRecs() {
+		return recs;
+	}
+
+	/**
+	 * set the number of recs in this node
+	 * @param r the number of recs
+	 */
+	@Override
+	public void setRecs(int r) {
+		recs = r;
+		
+	}
+
+	/**
+	 * set the E at the index
+	 * @param index the index to insert at
+	 * @param value the E to insert
+	 */
+	public void setKey(int index, KVPair value) {
+		this.keys[index] = value;
+	}
+
+	/**
+	 * is the number of recs too damn high?
+	 * @return too many recs
+	 */
+	@Override
+	public boolean isFull() {
+		return (this.numRecs() == 3);
+	}
+
+	/**
+	 * get the KVPair at the index
+	 * @param i the index to get
+	 * @return the KVPair
+	 */
+	@Override
+	public KVPair getKeyV(int i) {
+		return keys[i];
+	}
+
+	/**
+	 * get a memhandle
+	 * throws UnsupportedOperationException
+	 * @param i the index
+	 * @return NOTHING
+	 */
+	@Override
+	public MemHandle getKey(int i) {
+		throw new UnsupportedOperationException("LNodes only store KVPairs.");
+	}
 }

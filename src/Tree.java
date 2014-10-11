@@ -5,7 +5,7 @@
  *
  */
 public class Tree {
-	TTNode<KVPair> root;
+	TTNode root;
 	
 	/**
 	 * initialize the tree
@@ -18,7 +18,7 @@ public class Tree {
 	 * insert a value into the tree
 	 * @param k the KVPair to insert
 	 */
-	public void insert(TTNode<?> node, KVPair k) {
+	public void insert(TTNode node, KVPair k) {
 		//base case
 		if (node == null) {
 			node = new LNode(k);
@@ -44,9 +44,9 @@ public class Tree {
 		if (!node.isLeaf()) {
 			for (int i = 0; i < 3; i++) {
 				if (node.getChild(i) != null && node.getChild(i).isFull()) {
-					TTNode<?> temp = node.getChild(i).split();
+					TTNode temp = node.getChild(i).split();
 					
-					node.promote(temp);
+					node.promote(node, temp);
 				}
 			}
 		}
@@ -58,7 +58,7 @@ public class Tree {
 	 * @param k the key to find
 	 * @return k exists in the tree
 	 */
-	public boolean search(TTNode<KVPair> node, KVPair k) {
+	public boolean search(TTNode node, KVPair k) {
 		if (node == null) {
 			return false;
 		}

@@ -12,6 +12,7 @@ public class INode extends TTNode<KVPair> {
 	private int recs = 0;
 	private KVPair leftVal;
 	private KVPair rightVal;
+	protected KVPair[] keys;
 	
 	/**
 	 * constructor for the inner node class
