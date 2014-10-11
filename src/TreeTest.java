@@ -12,9 +12,9 @@ import junit.framework.TestCase;
  *
  */
 public class TreeTest extends TestCase {
-	
+
 	private Tree tree;
-	
+
 	/**
 	 * set up a tree before the tests start
 	 */
@@ -22,9 +22,23 @@ public class TreeTest extends TestCase {
 	public void setUp() {
 		tree = new Tree();
 	}
-	
+
 	public void printSomething() {
 		System.out.println("something");
+	}
+
+	public void testIsLeaf()
+	{
+	    assertTrue(tree.getRoot().isLeaf());
+	    for (int i = 1; i <= 3; i++) {
+            MemHandle m = new MemHandle(i);
+            MemHandle v = new MemHandle(i + 5);
+            tree.insert(tree.getRoot(), null, new KVPair(m, v));
+        }
+	    assertFalse(tree.getRoot().isLeaf());
+	    assertEquals(1, tree.getRoot().numRecs());
+	    tree.print(tree.getRoot(), tree.depth());
+
 	}
 
 	/**
@@ -33,15 +47,15 @@ public class TreeTest extends TestCase {
 	public void testPrint() {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
         System.setOut(new PrintStream(baos));
-        
+
         for (int i = 1; i <= 5; i++) {
         	MemHandle m = new MemHandle(i);
         	MemHandle v = new MemHandle(i + 5);
-        	tree.add(new KVPair(m, v));
+        	tree.insert(tree.getRoot(), null, new KVPair(m, v));
         }
-        
-        tree.printTree();
-        
+
+        tree.print(tree.getRoot(), tree.depth());
+
         try {
 			baos.flush();
 		} catch (IOException e) {

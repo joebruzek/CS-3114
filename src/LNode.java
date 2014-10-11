@@ -91,14 +91,6 @@ public class LNode implements TTNode {
 
 		this.setKey(index, k);
 		this.recs++;
-<<<<<<< HEAD
-
-		if (isFull()) {
-			return split();
-		}
-		return this;
-=======
->>>>>>> 8f8a3893c1a6d6d4aecd960c75ffaccf14be7ff6
 	}
 
 	/**

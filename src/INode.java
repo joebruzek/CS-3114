@@ -32,6 +32,7 @@ public class INode implements TTNode
         this.keys = new KVPair[3];
         this.keys[0] = data;
         this.recs = 1;
+        children = new TTNode[4];
     }
 
     /**
@@ -66,6 +67,7 @@ public class INode implements TTNode
         INode rightSplit = new INode(max);
         this.setKey(1, null);
         this.setKey(2, null);
+        this.recs = 1;
         for (int i = 0; i < 2; i++)
         {
             rightSplit.setChild(i, this.getChild(i + 2));

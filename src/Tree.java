@@ -6,12 +6,14 @@
  */
 public class Tree {
     private TTNode root;
+    private int depth;
 
     /**
      * initialize the tree
      */
     public Tree() {
         root = new LNode();
+        depth = 1;
     }
 
     /**
@@ -34,12 +36,26 @@ public class Tree {
                 newNode.setChild(0, root);
                 newNode.setChild(1, temp);
                 root = newNode;
+                depth++;
                 return root;
             }
+            return root;
         }
+        else
+        {
+            if (root.isFull())
+            {
+                //if insert into root causes overflow split and create new root
+                INode newNode = new INode(root.getKeyV(1));
+                INode temp = (INode) root.split();
+                newNode.setChild(0, root);
+                newNode.setChild(1, temp);
+                root = newNode;
+                depth++;
+                return root;
+            }
 
-<<<<<<< HEAD
-            if (node.getChild(0).isLeaf())
+            if (!node.isLeaf() && node.getChild(0).isLeaf())
             {
                 //insert the key into a leaf node by recursing to the second to last level
                 int i;
@@ -47,7 +63,7 @@ public class Tree {
                 {
                     i = 0;
                 }
-                else if (node.getChild(1) == null || k.compareTo(node.getKeyV(1)) < 0)
+                else if (node.getKeyV(1) == null || k.compareTo(node.getKeyV(1)) < 0)
                 {
                     i = 1;
                 }
@@ -112,16 +128,16 @@ public class Tree {
                 }
                 return node;
             }
-            if (k.key().compareTo(node.getKey(0)) < 0) {
+            if (k.key().compareTo(node.getKeyV(0).key()) < 0) {
                 this.insert(node.getChild(0), promote, k);
             }
-            else if (node.getKey(1) == null || k.key().compareTo(node.getKey(1)) < 0) {
+            else if (node.getKeyV(1) == null || k.key().compareTo(node.getKeyV(1).key()) < 0) {
                 this.insert(node.getChild(1), promote, k);
             }
             else {
                 this.insert(node.getChild(2),promote, k);
             }
-
+        }
         return node;
     }
 
@@ -155,23 +171,6 @@ public class Tree {
         }
     }
 
-=======
-		// recursive case, if root's an internal node
-		else {
-			if (k.key().compareTo((KVPair)node.getKey(0)) <= 0) {
-				this.insert(node.getChild(0), k);
-			}
-			else if (node.getKey(1) == null || k.key().compareTo((KVPair)node.getKey(1)) < 0) {
-				this.insert(node.getChild(1), k);
-			}
-			else {
-				this.insert(node.getChild(2), k);
-			}
-		}
-		
-		return null;
-	}
->>>>>>> 8f8a3893c1a6d6d4aecd960c75ffaccf14be7ff6
 
 
 	/**
@@ -203,5 +202,19 @@ public class Tree {
 		print(node.getChild(0), d + 1);
 		print(node.getChild(1), d + 1);
 		print(node.getChild(2), d + 1);
+	}
+
+	public TTNode getRoot()
+	{
+	    return this.root;
+	}
+
+	/**
+	 * Gets the height of the tree
+	 * @return returns the height
+	 */
+	public int depth()
+	{
+	    return depth;
 	}
 }
