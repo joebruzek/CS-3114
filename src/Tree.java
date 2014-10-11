@@ -5,115 +5,157 @@
  *
  */
 public class Tree {
-	TTNode root;
+    private TTNode root;
 
-	/**
-	 * initialize the tree
-	 */
-	public Tree() {
-		root = null;
-	}
+    /**
+     * initialize the tree
+     */
+    public Tree() {
+        root = new LNode();
+    }
 
-	/**
-	 * insert a value into the tree
-	 * @param k the KVPair to insert
-	 */
-	public TTNode insert(TTNode node, KVPair k) {
-		//base case
-		if (node == null) {
-			node = new LNode(k);
-			return node;
-		}
-		if (node.isLeaf()) {
-			((LNode) node).insert(k);
-			return insert(new INode());
-		}
+    /**
+     * insert a value into the tree
+     * @param k the KVPair to insert
+     * @param node the current node in the tree
+     * @param promote the promoted node, null if no promotion
+     * @return TTNode the parent of the inserted node
+     */
+    public TTNode insert(TTNode node, TTNode promote, KVPair k) {
+        //base case
+        if (root.isLeaf())
+        {
+            ((LNode) root).insert(k);
+            if (root.isFull())
+            {
+                //if insert into root causes overflow split and create new root
+                INode newNode = new INode(root.getKeyV(1));
+                LNode temp = ((LNode) root).split();
+                newNode.setChild(0, root);
+                newNode.setChild(1, temp);
+                root = newNode;
+                return root;
+            }
+        }
 
-		// recursive case, if root's an internal node
-		else {
-			if (k.key().compareTo((KVPair)node.getKey(0)) <= 0) {
-				this.insert(node.getChild(0), k);
-			}
-			else if (node.getKey(1) == null || k.key().compareTo((KVPair)node.getKey(1)) < 0) {
-				this.insert(node.getChild(1), k);
-			}
-			else {
-				this.insert(node.getChild(2), k);
-			}
-		}
+            if (node.getChild(0).isLeaf())
+            {
+                //insert the key into a leaf node by recursing to the second to last level
+                int i;
+                if (k.compareTo(node.getKeyV(0)) < 0)
+                {
+                    i = 0;
+                }
+                else if (node.getChild(1) == null || k.compareTo(node.getKeyV(1)) < 0)
+                {
+                    i = 1;
+                }
+                else
+                {
+                    i = 2;
+                }
+                ((LNode) node.getChild(i)).insert(k);
+                if (node.getChild(i).isFull())
+                {
+                    LNode temp = ((LNode) node.getChild(i)).split();
+                    node.setChild(i + 1, temp);
+                    ((INode) node).insert(temp.getKeyV(0));
+                    if (node.isFull())
+                    {
+                        //the returned node points to the two split children
+                        INode p = (INode) node.split();
+                        insert (root, p, p.getKeyV(0));
+                    }
+                    return node;
+                }
+            }
 
-		//handle splitting
-		if (!node.isLeaf()) {
-			for (int i = 0; i < 3; i++) {
-				if (node.getChild(i) != null && node.getChild(i).isFull()) {
-					TTNode temp = node.getChild(i).split();
-<<<<<<< HEAD
+            //Deals with promoting a node
+            if (promote != null && promote.getChild(0) == root)
+            {
+                root = promote;
+            }
+            else if (promote != null && node.getChild(0) == promote.getChild(0))
+            {
+                ((INode) node).promote(node.getChild(0), promote.getChild(1));
+                ((INode) node).insert(promote.getKeyV(0));
+                if (node.isFull())
+                {
+                    //the returned node points to the two split children
+                    INode p = (INode) node.split();
+                    insert (root, p, p.getKeyV(0));
+                }
+                return node;
+            }
+            else if (promote != null && node.getChild(1) == promote.getChild(0))
+            {
+                ((INode) node).promote(node.getChild(1), promote.getChild(1));
+                ((INode) node).insert(promote.getKeyV(0));
+                if (node.isFull())
+                {
+                    //the returned node points to the two split children
+                    INode p = (INode) node.split();
+                    insert (root, p, p.getKeyV(0));
+                }
+                return node;
+            }
+            else if (promote != null && node.getChild(2) == promote.getChild(0))
+            {
+                ((INode) node).promote(node.getChild(2), promote.getChild(1));
+                ((INode) node).insert(promote.getKeyV(0));
+                if (node.isFull())
+                {
+                    //the returned node points to the two split children
+                    INode p = (INode) node.split();
+                    insert (root, p, p.getKeyV(0));
+                }
+                return node;
+            }
+            if (k.key().compareTo(node.getKey(0)) < 0) {
+                this.insert(node.getChild(0), promote, k);
+            }
+            else if (node.getKey(1) == null || k.key().compareTo(node.getKey(1)) < 0) {
+                this.insert(node.getChild(1), promote, k);
+            }
+            else {
+                this.insert(node.getChild(2),promote, k);
+            }
 
-					node.promote(node, temp);
-=======
-					
-					// promote up the node stuff
-					((INode) node).promote(node, temp);
->>>>>>> f8e5342a92b29f7bc0d226131492cfe97098c6fd
-				}
-			}
-		}
-		
-		return null;
-	}
+        return node;
+    }
 
-	// ----------------------------------------------------------
-	/**
-	 * Adds key values to the inner nodes
-	 * @param node
-	 * @param k
-	 */
-	public void add(INode node, KVPair k)
-	{
-	    if(node.isFull())
-	    {
-	        INode temp = node.split();
-	    }
-	}
+    /**
+     * search the tree recursively to see if it contains a value
+     * @param node the root to search from
+     * @param k the key to find
+     * @return k exists in the tree
+     */
+    public boolean search(TTNode node, KVPair k) {
+        if (node == null) {
+            return false;
+        }
+        if (k.compareTo(node.getKey(0)) == 0) {
+            return true;
+        }
+        if (node.getKey(1) != null && k.compareTo(node.getKey(1)) == 0) {
+            return true;
+        }
+        if (k.compareTo(node.getKey(0)) < 0) {
+            return search(node.getChild(0), k);
+        }
+        else if (node.getKey(1) == null) {
+            return search(node.getChild(1), k);
+        }
+        else if (k.compareTo(node.getKey(1)) < 0) {
+            return (search(node.getChild(1), k));
+        }
+        else {
+            return (search(node.getChild(2), k));
+        }
+    }
 
-	/**
-	 * search the tree recursively to see if it contains a value
-	 * @param node the root to search from
-	 * @param k the key to find
-	 * @return k exists in the tree
-	 */
-	public boolean search(TTNode node, KVPair k) {
-		if (node == null) {
-			return false;
-		}
-		if (k.compareTo(node.getKey(0)) == 0) {
-			return true;
-		}
-		if (node.getKey(1) != null && k.compareTo(node.getKey(1)) == 0) {
-			return true;
-		}
-		if (k.compareTo(node.getKey(0)) < 0) {
-			return search(node.getChild(0), k);
-		}
-		else if (node.getKey(1) == null) {
-			return search(node.getChild(1), k);
-		}
-		else if (k.compareTo(node.getKey(1)) < 0) {
-			return (search(node.getChild(1), k));
-		}
-		else {
-			return (search(node.getChild(2), k));
-		}
-	}
-	
-	/**
-	 * print the tree
-	 * Calls the recursive tree print method
-	 */
-	public void printTree() {
-		print(root, 0);
-	}
-	
+
+
 	/**
 	 * recursive print method
 	 * @param node the node you're on
@@ -124,7 +166,7 @@ public class Tree {
 		if (node == null) {
 			return;
 		}
-		
+
 		StringBuilder s = new StringBuilder();
 		for (int i = 0; i < d * 2; i++) {
 			s.append(" ");
@@ -132,14 +174,14 @@ public class Tree {
 		String space = "";
 		for (int i = 0; i < node.numRecs(); i++) {
 			s.append(space);
-			s.append(node.getKey(i).key());
+			s.append(node.getKeyV(i).key());
 			s.append(" ");
-			s.append(node.getKey(i).value());
+			s.append(node.getKeyV(i).value());
 			space = " ";
 		}
-		
+
 		System.out.println(s.toString());
-		
+
 		print(node.getChild(0), d + 1);
 		print(node.getChild(1), d + 1);
 		print(node.getChild(2), d + 1);

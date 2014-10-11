@@ -91,7 +91,7 @@ public class LNode implements TTNode {
 
 		this.setKey(index, k);
 		this.recs++;
-		
+
 		if (isFull()) {
 			return split();
 		}
@@ -104,7 +104,7 @@ public class LNode implements TTNode {
 	 * @return the new node that has been split from this one
 	 */
 	@Override
-	public TTNode split() {
+	public LNode split() {
 		LNode node = new LNode();
 		node.insert(this.keys[1]);
 		this.keys[1] = null;
