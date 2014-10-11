@@ -11,7 +11,7 @@ public class INode implements TTNode
 	private MemHandle[] keys;
 	private int recs;
 	private TTNode[] children;
-	
+
     // ----------------------------------------------------------
     /**
      * New inner node object
@@ -60,18 +60,20 @@ public class INode implements TTNode
     {
         MemHandle mid;
         MemHandle max;
-        MemHandle min;
-        min = this.getKey(0);
         mid = this.getKey(1);
         max = this.getKey(2);
         INode newNode = new INode(mid);
         INode rightSplit = new INode(max);
-
         this.setKey(1, null);
         this.setKey(2, null);
+        for (int i = 0; i < 2; i++)
+        {
+            rightSplit.setChild(i, this.getChild(i + 2));
+            this.setChild(i + 2, null);
+        }
         return newNode;
     }
-    
+
     /**
      * set the key at an index
      * @param i the index
@@ -146,16 +148,16 @@ public class INode implements TTNode
         this.setChild(index + 1, newNode);
         this.insert(newNode.getKey(0));
     }
-    
+
     /**
-     * get the number of recs 
+     * get the number of recs
      * @return the number of recs
      */
 	@Override
 	public int numRecs() {
 		return recs;
 	}
-	
+
 	/**
 	 * set the number of recs
 	 * @param r the recs
@@ -163,9 +165,9 @@ public class INode implements TTNode
 	@Override
 	public void setRecs(int r) {
 		recs = r;
-		
+
 	}
-	
+
 	/**
 	 * set the child at an index
 	 * @param i the index
@@ -175,7 +177,7 @@ public class INode implements TTNode
 	public void setChild(int i, TTNode c) {
 		children[i] = c;
 	}
-	
+
 	/**
 	 * get the child at an index
 	 * @param i the index
@@ -185,7 +187,7 @@ public class INode implements TTNode
 	public TTNode getChild(int i) {
 		return children[i];
 	}
-	
+
 	/**
 	 * is this node full
 	 * @return if there are too many recs
@@ -194,7 +196,7 @@ public class INode implements TTNode
 	public boolean isFull() {
 		return recs == 3;
 	}
-	
+
 	/**
 	 * get a KVPair
 	 * throws UnsupportedOperationException
@@ -205,7 +207,7 @@ public class INode implements TTNode
 	public KVPair getKeyV(int i) {
 		throw new UnsupportedOperationException("Inner nodes only hold MemHandles");
 	}
-	
+
 	/**
 	 * get the MemHandle at an index
 	 * @param i the index
