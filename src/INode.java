@@ -3,18 +3,24 @@
 /**
  *  implements each inner node in the tree
  *
- *  @author mcstewart
+ *  @author jbruzek sucram20
  *  @version Oct 10, 2014
  */
-public class INode extends TTNode<MemHandle>
+public class INode implements TTNode
 {
+	private MemHandle[] keys;
+	private int recs;
+	private TTNode[] children;
+	
     // ----------------------------------------------------------
     /**
      * New inner node object
      */
     public INode()
     {
-        this.keys = new MemHandle[3];
+        keys = new MemHandle[3];
+        recs = 0;
+        children = new TTNode[4];
     }
     // ----------------------------------------------------------
     /**
@@ -28,9 +34,11 @@ public class INode extends TTNode<MemHandle>
         this.recs = 1;
     }
 
-
-
-    @Override
+    /**
+     * search the INode for a MemHandle
+     * @param k the Memhandle to search for
+     * @return the index
+     */
     public int search(MemHandle k)
     {
         for (int i = 0; i < this.numRecs(); i++)
@@ -43,8 +51,12 @@ public class INode extends TTNode<MemHandle>
         return -1;
     }
 
+    /**
+     * split the node
+     * @return the node split from this one
+     */
     @Override
-    public TTNode<MemHandle> split()
+    public TTNode split()
     {
         MemHandle mid;
         MemHandle max;
@@ -59,14 +71,30 @@ public class INode extends TTNode<MemHandle>
         this.setKey(2, null);
         return newNode;
     }
+    
+    /**
+     * set the key at an index
+     * @param i the index
+     * @param k the MemHandle
+     */
+    public void setKey(int i, MemHandle k) {
+    	keys[i] = k;
+    }
 
-
+    /**
+     * is this a leaf?
+     * @return false, this is an inner node
+     */
     @Override
     public boolean isLeaf()
     {
         return false;
     }
 
+    /**
+     * insert a MemHandle into the node
+     * @param k the memHandle
+     */
     public void insert(MemHandle k)
     {
         int index = 0;
@@ -82,7 +110,12 @@ public class INode extends TTNode<MemHandle>
         this.recs++;
     }
 
-    public void promote(TTNode<MemHandle> node, TTNode<MemHandle> newNode)
+    /**
+     * promote values up from a split child
+     * @param node the node that is already a child
+     * @param newNode the newly split node
+     */
+    public void promote(TTNode node, TTNode newNode)
     {
 //        this.insert((MemHandle) node.getKey(0));
 //        if (this.getChild(0) == node)
@@ -113,5 +146,74 @@ public class INode extends TTNode<MemHandle>
         this.setChild(index + 1, newNode);
         this.insert(newNode.getKey(0));
     }
+    
+    /**
+     * get the number of recs 
+     * @return the number of recs
+     */
+	@Override
+	public int numRecs() {
+		return recs;
+	}
+	
+	/**
+	 * set the number of recs
+	 * @param r the recs
+	 */
+	@Override
+	public void setRecs(int r) {
+		recs = r;
+		
+	}
+	
+	/**
+	 * set the child at an index
+	 * @param i the index
+	 * @param c the new node
+	 */
+	@Override
+	public void setChild(int i, TTNode c) {
+		children[i] = c;
+	}
+	
+	/**
+	 * get the child at an index
+	 * @param i the index
+	 * @return the node
+	 */
+	@Override
+	public TTNode getChild(int i) {
+		return children[i];
+	}
+	
+	/**
+	 * is this node full
+	 * @return if there are too many recs
+	 */
+	@Override
+	public boolean isFull() {
+		return recs == 3;
+	}
+	
+	/**
+	 * get a KVPair
+	 * throws UnsupportedOperationException
+	 * @param i the index
+	 * @return the KVPair
+	 */
+	@Override
+	public KVPair getKeyV(int i) {
+		throw new UnsupportedOperationException("Inner nodes only hold MemHandles");
+	}
+	
+	/**
+	 * get the MemHandle at an index
+	 * @param i the index
+	 * @return the MemHandle
+	 */
+	@Override
+	public MemHandle getKey(int i) {
+		return keys[i];
+	}
 
 }
