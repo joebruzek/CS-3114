@@ -4,11 +4,11 @@
  *
  */
 public class LNode implements TTNode {
-	
+
 	private LNode next;
 	private int recs;
 	private KVPair[] keys;
-	
+
 	/**
 	 * constructor for the leaf node
 	 */
@@ -17,7 +17,7 @@ public class LNode implements TTNode {
 		this.keys = new KVPair[3];
 		next = null;
 	}
-	
+
 	/**
 	 * make a LNode with a left value
 	 * @param l the KVPair
@@ -25,7 +25,7 @@ public class LNode implements TTNode {
 	public LNode(KVPair l) {
 		next = null;
 	}
-	
+
 	/**
 	 * set the next LNode
 	 * @param the next LNode
@@ -33,7 +33,7 @@ public class LNode implements TTNode {
 	public void setNext(LNode n) {
 		next = n;
 	}
-	
+
 	/**
 	 * get the next node
 	 * @return the next node
@@ -67,10 +67,10 @@ public class LNode implements TTNode {
 				return i;
 			}
 		}
-		
+
 		return -1;
 	}
-	
+
 	/**
 	 * insert a KVPair into the node
 	 * @param k the E to insert
@@ -80,19 +80,19 @@ public class LNode implements TTNode {
 		int index = 0;
 		while (index < this.numRecs() && this.getKeyV(index).compareTo(k) < 0)
 			++index;
-		
+
 		// move space for the new key
 		for (int i = this.numRecs() - 1; i >= index; --i) {
 			this.setKey(i + 1, this.getKeyV(i));
 		}
-		
+
 		this.setKey(index, k);
 		this.recs++;
 	}
 
 	/**
 	 * split the node into two, when it has more than 2 recs
-	 * 
+	 *
 	 * @return the new node that has been split from this one
 	 */
 	@Override
@@ -104,7 +104,7 @@ public class LNode implements TTNode {
 		this.keys[2] = null;
 		this.recs = 1;
 		node.recs = 2;
-		
+
 		if (this.next != null) {
 			LNode temp = this.next();
 			this.next = node;
@@ -112,7 +112,7 @@ public class LNode implements TTNode {
 		} else {
 			this.next = node;
 		}
-		
+
 		return node;
 	}
 
@@ -135,7 +135,7 @@ public class LNode implements TTNode {
 	 */
 	@Override
 	public TTNode getChild(int i) {
-		throw new UnsupportedOperationException("Leaf nodes have no children");
+		return null;
 	}
 
 	/**
@@ -154,7 +154,7 @@ public class LNode implements TTNode {
 	@Override
 	public void setRecs(int r) {
 		recs = r;
-		
+
 	}
 
 	/**

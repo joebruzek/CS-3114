@@ -8,7 +8,7 @@
  */
 public class INode implements TTNode
 {
-	private MemHandle[] keys;
+	private KVPair[] keys;
 	private int recs;
 	private TTNode[] children;
 
@@ -18,7 +18,7 @@ public class INode implements TTNode
      */
     public INode()
     {
-        keys = new MemHandle[3];
+        keys = new KVPair[3];
         recs = 0;
         children = new TTNode[4];
     }
@@ -27,26 +27,26 @@ public class INode implements TTNode
      * Create a new INode object with a left value.
      * @param data
      */
-    public INode(MemHandle data)
+    public INode(KVPair data)
     {
-        this.keys = new MemHandle[3];
+        this.keys = new KVPair[3];
         this.keys[0] = data;
         this.recs = 1;
     }
 
     /**
-     * search the INode for a MemHandle
+     * search the INode for a KVPair
      * @param k the Memhandle to search for
      * @return the index
      */
-    public int search(MemHandle k)
+    public int search(KVPair k)
     {
         for (int i = 0; i < this.numRecs(); i++)
         {
             if (this.getKey(i) == null) {
                 return -1;
             }
-            if( this.getKey(i).compareTo(k) == 0) return i;
+            if( this.getKey(i).compareTo(k.key()) == 0) return i;
         }
         return -1;
     }
@@ -56,12 +56,12 @@ public class INode implements TTNode
      * @return the node split from this one
      */
     @Override
-    public TTNode split()
+    public INode split()
     {
-        MemHandle mid;
-        MemHandle max;
-        mid = this.getKey(1);
-        max = this.getKey(2);
+        KVPair mid;
+        KVPair max;
+        mid = this.getKeyV(1);
+        max = this.getKeyV(2);
         INode newNode = new INode(mid);
         INode rightSplit = new INode(max);
         this.setKey(1, null);
@@ -71,15 +71,17 @@ public class INode implements TTNode
             rightSplit.setChild(i, this.getChild(i + 2));
             this.setChild(i + 2, null);
         }
+        newNode.setChild(0, this);
+        newNode.setChild(1, rightSplit);
         return newNode;
     }
 
     /**
      * set the key at an index
      * @param i the index
-     * @param k the MemHandle
+     * @param k the KVPair
      */
-    public void setKey(int i, MemHandle k) {
+    public void setKey(int i, KVPair k) {
     	keys[i] = k;
     }
 
@@ -94,18 +96,18 @@ public class INode implements TTNode
     }
 
     /**
-     * insert a MemHandle into the node
+     * insert a KVPair into the node
      * @param k the memHandle
      */
-    public void insert(MemHandle k)
+    public void insert(KVPair k)
     {
         int index = 0;
-        while (index < this.numRecs() && this.getKey(index).compareTo(k) < 0)
+        while (index < this.numRecs() && this.getKey(index).compareTo(k.key()) < 0)
             ++index;
 
         // move space for the new key
         for (int i = this.numRecs() - 1; i >= index; --i) {
-            this.setKey(i + 1, this.getKey(i));
+            this.setKey(i + 1, this.getKeyV(i));
         }
 
         this.setKey(index, k);
@@ -119,12 +121,12 @@ public class INode implements TTNode
      */
     public void promote(TTNode node, TTNode newNode)
     {
-//        this.insert((MemHandle) node.getKey(0));
+//        this.insert((KVPair) node.getKey(0));
 //        if (this.getChild(0) == node)
 //        {
 //            if (this.getChild(1) != null)
 //            {
-//                TTNode<MemHandle> temp = this.getChild(1);
+//                TTNode<KVPair> temp = this.getChild(1);
 //                this.setChild(1, newNode);
 //                promote(this.getChild(1), temp);
 //
@@ -146,7 +148,7 @@ public class INode implements TTNode
             this.setChild(i, this.getChild(i - 1));
         }
         this.setChild(index + 1, newNode);
-        this.insert(newNode.getKey(0));
+        this.insert(newNode.getKeyV(0));
     }
 
     /**
@@ -205,17 +207,17 @@ public class INode implements TTNode
 	 */
 	@Override
 	public KVPair getKeyV(int i) {
-		throw new UnsupportedOperationException("Inner nodes only hold MemHandles");
+		return keys[i];
 	}
 
 	/**
-	 * get the MemHandle at an index
+	 * get the KVPair at an index
 	 * @param i the index
-	 * @return the MemHandle
+	 * @return the KVPair
 	 */
 	@Override
 	public MemHandle getKey(int i) {
-		return keys[i];
+		return keys[i].key();
 	}
 
 }
