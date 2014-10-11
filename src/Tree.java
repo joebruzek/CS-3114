@@ -125,8 +125,8 @@ public class Tree {
                         INode p = ((INode) node).split();
                         insert (root, p, p.getKeyV(0));
                     }
-                    return node;
                 }
+                return node;
             }
 
 

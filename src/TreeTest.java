@@ -23,6 +23,10 @@ public class TreeTest extends TestCase {
 		tree = new Tree();
 	}
 
+	// ----------------------------------------------------------
+	/**
+	 * Just cuz
+	 */
 	public void printSomething() {
 		System.out.println("something");
 	}
@@ -33,12 +37,24 @@ public class TreeTest extends TestCase {
 	 */
 	public void testInsert()
 	{
+	    int j = 3;
 	    assertTrue(tree.getRoot().isLeaf());
-	    for (int i = 1; i <= 100; i++) {
+	    for (int i = 2; i <= 100; i*= 3 , j *= 3) {
             MemHandle m = new MemHandle(i);
             MemHandle v = new MemHandle(i + 5);
             tree.insert(tree.getRoot(), null, new KVPair(m, v));
+            MemHandle h = new MemHandle(j);
+            MemHandle x = new MemHandle(j + 3);
+            tree.insert(tree.getRoot(), null, new KVPair(h, x));
         }
+	    MemHandle m = new MemHandle(5);
+        MemHandle v = new MemHandle(20);
+	    tree.insert(tree.getRoot(), null, new KVPair(m, v));
+
+	    MemHandle h = new MemHandle(3);
+        MemHandle x = new MemHandle(25);
+        tree.insert(tree.getRoot(), null, new KVPair(h, x));
+
 	    assertFalse(tree.getRoot().isLeaf());
 	    assertFalse(tree.getRoot().getChild(0).isLeaf());
 	    assertFalse(tree.getRoot().getChild(1).isLeaf());
