@@ -143,14 +143,13 @@ public class INode implements TTNode
 //
 //        }
         int index = 0;
-        while (index < this.children.length && this.getChild(index).getKey(index).compareTo(node.getKey(0)) != 0)
+        while (index < this.children.length && this.getChild(index).getKeyV(0).compareTo(node.getKeyV(0)) != 0)
             index++;
         for (int i = this.children.length - 1; i > index; i--)
         {
             this.setChild(i, this.getChild(i - 1));
         }
         this.setChild(index + 1, newNode);
-        this.insert(newNode.getKeyV(0));
     }
 
     /**

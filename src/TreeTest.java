@@ -27,16 +27,19 @@ public class TreeTest extends TestCase {
 		System.out.println("something");
 	}
 
-	public void testIsLeaf()
+	// ----------------------------------------------------------
+	/**
+	 * tests insert for multiple inserts
+	 */
+	public void testInsert()
 	{
 	    assertTrue(tree.getRoot().isLeaf());
-	    for (int i = 1; i <= 5; i++) {
+	    for (int i = 1; i <= 100; i++) {
             MemHandle m = new MemHandle(i);
             MemHandle v = new MemHandle(i + 5);
             tree.insert(tree.getRoot(), null, new KVPair(m, v));
         }
 	    assertFalse(tree.getRoot().isLeaf());
-	    assertEquals(1, tree.getRoot().numRecs());
 	    assertFalse(tree.getRoot().getChild(0).isLeaf());
 	    assertFalse(tree.getRoot().getChild(1).isLeaf());
 	    tree.print(tree.getRoot(), tree.depth());
