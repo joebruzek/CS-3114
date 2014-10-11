@@ -54,43 +54,11 @@ public class Tree {
                 depth++;
                 return root;
             }
-
-            if (!node.isLeaf() && node.getChild(0).isLeaf())
-            {
-                //insert the key into a leaf node by recursing to the second to last level
-                int i;
-                if (k.compareTo(node.getKeyV(0)) < 0)
-                {
-                    i = 0;
-                }
-                else if (node.getKeyV(1) == null || k.compareTo(node.getKeyV(1)) < 0)
-                {
-                    i = 1;
-                }
-                else
-                {
-                    i = 2;
-                }
-                ((LNode) node.getChild(i)).insert(k);
-                if (node.getChild(i).isFull())
-                {
-                    LNode temp = ((LNode) node.getChild(i)).split();
-                    node.setChild(i + 1, temp);
-                    ((INode) node).insert(temp.getKeyV(0));
-                    if (node.isFull())
-                    {
-                        //the returned node points to the two split children
-                        INode p = (INode) node.split();
-                        insert (root, p, p.getKeyV(0));
-                    }
-                    return node;
-                }
-            }
-
-            //Deals with promoting a node
+          //Deals with promoting a node
             if (promote != null && promote.getChild(0) == root)
             {
                 root = promote;
+                return root;
             }
             else if (promote != null && node.getChild(0) == promote.getChild(0))
             {
@@ -128,6 +96,40 @@ public class Tree {
                 }
                 return node;
             }
+
+            if (node.getChild(0).isLeaf())
+            {
+                //insert the key into a leaf node by recursing to the second to last level
+                int i;
+                if (k.compareTo(node.getKeyV(0)) < 0)
+                {
+                    i = 0;
+                }
+                else if (node.getKeyV(1) == null || k.compareTo(node.getKeyV(1)) < 0)
+                {
+                    i = 1;
+                }
+                else
+                {
+                    i = 2;
+                }
+                ((LNode) node.getChild(i)).insert(k);
+                if (node.getChild(i).isFull())
+                {
+                    LNode temp = ((LNode) node.getChild(i)).split();
+                    ((INode) node).insert(temp.getKeyV(0));
+                    node.setChild(i + 1, temp);
+                    if (node.isFull())
+                    {
+                        //the returned node points to the two split children
+                        INode p = ((INode) node).split();
+                        insert (root, p, p.getKeyV(0));
+                    }
+                    return node;
+                }
+            }
+
+
             if (k.key().compareTo(node.getKeyV(0).key()) < 0) {
                 this.insert(node.getChild(0), promote, k);
             }
