@@ -23,7 +23,7 @@ public class LNode implements TTNode {
 	 * @param l the KVPair
 	 */
 	public LNode(KVPair l) {
-		this.recs = 0;
+		this.recs = 1;
 		this.keys = new KVPair[3];
 		next = null;
 		setKey(0, l);
@@ -132,7 +132,6 @@ public class LNode implements TTNode {
 
 	/**
 	 * get the child
-	 * Throws UnsupportedOperationException
 	 * @param i the index
 	 * @return the child
 	 */
