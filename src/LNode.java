@@ -23,7 +23,7 @@ public class LNode implements TTNode {
 	 * @param l the KVPair
 	 */
 	public LNode(KVPair l) {
-		this.recs = 0;
+		this.recs = 1;
 		this.keys = new KVPair[3];
 		next = null;
 		setKey(0, l);
@@ -78,7 +78,7 @@ public class LNode implements TTNode {
 	 * insert a KVPair into the node
 	 * @param k the E to insert
 	 */
-	public TTNode insert(KVPair k) {
+	public void insert(KVPair k) {
 		//find the index to insert into
 		int index = 0;
 		while (index < this.numRecs() && this.getKeyV(index).compareTo(k) < 0)
@@ -91,11 +91,14 @@ public class LNode implements TTNode {
 
 		this.setKey(index, k);
 		this.recs++;
+<<<<<<< HEAD
 
 		if (isFull()) {
 			return split();
 		}
 		return this;
+=======
+>>>>>>> 8f8a3893c1a6d6d4aecd960c75ffaccf14be7ff6
 	}
 
 	/**
@@ -137,7 +140,6 @@ public class LNode implements TTNode {
 
 	/**
 	 * get the child
-	 * Throws UnsupportedOperationException
 	 * @param i the index
 	 * @return the child
 	 */

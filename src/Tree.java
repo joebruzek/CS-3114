@@ -38,6 +38,7 @@ public class Tree {
             }
         }
 
+<<<<<<< HEAD
             if (node.getChild(0).isLeaf())
             {
                 //insert the key into a leaf node by recursing to the second to last level
@@ -154,6 +155,23 @@ public class Tree {
         }
     }
 
+=======
+		// recursive case, if root's an internal node
+		else {
+			if (k.key().compareTo((KVPair)node.getKey(0)) <= 0) {
+				this.insert(node.getChild(0), k);
+			}
+			else if (node.getKey(1) == null || k.key().compareTo((KVPair)node.getKey(1)) < 0) {
+				this.insert(node.getChild(1), k);
+			}
+			else {
+				this.insert(node.getChild(2), k);
+			}
+		}
+		
+		return null;
+	}
+>>>>>>> 8f8a3893c1a6d6d4aecd960c75ffaccf14be7ff6
 
 
 	/**
