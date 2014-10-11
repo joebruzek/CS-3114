@@ -56,7 +56,7 @@ public class TreeTest extends TestCase {
         	tree.insert(tree.getRoot(), null, new KVPair(m, v));
         }
 
-        tree.print(tree.getRoot(), tree.depth());
+        tree.print(tree.getRoot(), 0);
 
         try {
 			baos.flush();
@@ -67,13 +67,12 @@ public class TreeTest extends TestCase {
         String[] linesOfOutput = whatWasPrinted.split(
                 System.getProperty("line.separator"));
         assertEquals(7, linesOfOutput.length);
-//        assertEquals("3 9", linesOfOutput[0]);
-//        assertEquals("  2 7", linesOfOutput[1]);
-//        assertEquals("    1 6", linesOfOutput[2]);
-//        assertEquals("    2 7", linesOfOutput[3]);
-//        assertEquals("  4 9", linesOfOutput[4]);
-//        assertEquals("    3 8", linesOfOutput[5]);
-//        assertEquals("    4 9", linesOfOutput[6]);
-//        assertEquals("    5 10", linesOfOutput[7]);
+        assertEquals("3 8", linesOfOutput[0]);
+        assertEquals("  2 7", linesOfOutput[1]);
+        assertEquals("    1 6", linesOfOutput[2]);
+        assertEquals("    2 7", linesOfOutput[3]);
+        assertEquals("  4 9", linesOfOutput[4]);
+        assertEquals("    3 8", linesOfOutput[5]);
+        assertEquals("    4 9 5 10", linesOfOutput[6]);
 	}
 }

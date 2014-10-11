@@ -193,9 +193,9 @@ public class Tree {
 		String space = "";
 		for (int i = 0; i < node.numRecs(); i++) {
 			s.append(space);
-			s.append(node.getKeyV(i).key());
+			s.append(node.getKeyV(i).key().getPosition());
 			s.append(" ");
-			s.append(node.getKeyV(i).value());
+			s.append(node.getKeyV(i).value().getPosition());
 			space = " ";
 		}
 
@@ -206,6 +206,10 @@ public class Tree {
 		print(node.getChild(2), d + 1);
 	}
 
+	/**
+	 * Gets the root node of the tree
+	 * @return the root node
+	 */
 	public TTNode getRoot()
 	{
 	    return this.root;
