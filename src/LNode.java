@@ -78,7 +78,7 @@ public class LNode implements TTNode {
 	 * insert a KVPair into the node
 	 * @param k the E to insert
 	 */
-	public TTNode insert(KVPair k) {
+	public void insert(KVPair k) {
 		//find the index to insert into
 		int index = 0;
 		while (index < this.numRecs() && this.getKeyV(index).compareTo(k) < 0)
@@ -91,11 +91,6 @@ public class LNode implements TTNode {
 
 		this.setKey(index, k);
 		this.recs++;
-		
-		if (isFull()) {
-			return split();
-		}
-		return this;
 	}
 
 	/**
