@@ -12,7 +12,6 @@
 public class HashTable
 {
     private int size;
-    //private Handle[] hashTable;
     private int numElem;            //number of elements in hash table
     private int[] save;
     private MemHandle[] hashTable;
@@ -22,9 +21,10 @@ public class HashTable
     /**
      * Create a new HashTable object.
      * @param M
+     * @param name
      */
     public HashTable(int M, String name) {
-    	this.name = name;
+        this.name = name;
         size = M;
         hashTable = new MemHandle[size];
         //TODO
@@ -69,11 +69,6 @@ public class HashTable
      * @return true if there are no elements in the table.
      */
     public boolean isEmpty() {
-        /*for (int i = 0; i < size; i++) {
-            if (hashTable[i].getKey() != -1) {
-                return false;
-            }
-        }*/
         return numElem == 0;
     }
 
@@ -119,16 +114,15 @@ public class HashTable
             }
             pos = probe(key, i);
         }
-        
-        if (duplicate(k)) {
-        	 hashTable[pos] = handle;
+
+        if (!searchTable(k)) {
+             hashTable[pos] = handle;
              hashTable[pos].setKey(key);
-             saveIndex(pos);
              numElem++;
-             
+
              if (numElem > size/2) {
                  resize();
-                 System.out.println(name + " hash table size doubled.");
+//                 System.out.println(name + " hash table size doubled.");
              }
         }
     }
@@ -146,7 +140,7 @@ public class HashTable
         for (int i = 1; hashTable[pos] != null &&
             hashTable[pos].getKey() != key &&
                 hashTable[pos].getKey() != -1; i++) {
-            //TODO
+            if (i == size) return false;
             pos = probe(key, i);
         }
         return (hashTable[pos] != null && hashTable[pos].getKey() == key);
@@ -156,11 +150,9 @@ public class HashTable
     /**
      * delete something from the hash table
      * @param k The key that is being removed
-     * @param handle The handle of the key being removed
      * @return true if the k was successfully removed
      */
     public MemHandle hashDelete(String k) {
-        //TODO
         if (!searchTable(k)){
             return null;
         }
@@ -168,7 +160,7 @@ public class HashTable
         long key = sfold(k);
         int h = home(key);
         int pos = h;
-        
+
         for (int i = 1; hashTable[pos] != null && hashTable[pos].getKey() != key; i++) {
             pos = probe(key, i);
         }
@@ -180,112 +172,87 @@ public class HashTable
 
         return temp;
     }
-    
+
     /**
      * is the key a duplicate?
      * @return is it is duplicate
+     * @param k
      */
     public boolean duplicate(String k) {
-    	long key = sfold(k);
+        long key = sfold(k);
         int h = home(key);
         int pos = h;
-
-        for (int i=1; hashTable[pos] != null && hashTable[pos].getKey() != -1;
-            i++) {
-
-            if (hashTable[pos].getKey() == key) {
-                return false;
-            }
+        for (int i = 1; hashTable[pos] != null &&
+            hashTable[pos].getKey() != key &&
+                hashTable[pos].getKey() != -1; i++) {
+            if (i == size) return true;
             pos = probe(key, i);
         }
-        
-        return true;
+        if (!searchTable(k) && (numElem + 1) > size/2) {
+            System.out.println(name + " hash table size doubled.");
+        }
+        return !(hashTable[pos] != null && hashTable[pos].getKey() == key);
     }
 
     /**
      * resize the table
      */
     public void resize() {
-        if (numElem > (size/2)) {
-        	
-        	int count = numElem;
-        	
-        	for (int i = 0; i < save.length; i++) {
-        		if (hashTable[save[i]].getKey() == -2) {
-        			count--;
-        			for (int j = 0; j < save.length - 1; j++) {
-        				save[j] = save[j + 1];
-        			}
-        		}
-        	}
-        	
-            int [] save2 = new int[size];
-            size = size*2;
-            for (int i = 0; i < save.length; i++) {
-                save2[i] = save[i];
-            }
-            save = new int[size];
-            MemHandle[] change = new MemHandle[size];
-
-            for (int i = 0; i < count; i++) {
-                change[save2[i]] = hashTable[save2[i]];
-            }
-            hashTable = new MemHandle[size];
-            //TODO
-            for (int i = 0; i < size; i++) {
-                hashTable[i] = new MemHandle(0);
-            }
-
-            for (int i = 0; i < count; i++) {
-                long key = change[save2[i]].getKey();
-                if (key > -1) {
-                	int h = home(key);
-                    int pos = h;
-
-                    for (int j=1; hashTable[pos] != null &&
-                            hashTable[pos].getKey() > -1; j++) {
-                        pos = probe(key, j) % size;
-                    }
-
-
-                    hashTable[pos] = change[save2[i]];
-                    hashTable[pos].setKey(key);
-                    save[i] = pos;
-                }
-            }
-
+        size = size*2;
+        MemHandle[] resized = new MemHandle[size];
+        for (int i = 0; i < size; i++) {
+            resized[i] = new MemHandle(0);
         }
+        for (int i = 0; i < hashTable.length; i++) {
+            if(hashTable[i].getKey() > -1) {
+                long key = hashTable[i].getKey();
+                int h = home(hashTable[i].getKey());
+                int pos = h;
+                for (int j=1; resized[pos] != null && resized[pos].getKey() >= 0;
+                    j++) {
+                    pos = probe(key, j);
+                }
+                resized[pos] = hashTable[i];
+                resized[pos].setKey(key);
+            }
+        }
+        hashTable = resized;
+
     }
-    
+
     /**
      * find all things in the hashTable
-     * @param index
      * @return a pair with a MemHandle array and a int array
      */
     public Pair<MemHandle[], int[]> findAll() {
-    	MemHandle[] names = new MemHandle[numElem];
-    	int[] nums = new int[numElem];
-    	int count = 0;
-    	
-    	for (int i = 0; i < size; i++) {
-    		if (hashTable[i].getKey() > -1) {
-    			names[count] = hashTable[i];
-    			nums[count] = i;
-    			count++;
-    		}
-    	}
-    	
-    	return new Pair<MemHandle[], int[]>(names, nums);
+        MemHandle[] names = new MemHandle[numElem];
+        int[] nums = new int[numElem];
+        int count = 0;
+
+        for (int i = 0; i < size; i++) {
+            if (hashTable[i].getKey() > -1) {
+                names[count] = hashTable[i];
+                nums[count] = i;
+                count++;
+            }
+        }
+
+        return new Pair<MemHandle[], int[]>(names, nums);
     }
 
     /**
      * save the index in the save array
      * @param index
      */
-    public void saveIndex(int index) {
-        save[numElem] = index;
-    }
+//    public void saveIndex(int index) {
+//        save[numElem] = index;
+//    }
 
+    // ----------------------------------------------------------
+    /**
+     * Place a description of your method here.
+     * @return the size of the hash table
+     */
     public int getSize() {
         return size;
     }
@@ -293,7 +260,7 @@ public class HashTable
     /**
      * get the handle for a position
      * @param pos
-     * @return
+     * @return the handle at a certain position
      */
     public MemHandle getHandle(int pos) {
         return hashTable[pos];

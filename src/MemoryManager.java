@@ -81,14 +81,12 @@ public class MemoryManager implements MemManager {
         }
         size += initialSize;
         pool = newPool;
+        System.out.println("Memory pool expanded to be " + size + " bytes.");
         dub = true;
     }
-    
+
     public void increased() {
-    	if (dub) {
-    		System.out.println("Memory pool expanded to be " + size + " bytes.");
-    	}
-    	dub = false;
+        dub = false;
     }
 
     /**
@@ -98,28 +96,34 @@ public class MemoryManager implements MemManager {
     public FreeBlockList getBlocks() {
         return blocks;
     }
-    
+
     /**
      * get dub
      * @return dub
      */
     public boolean getDub() {
-    	return dub;
+        return dub;
     }
-    
+
     /**
      * get names from an array of handles
      * @param handles
      * @return
      */
     public String[] getNames(MemHandle[] handles) {
-    	String[] names = new String[handles.length];
-    	for (int i = 0; i < handles.length; i++) {
-    		names[i] = getString(getRecord(handles[i]), handles[i]);
-    	}
-    	return names;
+        int count = 0;
+        for (int i = 0; i < handles.length; i++) {
+            if (handles[i] == null) {
+                count++;
+            }
+        }
+        String[] names = new String[handles.length - count];
+        for (int i = 0; i < names.length; i++) {
+            names[i] = getString(getRecord(handles[i]), handles[i]);
+        }
+        return names;
     }
-    
+
     /**
      * get the length of the string from the first two bytes of the byte array
      * @param data
@@ -127,14 +131,14 @@ public class MemoryManager implements MemManager {
      */
     public int getLength(MemHandle h)
     {
-    	int position = h.getPosition();
+        int position = h.getPosition();
         byte[] bytes = {
-        		pool[position],
-        		pool[position + 1]
+                pool[position],
+                pool[position + 1]
         };
        return (int)((bytes[1]<<8) | (bytes[0]));
     }
-    
+
     /**
      * get the string value from a byte array
      * @param b
@@ -142,12 +146,12 @@ public class MemoryManager implements MemManager {
      * @return
      */
     public String getString(byte[] b, MemHandle h) {
-    	int length = getLength(h);
-    	char[] chars = new char[length];
-    	for (int i = 0; i < length; i++) {
-    		chars[i] = (char)b[i];
-    	}
-    	return new String(chars);
+        int length = getLength(h);
+        char[] chars = new char[length];
+        for (int i = 0; i < length; i++) {
+            chars[i] = (char)b[i];
+        }
+        return new String(chars);
     }
 
     /**
