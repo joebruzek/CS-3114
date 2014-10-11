@@ -41,23 +41,6 @@ public class Tree {
 				this.insert(node.getChild(2), k);
 			}
 		}
-
-		//handle splitting
-		if (!node.isLeaf()) {
-			for (int i = 0; i < 3; i++) {
-				if (node.getChild(i) != null && node.getChild(i).isFull()) {
-					TTNode temp = node.getChild(i).split();
-<<<<<<< HEAD
-
-					node.promote(node, temp);
-=======
-					
-					// promote up the node stuff
-					((INode) node).promote(node, temp);
->>>>>>> f8e5342a92b29f7bc0d226131492cfe97098c6fd
-				}
-			}
-		}
 		
 		return null;
 	}
@@ -132,9 +115,9 @@ public class Tree {
 		String space = "";
 		for (int i = 0; i < node.numRecs(); i++) {
 			s.append(space);
-			s.append(node.getKey(i).key());
+			s.append(node.getKeyV(i).key());
 			s.append(" ");
-			s.append(node.getKey(i).value());
+			s.append(node.getKeyV(i).value());
 			space = " ";
 		}
 		
