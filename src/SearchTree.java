@@ -79,16 +79,16 @@ public class SearchTree {
                     Pair<String, String> sPair = toPair(value);
                     Pair<byte[], byte[]> bPair = toByteArray(sPair);
                     MemHandle h1;
+                    h1 = mm.insert(bPair.getFirst());
                     MemHandle h2;
+                    h2 = mm.insert(bPair.getSecond());
                     if (artists.duplicate(sPair.getFirst())) {
-                        h1 = mm.insert(bPair.getFirst());
                         artists.hashInsert(sPair.getFirst(), h1);
                         System.out.println("|" + sPair.getFirst() + "| is added to the artist database.");
                     } else {
                         System.out.println("|" + sPair.getFirst() + "| duplicates a record already in the artist database.");
                     }
                     if (songs.duplicate(sPair.getSecond())) {
-                        h2 = mm.insert(bPair.getSecond());
                         songs.hashInsert(sPair.getSecond(), h2);
                         mm.increased();
                         System.out.println("|" + sPair.getSecond() + "| is added to the song database.");

@@ -75,7 +75,7 @@ public class TreeTest extends TestCase {
         	tree.insert(tree.getRoot(), null, new KVPair(m, v));
         }
 
-        tree.print(tree.getRoot(), 0);
+        tree.printTree();
 
         try {
 			baos.flush();

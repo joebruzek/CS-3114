@@ -15,6 +15,15 @@ public class Tree {
         root = new LNode();
         depth = 1;
     }
+    
+    /**
+     * add a value into the tree
+     * calls the insert method
+     * @param k the KVPair to insert
+     */
+    public void add(KVPair k) {
+    	insert(root, null, k);
+    }
 
     /**
      * insert a value into the tree
