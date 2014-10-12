@@ -135,6 +135,9 @@ public class SearchTree {
                     break;
                 case "print":
                     switch(value) {
+                    	case "tree":
+                    		tree.printTree();
+                    		break;
                         case "blocks":
                             System.out.println(mm.getBlocks());
                             break;

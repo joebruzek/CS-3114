@@ -173,6 +173,12 @@ public class Tree {
         }
     }
 
+    /**
+     * print the tree
+     */
+    public void printTree() {
+    	print(root, 0);
+    }
 
 
 	/**
