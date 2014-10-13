@@ -6,6 +6,7 @@
 public class LNode implements TTNode {
 
 	private LNode next;
+	private LNode previous;
 	private int recs;
 	private KVPair[] keys;
 
@@ -16,6 +17,7 @@ public class LNode implements TTNode {
 		this.recs = 0;
 		this.keys = new KVPair[3];
 		next = null;
+		previous = null;
 	}
 
 	/**
@@ -43,6 +45,22 @@ public class LNode implements TTNode {
 	 */
 	public LNode next() {
 		return next;
+	}
+	
+	/**
+	 * set the previous node
+	 * @param p the previous
+	 */
+	public void setPrevious(LNode p) {
+		previous = p;
+	}
+	
+	/**
+	 * get the previous node
+	 * @return the previous
+	 */
+	public LNode previous() {
+		return previous;
 	}
 
 	/**
@@ -110,10 +128,13 @@ public class LNode implements TTNode {
 
 		if (this.next != null) {
 			LNode temp = this.next();
-			this.next = node;
+			this.setNext(node);
+			node.setPrevious(this);
 			node.setNext(temp);
+			temp.setPrevious(node);
 		} else {
-			this.next = node;
+			this.setNext(node);
+			node.setPrevious(this);
 		}
 
 		return node;

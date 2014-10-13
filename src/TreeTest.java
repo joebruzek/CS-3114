@@ -85,14 +85,15 @@ public class TreeTest extends TestCase {
         String whatWasPrinted = new String(baos.toByteArray());
         String[] linesOfOutput = whatWasPrinted.split(
                 System.getProperty("line.separator"));
-        assertEquals(7, linesOfOutput.length);
-        assertEquals("3 8", linesOfOutput[0]);
-        assertEquals("  2 7", linesOfOutput[1]);
-        assertEquals("    1 6", linesOfOutput[2]);
-        assertEquals("    2 7", linesOfOutput[3]);
-        assertEquals("  4 9", linesOfOutput[4]);
-        assertEquals("    3 8", linesOfOutput[5]);
-        assertEquals("    4 9 5 10", linesOfOutput[6]);
+        assertEquals(8, linesOfOutput.length);
+        assertEquals("Printing 2-3 tree:", linesOfOutput[0]);
+        assertEquals("3 8", linesOfOutput[1]);
+        assertEquals("  2 7", linesOfOutput[2]);
+        assertEquals("    1 6", linesOfOutput[3]);
+        assertEquals("    2 7", linesOfOutput[4]);
+        assertEquals("  4 9", linesOfOutput[5]);
+        assertEquals("    3 8", linesOfOutput[6]);
+        assertEquals("    4 9 5 10", linesOfOutput[7]);
 	}
 
 	/**
@@ -119,5 +120,74 @@ public class TreeTest extends TestCase {
         KVPair pair = new KVPair(a, b);
         assertFalse(tree.search(tree.getRoot(), pair));
 
+	}
+	
+	/**
+	 * test the getToFirst method
+	 */
+	public void testGetToFirst() {
+		assertEquals(tree.getRoot(), tree.getToFirst(tree.getRoot()));
+		MemHandle m = new MemHandle(0);
+        MemHandle v = new MemHandle(1);
+	    tree.insert(new KVPair(m, v));
+	    
+	    assertEquals(tree.getRoot(), tree.getToFirst(tree.getRoot()));
+	    
+	    MemHandle q = new MemHandle(0);
+        MemHandle w = new MemHandle(2);
+	    tree.insert(new KVPair(q, w));
+	    MemHandle e = new MemHandle(0);
+        MemHandle r = new MemHandle(3);
+	    tree.insert(new KVPair(e, r));
+		
+	    assertEquals(1, tree.getToFirst(tree.getRoot()).getKeyV(0).value().getPosition());
+	    //damn that was a long assertion statement
+	    assertEquals(1, tree.getToFirst(tree.getRoot()).numRecs());
+	}
+	
+	/**
+	 * test the numElements method
+	 */
+	public void testNumElements() {
+		assertEquals(0, tree.numElements());
+		
+		MemHandle m = new MemHandle(0);
+        MemHandle v = new MemHandle(1);
+	    tree.insert(new KVPair(m, v));
+		MemHandle q = new MemHandle(0);
+        MemHandle w = new MemHandle(2);
+	    tree.insert(new KVPair(q, w));
+	    MemHandle e = new MemHandle(0);
+        MemHandle r = new MemHandle(3);
+	    tree.insert(new KVPair(e, r));
+	    
+	    assertEquals(3, tree.numElements());
+	}
+	
+	/**
+	 * test the find method
+	 */
+	public void testFind() {
+		MemHandle m = new MemHandle(1);
+        MemHandle v = new MemHandle(10);
+	    tree.insert(new KVPair(m, v));
+		MemHandle q = new MemHandle(2);
+        MemHandle w = new MemHandle(20);
+	    tree.insert(new KVPair(q, w));
+	    MemHandle e = new MemHandle(3);
+        MemHandle r = new MemHandle(30);
+	    tree.insert(new KVPair(e, r));
+	    MemHandle a = new MemHandle(3);
+        MemHandle s = new MemHandle(300);
+	    tree.insert(new KVPair(a, s));
+	    
+	    assertEquals(0, tree.find(new MemHandle(50)).length);
+	    assertEquals(1, tree.find(new MemHandle(1)).length);
+	    assertEquals(10, tree.find(new MemHandle(1))[0].getPosition());
+	    
+	    MemHandle[] found = tree.find(new MemHandle(3));
+	    assertEquals(2, found.length);
+	    assertEquals(30, found[0].getPosition());
+	    assertEquals(300, found[1].getPosition());
 	}
 }

@@ -190,6 +190,7 @@ public class Tree {
      * print the tree
      */
     public void printTree() {
+    	System.out.println("Printing 2-3 tree:");
     	print(root, 0);
     }
 
@@ -241,5 +242,67 @@ public class Tree {
 	public int depth()
 	{
 	    return depth;
+	}
+	
+	/**
+	 * go to the first LNode in the tree
+	 * @param node the root for this subtree
+	 * @return the first LNode, null if tree is empty
+	 */
+	public LNode getToFirst(TTNode node) {
+		//base case
+		if (node == null) {
+			return null;
+		}
+		if (node.isLeaf()) {
+			return (LNode) node;
+		}
+		
+		return getToFirst(node.getChild(0));
+	}
+	
+	/**
+	 * get the number of KVPairs in the leaves of the tree
+	 * @return the number of KVPairs in the tree
+	 */
+	public int numElements() {
+		int results = 0;
+		LNode temp = getToFirst(root);
+		
+		do {
+			results += temp.numRecs();
+			temp = temp.next();
+		} while(temp != null);
+		
+		return results;
+	}
+	
+	/**
+	 * find all the values in the tree that match a key
+	 * @param k the MemHandle key
+	 */
+	public MemHandle[] find(MemHandle k) {
+		MemHandle[] results = new MemHandle[numElements()];
+		int nums = 0;
+		
+		LNode temp = getToFirst(root);
+		
+		do {
+			for (int i = 0; i < temp.numRecs(); i++) {
+				if (temp.getKeyV(i).key().compareTo(k) == 0) {
+					results[nums] = temp.getKeyV(i).value();
+					nums++;
+				}
+			}
+			temp = temp.next();
+		} while (temp != null);
+		
+		// make the array the size of the results returned
+		MemHandle[] finals = new MemHandle[nums];
+		for (int i = 0; i < nums; i++) {
+			finals[i] = results[i];
+		}
+		
+		return finals;
 	}
 }

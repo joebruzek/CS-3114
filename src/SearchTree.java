@@ -175,6 +175,60 @@ public class SearchTree {
                             //nothing
                     }
                     break;
+                case "list":
+                	String[] words1 = value.split(" ");
+                	String type1 = words1[0];
+                	String name1 = value.substring(type1.length() + 1, value.length());
+                	switch(type1) {
+	                	case "artist":
+	                		//find the MemHandle for the artist name
+	                		Pair<MemHandle[], int[]> pair = artists.findAll();
+	                		if (pair.getFirst().length == 0) {
+	                			System.out.println("|" + name1 + "| does not exist in the artist database.");
+	                		}
+	                		String[] names = mm.getNames(pair.getFirst());
+	                		MemHandle match = null;
+	                		for (int j = 0; j < names.length; j++) {
+                                if(names[j].equals(name1)) {
+                                	match = pair.getFirst()[j];
+                                }
+                            }
+	                		if (match == null) {
+	                			// this should never happen I don't think
+	                			System.out.println("There's something wrong with list artist");
+	                		} else {
+	                			MemHandle[] handles = tree.find(match);
+	                			String[] theNames = mm.getNames(handles);
+	                			for (int j = 0; j < theNames.length; j++) {
+	                				System.out.println("|" + theNames[j] + "|");
+	                			}
+	                		}
+	                		break;
+	                	case "song":
+	                		//find the MemHandle for the artist name
+	                		Pair<MemHandle[], int[]> pair1 = songs.findAll();
+	                		if (pair1.getFirst().length == 0) {
+	                			System.out.println("|" + name1 + "| does not exist in the artist database.");
+	                		}
+	                		String[] names1 = mm.getNames(pair1.getFirst());
+	                		MemHandle match1 = null;
+	                		for (int j = 0; j < names1.length; j++) {
+                                if(names1[j].equals(name1)) {
+                                	match1 = pair1.getFirst()[j];
+                                }
+                            }
+	                		if (match1 == null) {
+	                			// this should never happen I don't think
+	                			System.out.println("There's something wrong with list artist");
+	                		} else {
+	                			MemHandle[] handles = tree.find(match1);
+	                			String[] theNames = mm.getNames(handles);
+	                			for (int j = 0; j < theNames.length; j++) {
+	                				System.out.println("|" + theNames[j] + "|");
+	                			}
+	                		}
+	                		break;
+                	}
                 default:
                     //nothing was there
             }

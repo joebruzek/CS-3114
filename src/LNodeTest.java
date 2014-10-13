@@ -194,6 +194,21 @@ public class LNodeTest extends TestCase {
 			assertEquals("LNodes only store KVPairs.", e.getMessage());
 		}
 	}
+	
+	/**
+	 * test the previous getter/setter
+	 * Webcat testing getter/setter test code coverage is a pain.
+	 * I mean seriously, they're getters and setters
+	 * it's literally one line of code.
+	 * I think it's written correctly
+	 */
+	public void testPrevious() {
+		LNode temp = new LNode();
+		
+		l.setPrevious(temp);
+		
+		assertEquals(temp, l.previous());
+	}
 }
 
 
