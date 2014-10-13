@@ -97,12 +97,26 @@ public class SearchTree {
                     }
                     KVPair p1 = new KVPair(h1, h2);
                     KVPair p2 = new KVPair(h2, h1);
-                    tree.add(p1);
-                    System.out.println("The KVPair (|" + sPair.getFirst() + "|,|" + sPair.getSecond() 
-                    		+ "|),(" + h1.getPosition() + "," + h2.getPosition() + ") is added to the tree.");
-                    tree.add(p2);
-                    System.out.println("The KVPair (|" + sPair.getSecond() + "|,|" + sPair.getFirst() 
+                    if (tree.insert(p1))
+                    {
+                        System.out.println("The KVPair (|" + sPair.getFirst() + "|,|" + sPair.getSecond()
+                            + "|),(" + h1.getPosition() + "," + h2.getPosition() + ") is added to the tree.");
+                    }
+                    else
+                    {
+                        System.out.println("The KVPair (|" + sPair.getFirst() + "|,|" + sPair.getSecond()
+                            + "|),(" + h1.getPosition() + "," + h2.getPosition() + ") duplicates a record already in the song database.");
+                    }
+                    if (tree.insert(p2))
+                    {
+                        System.out.println("The KVPair (|" + sPair.getSecond() + "|,|" + sPair.getFirst()
                     		+ "|),(" + h2.getPosition() + "," + h1.getPosition() + ") is added to the tree.");
+                    }
+                    else
+                    {
+                        System.out.println("The KVPair (|" + sPair.getSecond() + "|,|" + sPair.getFirst()
+                            + "|),(" + h2.getPosition() + "," + h1.getPosition() + ") duplicates a record already in the song database.");
+                    }
 
                     break;
                 case "remove":

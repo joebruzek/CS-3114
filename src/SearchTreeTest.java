@@ -9,10 +9,10 @@ import junit.framework.TestCase;
  *
  */
 public class SearchTreeTest extends TestCase {
-	
+
 	private ArrayList<String> commands;
 	private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-	
+
 	/**
 	 * set up before tests
 	 */
@@ -29,7 +29,7 @@ public class SearchTreeTest extends TestCase {
 		commands.add("print song");
 		commands.add("jsdhbjsdavjdf jbkvsa");
 	}
-	
+
 	/**
 	 * test main
 	 */
@@ -39,48 +39,48 @@ public class SearchTreeTest extends TestCase {
 		str[1] = "32";
 		str[2] = "src/test1.txt";
 		SearchTree.main(str);
-		
+
 		assertTrue(!outContent.toString().equals(""));
 	}
-   
+
 	/**
 	 * test the get bytes method
 	 */
     public void testGetBytes() {
     	String test = "Length: 10";
-    	
+
     	byte[] bytes = SearchTree.getBytes(test);
     	assertEquals(12, bytes.length);
     	assertEquals((byte) 10, bytes[0]);
     	assertEquals((byte) 0, bytes[1]);
     }
-    
+
     /**
      * test toPair method
      */
     public void testToPair() {
     	String str = "First thing<SEP>Second thing";
     	Pair<String, String> p = SearchTree.toPair(str);
-    	
+
     	assertEquals("First thing", p.getFirst());
     	assertEquals("Second thing", p.getSecond());
     }
-    
+
     /**
      * test the toByteArray method
-     * 
+     *
      * implicitely test the getLength method
      */
     public void testToByteArray() {
     	String str = "Length: 10<SEP>Length: 15-----";
     	Pair<String, String> p = SearchTree.toPair(str);
-    	
+
     	Pair<byte[], byte[]> pair = SearchTree.toByteArray(p);
-    	
+
     	assertEquals(10, SearchTree.getLength(pair.getFirst()));
     	assertEquals(15, SearchTree.getLength(pair.getSecond()));
     }
-    
+
 	/**
      * test the execute commands method
      */
@@ -90,7 +90,7 @@ public class SearchTreeTest extends TestCase {
     	HashTable b = new HashTable(10, "Songs");
     	Tree t = new Tree();
     	SearchTree.executeCommands(commands, mm, a, b, t);
-    	
+
     	assertEquals(1, mm.getBlocks().size());
     	assertEquals(10, a.getSize());
     	assertEquals(10, b.getSize());

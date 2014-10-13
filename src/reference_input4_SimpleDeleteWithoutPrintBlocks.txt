@@ -1,0 +1,76 @@
+insert Loudermilk<SEP>Mai
+insert Five Fingers of Funk<SEP>Let It Flow (Feat. Gauran-T and Freaky Frederali)
+insert BT<SEP>Mercury & Solace
+insert The Suicide Machines<SEP>Your Silence
+insert Melvins<SEP>You've Never Been Right - (Live In Boston_ MA 2008)
+insert Hot Tuna<SEP>Candy Man
+insert Klaus Badelt<SEP>After The Fire
+insert Graham Central Station<SEP>It's Alright
+insert Bryan White<SEP>Love Happens Just Like That (LP Version)
+insert Darryl Worley<SEP>Those Less Fortunate Than I
+insert Confetti's<SEP>C Day (Maxi Club Version)
+insert Martina McBride<SEP>Thanks A Lot
+insert K-OS<SEP>B-Boy Stance
+insert Taking Back Sunday<SEP>I Am Fred Astaire (Album Version)
+insert Stevie Ray Vaughan And Double Trouble<SEP>Ain't Gone 'N' Give Up On Love
+insert Jeff Wahl<SEP>Waterfall
+insert Sonny Landreth<SEP>She Left Me A Mule
+insert Rise Against<SEP>1000 Good Intentions
+insert Sick Puppies<SEP>Deliverance
+insert Hevia<SEP>Albo
+insert Salt-N-Pepa<SEP>Push It
+insert Papa Wemba<SEP>Excuse me
+insert Tex Williams<SEP>Smoke! Smoke! Smoke! (That Cigarette)
+insert GG Allin<SEP>Garbage Dump
+insert Sade<SEP>Smooth Operator
+insert Slick Rick<SEP>Kill Niggaz
+insert Memphis Jug Band<SEP>Ambulance Man
+insert Casiotone For The Painfully Alone<SEP>Rice Dream Girl
+insert The Gone Jackals<SEP>Drop The Hammer
+insert Jerry Goldsmith<SEP>Main Title
+insert 3 Steps Ahead<SEP>My Mind Is Gone
+insert Cornell Campbell<SEP>Got To Tell The People
+insert Sierra Maestra<SEP>Abandonada / Blancas azucenas
+insert Johnny Cash<SEP>A Boy Named Sue
+insert Silent Stream Of Godless Elegy<SEP>Theme III
+insert Digital Mystikz<SEP>Molten
+insert Aerosmith<SEP>Reefer Head Woman
+insert Patty Griffin<SEP>Flaming Red
+insert Phil Collins<SEP>Please Come Out Tonight
+insert Suicide<SEP>Night Time
+insert Milk Inc.<SEP>Breakin'
+insert Buju Banton<SEP>Searching
+insert Enthroned<SEP>Ad Te Clamamus Exsvles Mortva Liberi
+insert Anna Abreu<SEP>Shame
+insert April Wine<SEP>Caught In The Crossfire
+insert The Chieftains<SEP>The Raggle Taggle Gypsy
+insert Seal<SEP>The Beginning (Giro E Giro Mix)
+insert Count Ossie<SEP>No Night In Zion - Original
+insert Nine Inch Nails<SEP>Survivalism
+insert The Ronettes<SEP>(The Best Part Of) Breakin' Up
+insert Franz Ferdinand<SEP>No You Girls
+insert Thrice<SEP>All That's Left
+remove artist Loudermilk
+remove song Mai
+remove artist Bryan White
+remove song Love Happens Just Like That (LP Version)
+remove artist Stevie Ray Vaughan And Double Trouble
+remove song Ain't Gone 'N' Give Up On Love
+remove artist Hevia
+remove song Albo
+remove artist Sade
+remove song Smooth Operator
+remove artist Jerry Goldsmith
+remove song Main Title
+remove artist Silent Stream Of Godless Elegy
+remove song Theme III
+remove artist Suicide
+remove song Night Time
+remove artist April Wine
+remove artist The Chieftains
+remove artist Blind Lemon Jefferson
+remove song When Summer's Through
+remove artist Seal
+remove artist Count
+print artist
+print song

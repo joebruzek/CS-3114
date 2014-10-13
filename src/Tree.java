@@ -15,15 +15,18 @@ public class Tree {
         root = new LNode();
         depth = 1;
     }
-    
+
     /**
      * add a value into the tree
      * calls the insert method
      * @param k the KVPair to insert
      */
-    public void add(KVPair k) {
-    	insert(root, null, k);
+    public boolean insert(KVPair k) {
+        if (search(root, k)) return false;
+    	add(root, null, k);
+    	return true;
     }
+
 
     /**
      * insert a value into the tree
@@ -32,7 +35,7 @@ public class Tree {
      * @param promote the promoted node, null if no promotion
      * @return TTNode the parent of the inserted node
      */
-    public TTNode insert(TTNode node, TTNode promote, KVPair k) {
+    public TTNode add(TTNode node, TTNode promote, KVPair k) {
         //base case
         if (root.isLeaf())
         {
@@ -77,7 +80,7 @@ public class Tree {
                 {
                     //the returned node points to the two split children
                     INode p = (INode) node.split();
-                    insert (root, p, p.getKeyV(0));
+                    add(root, p, p.getKeyV(0));
                 }
                 return node;
             }
@@ -89,7 +92,7 @@ public class Tree {
                 {
                     //the returned node points to the two split children
                     INode p = (INode) node.split();
-                    insert (root, p, p.getKeyV(0));
+                    add(root, p, p.getKeyV(0));
                 }
                 return node;
             }
@@ -101,7 +104,7 @@ public class Tree {
                 {
                     //the returned node points to the two split children
                     INode p = (INode) node.split();
-                    insert (root, p, p.getKeyV(0));
+                    add(root, p, p.getKeyV(0));
                 }
                 return node;
             }
@@ -132,7 +135,7 @@ public class Tree {
                     {
                         //the returned node points to the two split children
                         INode p = ((INode) node).split();
-                        insert (root, p, p.getKeyV(0));
+                        add(root, p, p.getKeyV(0));
                     }
                 }
                 return node;
@@ -140,13 +143,13 @@ public class Tree {
 
 
             if (k.key().compareTo(node.getKeyV(0).key()) < 0) {
-                this.insert(node.getChild(0), promote, k);
+                this.add(node.getChild(0), promote, k);
             }
             else if (node.getKeyV(1) == null || k.key().compareTo(node.getKeyV(1).key()) < 0) {
-                this.insert(node.getChild(1), promote, k);
+                this.add(node.getChild(1), promote, k);
             }
             else {
-                this.insert(node.getChild(2),promote, k);
+                this.add(node.getChild(2),promote, k);
             }
         }
         return node;
@@ -159,22 +162,23 @@ public class Tree {
      * @return k exists in the tree
      */
     public boolean search(TTNode node, KVPair k) {
-        if (node == null) {
+        if (node == null || k.key() == null) {
             return false;
         }
-        if (k.compareTo(node.getKey(0)) == 0) {
+        if (root.getKeyV(0) == null) return false;
+        if (k.compareTo(node.getKeyV(0)) == 0) {
             return true;
         }
-        if (node.getKey(1) != null && k.compareTo(node.getKey(1)) == 0) {
+        if (node.getKeyV(1) != null && k.compareTo(node.getKeyV(1)) == 0) {
             return true;
         }
-        if (k.compareTo(node.getKey(0)) < 0) {
+        if (k.compareTo(node.getKeyV(0)) < 0) {
             return search(node.getChild(0), k);
         }
-        else if (node.getKey(1) == null) {
+        else if (node.getKeyV(1) == null) {
             return search(node.getChild(1), k);
         }
-        else if (k.compareTo(node.getKey(1)) < 0) {
+        else if (k.compareTo(node.getKeyV(1)) < 0) {
             return (search(node.getChild(1), k));
         }
         else {
