@@ -50,7 +50,27 @@ insert Nine Inch Nails<SEP>Survivalism
 insert The Ronettes<SEP>(The Best Part Of) Breakin' Up
 insert Franz Ferdinand<SEP>No You Girls
 insert Thrice<SEP>All That's Left
+remove artist Loudermilk
+remove song Mai
+remove artist Bryan White
+remove song Love Happens Just Like That (LP Version)
+remove artist Stevie Ray Vaughan And Double Trouble
+remove song Ain't Gone 'N' Give Up On Love
+remove artist Hevia
+remove song Albo
+remove artist Sade
+remove song Smooth Operator
+remove artist Jerry Goldsmith
+remove song Main Title
+remove artist Silent Stream Of Godless Elegy
+remove song Theme III
+remove artist Suicide
+remove song Night Time
+remove artist April Wine
+remove artist The Chieftains
+remove artist Blind Lemon Jefferson
+remove song When Summer's Through
+remove artist Seal
+remove artist Count
 print artist
 print song
-print blocks
-print tree

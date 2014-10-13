@@ -105,7 +105,7 @@ public class SearchTree {
                     else
                     {
                         System.out.println("The KVPair (|" + sPair.getFirst() + "|,|" + sPair.getSecond()
-                            + "|),(" + h1.getPosition() + "," + h2.getPosition() + ") duplicates a record already in the song database.");
+                            + "|),(" + h1.getPosition() + "," + h2.getPosition() + ") duplicates a record already in the tree.");
                     }
                     if (tree.insert(p2))
                     {
@@ -115,7 +115,7 @@ public class SearchTree {
                     else
                     {
                         System.out.println("The KVPair (|" + sPair.getSecond() + "|,|" + sPair.getFirst()
-                            + "|),(" + h2.getPosition() + "," + h1.getPosition() + ") duplicates a record already in the song database.");
+                            + "|),(" + h2.getPosition() + "," + h1.getPosition() + ") duplicates a record already in the tree.");
                     }
 
                     break;
