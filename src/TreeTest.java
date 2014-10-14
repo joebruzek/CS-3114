@@ -399,4 +399,37 @@ public class TreeTest extends TestCase {
         assertEquals(one, tree.getRoot().getChild(0));
         assertEquals(two, tree.getRoot().getChild(2));
 	}
+	
+	/**
+	 * test the exists method
+	 */
+	public void testExists() {
+		assertFalse(tree.exists(new MemHandle(3)));
+		
+		MemHandle a = new MemHandle(5);
+        MemHandle s = new MemHandle(5);
+		INode root = new INode(new KVPair(a, s));
+		LNode one = new LNode();
+		LNode two = new LNode();
+		
+		MemHandle m = new MemHandle(1);
+        MemHandle v = new MemHandle(10);
+	    one.insert(new KVPair(m, v));
+		MemHandle q = new MemHandle(2);
+        MemHandle w = new MemHandle(20);
+	    one.insert(new KVPair(q, w));
+	    MemHandle e = new MemHandle(3);
+        MemHandle r = new MemHandle(30);
+	    one.insert(new KVPair(e, r));
+        two.insert(new KVPair(a, s));
+        one.setNext(two);
+        two.setPrevious(one);
+        
+        root.setChild(0, one);
+        root.setChild(1, two);
+        
+        tree.setRoot(root);
+        
+        assertTrue(tree.exists(r));
+	}
 }

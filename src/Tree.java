@@ -569,5 +569,25 @@ public class Tree {
 	public void setRoot(TTNode r) {
 		root = r;
 	}
+	
+	/**
+     * find if there is any instance of a handle left in the tree
+     */
+    public boolean exists(MemHandle m) {
+    	LNode temp = getToFirst(root);
+    	if (temp == null) return false;
+    	
+    	do {
+    		for (int i = 0; i < temp.numRecs(); i++) {
+    			if (temp.getKeyV(i).key().compareTo(m) == 0
+    					|| temp.getKeyV(i).value().compareTo(m) == 0) {
+    				return true;
+    			}
+    		}
+			temp = temp.next();
+		} while(temp != null);
+    	
+    	return false;
+    }
 
 }

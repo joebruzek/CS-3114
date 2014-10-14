@@ -234,6 +234,47 @@ public class SearchTree {
 	                		}
 	                		break;
                 	}
+                	break;
+                case "delete":
+                	Pair<String, String> sPair1 = toPair(value);
+                    //find the MemHandle for the artist name
+            		MemHandle artH = findHandle(sPair1.getFirst(), artists, mm);
+            		MemHandle songH = findHandle(sPair1.getSecond(), songs, mm);
+            		if (artH == null) {
+            			System.out.println("|" + sPair1.getFirst() + "| does not exist in the artist database.");
+            			break;
+            		} else if (songH == null) {
+            			System.out.println("|" + sPair1.getSecond() + "| does not exist in the song database.");
+            			break;
+            		} else {
+            			MemHandle[] handles = tree.find(artH);
+            			for (int j = 0; j < handles.length; j++) {
+            				if (handles[j].compareTo(songH) == 0) {
+            					tree.delete(tree.getRoot(), new KVPair(artH, songH));
+            					System.out.println("The KVPair (|" + sPair1.getFirst() + "|,|" + sPair1.getSecond() + "|) is deleted from the tree.");
+            				}
+            			}
+            			MemHandle[] handlesS = tree.find(songH);
+            			for (int j = 0; j < handlesS.length; j++) {
+            				if (handlesS[j].compareTo(artH) == 0) {
+            					tree.delete(tree.getRoot(), new KVPair(songH, artH));
+            					System.out.println("The KVPair (|" + sPair1.getSecond() + "|,|" + sPair1.getFirst() + "|) is deleted from the tree.");
+            				}
+            			}
+            			if (!tree.exists(artH)) {
+            				//remove artH form the database
+            				MemHandle rh = artists.hashDelete(sPair1.getFirst());
+                            mm.release(rh);
+                            System.out.println("|" + sPair1.getFirst() + "| is deleted from the artist database.");
+            			}
+            			if (!tree.exists(songH)) {
+            				//remove songH form the database
+            				MemHandle rh = songs.hashDelete(sPair1.getSecond());
+                            mm.release(rh);
+                            System.out.println("|" + sPair1.getSecond() + "| is deleted from the song database.");
+            			}
+            			
+            		}
                 default:
                     //nothing was there
             }
