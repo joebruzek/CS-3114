@@ -184,18 +184,6 @@ public class LNodeTest extends TestCase {
 	}
 	
 	/**
-	 * test the getKey method
-	 */
-	public void testGetKey() {
-		try {
-			l.getKey(2);
-			fail("Should throw an exception");
-		} catch (UnsupportedOperationException e) {
-			assertEquals("LNodes only store KVPairs.", e.getMessage());
-		}
-	}
-	
-	/**
 	 * test the previous getter/setter
 	 * Webcat testing getter/setter test code coverage is a pain.
 	 * I mean seriously, they're getters and setters

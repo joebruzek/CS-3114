@@ -44,10 +44,10 @@ public class INode implements TTNode
     {
         for (int i = 0; i < this.numRecs(); i++)
         {
-            if (this.getKey(i) == null) {
+            if (this.getKeyV(i) == null) {
                 return -1;
             }
-            if( this.getKey(i).compareTo(k.key()) == 0) return i;
+            if( this.getKeyV(i).compareTo(k) == 0) return i;
         }
         return -1;
     }
@@ -104,7 +104,7 @@ public class INode implements TTNode
     public void insert(KVPair k)
     {
         int index = 0;
-        while (index < this.numRecs() && this.getKey(index).compareTo(k.key()) < 0)
+        while (index < this.numRecs() && this.getKeyV(index).compareTo(k) < 0)
             ++index;
 
         // move space for the new key
@@ -123,28 +123,11 @@ public class INode implements TTNode
      */
     public void promote(TTNode node, TTNode newNode)
     {
-//        this.insert((KVPair) node.getKey(0));
-//        if (this.getChild(0) == node)
-//        {
-//            if (this.getChild(1) != null)
-//            {
-//                TTNode<KVPair> temp = this.getChild(1);
-//                this.setChild(1, newNode);
-//                promote(this.getChild(1), temp);
-//
-//            }
-//        }
-//        else if (this.getChild(1) == node)
-//        {
-//
-//        }
-//        else
-//        {
-//
-//        }
+    	//find the child index of node
         int index = 0;
         while (index < this.children.length && this.getChild(index).getKeyV(0).compareTo(node.getKeyV(0)) != 0)
             index++;
+        
         for (int i = this.children.length - 1; i > index; i--)
         {
             this.setChild(i, this.getChild(i - 1));
@@ -209,16 +192,6 @@ public class INode implements TTNode
 	@Override
 	public KVPair getKeyV(int i) {
 		return keys[i];
-	}
-
-	/**
-	 * get the KVPair at an index
-	 * @param i the index
-	 * @return the KVPair
-	 */
-	@Override
-	public MemHandle getKey(int i) {
-		return keys[i].key();
 	}
 
 }

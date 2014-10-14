@@ -56,13 +56,6 @@ public interface TTNode {
 	 * @return the KVPair
 	 */
 	public KVPair getKeyV(int i);
-
-	/**
-	 * get the key at an index. MemHandle
-	 * @param i the index
-	 * @return the Memhandle
-	 */
-	public MemHandle getKey(int i);
 	
 	/**
      * insert a KVPair into the node

@@ -37,7 +37,7 @@ public class SearchTreeTest extends TestCase {
 		String[] str = new String[3];
 		str[0] = "10";
 		str[1] = "32";
-		str[2] = "src/test1.txt";
+		str[2] = "src/P2_Input1_Sample.txt";
 		SearchTree.main(str);
 
 		assertTrue(!outContent.toString().equals(""));
@@ -94,5 +94,15 @@ public class SearchTreeTest extends TestCase {
     	assertEquals(1, mm.getBlocks().size());
     	assertEquals(10, a.getSize());
     	assertEquals(10, b.getSize());
+    }
+    
+    /**
+     * test the findHandle method
+     */
+    public void testFindHandle() {
+    	MemoryManager mm = new MemoryManager(1000);
+    	HashTable a = new HashTable(10, "Artists");
+    	
+    	assertNull(SearchTree.findHandle("Not there", a, mm));
     }
 }

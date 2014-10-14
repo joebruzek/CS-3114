@@ -206,17 +206,4 @@ public class INodeTest extends TestCase {
 		
 		assertTrue(i.isFull());
 	}
-	
-	/**
-	 * test the getKey method
-	 */
-	public void testGetKey() {
-		MemHandle q = new MemHandle(0);
-		MemHandle w = new MemHandle(0);
-		KVPair e = new KVPair(q, w);
-		
-		i.setKey(1, e);
-		
-		assertEquals(q, i.getKey(1));
-	}
 }

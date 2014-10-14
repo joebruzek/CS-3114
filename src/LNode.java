@@ -207,15 +207,4 @@ public class LNode implements TTNode {
 	public KVPair getKeyV(int i) {
 		return keys[i];
 	}
-
-	/**
-	 * get a memhandle
-	 * throws UnsupportedOperationException
-	 * @param i the index
-	 * @return NOTHING
-	 */
-	@Override
-	public MemHandle getKey(int i) {
-		throw new UnsupportedOperationException("LNodes only store KVPairs.");
-	}
 }

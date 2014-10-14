@@ -12,19 +12,32 @@ public class Tree {
      * initialize the tree
      */
     public Tree() {
-        root = new LNode();
+        root = null;
         depth = 1;
     }
 
     /**
      * add a value into the tree
-     * calls the insert method
+     * calls the recursive insert method
      * @param k the KVPair to insert
      */
     public boolean insert(KVPair k) {
-        if (search(root, k)) return false;
-    	add(root, null, k);
-    	return true;
+    	// if it's already in the tree
+    	if (search(root, k)) return false;
+    	
+    	if (root == null) {
+    		root = new LNode(k);
+    		return true;
+    	}
+    	else if (root.isLeaf()) {
+    		((LNode) root).insert(k);
+            rootFullCheck();
+            return true;
+    	}
+    	else {
+	    	add(root, k);
+	    	return true;
+    	}
     }
 
 
@@ -32,127 +45,105 @@ public class Tree {
      * insert a value into the tree
      * @param k the KVPair to insert
      * @param node the current node in the tree
-     * @param promote the promoted node, null if no promotion
      * @return TTNode the parent of the inserted node
      */
-    public TTNode add(TTNode node, TTNode promote, KVPair k) {
-        //base case
-        if (root.isLeaf())
-        {
-            ((LNode) root).insert(k);
-            if (root.isFull())
-            {
-                //if insert into root causes overflow split and create new root
-                INode newNode = new INode(root.getKeyV(1));
-                LNode temp = ((LNode) root).split();
-                newNode.setChild(0, root);
-                newNode.setChild(1, temp);
-                root = newNode;
-                depth++;
-                return root;
+    public TTNode add(TTNode node, KVPair k) {
+    	//base case, we never go below the lowest level of INodes
+        if (node.getChild(0).isLeaf()) {
+        	int i;
+            if (k.compareTo(node.getKeyV(0)) < 0) {
+                i = 0;
             }
-            return root;
-        }
-        else
-        {
-            if (root.isFull())
-            {
-                //if insert into root causes overflow split and create new root
-                INode newNode = new INode(root.getKeyV(1));
-                INode temp = (INode) root.split();
-                newNode.setChild(0, root);
-                newNode.setChild(1, temp);
-                root = newNode;
-                depth++;
-                return root;
-            }
-          //Deals with promoting a node
-            if (promote != null && promote.getChild(0) == root)
-            {
-                root = promote;
-                return root;
-            }
-            else if (promote != null && node.getChild(0) == promote.getChild(0))
-            {
-                ((INode) node).promote(node.getChild(0), promote.getChild(1));
-                ((INode) node).insert(promote.getKeyV(0));
-                if (node.isFull())
-                {
-                    //the returned node points to the two split children
-                    INode p = (INode) node.split();
-                    add(root, p, p.getKeyV(0));
-                }
-                return node;
-            }
-            else if (promote != null && node.getChild(1) == promote.getChild(0))
-            {
-                ((INode) node).promote(node.getChild(1), promote.getChild(1));
-                ((INode) node).insert(promote.getKeyV(0));
-                if (node.isFull())
-                {
-                    //the returned node points to the two split children
-                    INode p = (INode) node.split();
-                    add(root, p, p.getKeyV(0));
-                }
-                return node;
-            }
-            else if (promote != null && node.getChild(2) == promote.getChild(0))
-            {
-                ((INode) node).promote(node.getChild(2), promote.getChild(1));
-                ((INode) node).insert(promote.getKeyV(0));
-                if (node.isFull())
-                {
-                    //the returned node points to the two split children
-                    INode p = (INode) node.split();
-                    add(root, p, p.getKeyV(0));
-                }
-                return node;
-            }
-
-            if (node.getChild(0).isLeaf())
-            {
-                //insert the key into a leaf node by recursing to the second to last level
-                int i;
-                if (k.compareTo(node.getKeyV(0)) < 0)
-                {
-                    i = 0;
-                }
-                else if (node.getKeyV(1) == null || k.compareTo(node.getKeyV(1)) < 0)
-                {
-                    i = 1;
-                }
-                else
-                {
-                    i = 2;
-                }
-                ((LNode) node.getChild(i)).insert(k);
-                if (node.getChild(i).isFull())
-                {
-                    LNode temp = ((LNode) node.getChild(i)).split();
-                    ((INode) node).insert(temp.getKeyV(0));
-                    node.setChild(i + 1, temp);
-                    if (node.isFull())
-                    {
-                        //the returned node points to the two split children
-                        INode p = ((INode) node).split();
-                        add(root, p, p.getKeyV(0));
-                    }
-                }
-                return node;
-            }
-
-
-            if (k.key().compareTo(node.getKeyV(0).key()) < 0) {
-                this.add(node.getChild(0), promote, k);
-            }
-            else if (node.getKeyV(1) == null || k.key().compareTo(node.getKeyV(1).key()) < 0) {
-                this.add(node.getChild(1), promote, k);
+            else if (node.getKeyV(1) == null || k.compareTo(node.getKeyV(1)) < 0) {
+                i = 1;
             }
             else {
-                this.add(node.getChild(2),promote, k);
+                i = 2;
+            }
+            node.getChild(i).insert(k);
+        }
+        else {
+        	if (k.key().compareTo(node.getKeyV(0).key()) < 0) {
+                this.add(node.getChild(0), k);
+            }
+            else if (node.getKeyV(1) == null || k.key().compareTo(node.getKeyV(1).key()) < 0) {
+                this.add(node.getChild(1), k);
+            }
+            else {
+                this.add(node.getChild(2), k);
             }
         }
-        return node;
+        
+        //check to see if we filled any node
+        for (int i = 0; i < 4; i++) {
+	        if (node.getChild(i) != null && node.getChild(i).isFull()) {
+	        	splitUp(node, i);
+	        }
+        }
+        
+        return null;
+    }
+    
+    /**
+     * split up a node
+     * @param node the node that is above the splitting node
+     * @param index the index of the child to split
+     */
+    public void splitUp(TTNode node, int index) {
+    	TTNode child = node.getChild(index);
+    	if (node == root) {
+    		if (child.isLeaf()) {
+    			LNode temp = (LNode) child.split();
+    			for (int i = 3; i > index + 1; i--) {
+    				root.setChild(i, root.getChild(i - 1));
+    			}
+    			root.insert(temp.getKeyV(0));
+    			node.setChild(index + 1, temp);
+    		}
+    		else {
+    			INode temp = (INode) child.split();
+    			root.insert(temp.getKeyV(0));
+    			((INode) root).promote(child, temp.getChild(1));
+    		}
+    		
+    		rootFullCheck();
+    	} else {
+    		if (child.isLeaf()) {
+    			LNode temp = (LNode) child.split();
+    			for (int i = 3; i > index + 1; i--) {
+    				node.setChild(i, node.getChild(i - 1));
+    			}
+    			node.insert(temp.getKeyV(0));
+    			node.setChild(index + 1, temp);
+    		}
+    		else {
+    			INode temp = (INode) child.split();
+    			node.insert(temp.getKeyV(0));
+    			((INode) node).promote(child, temp.getChild(1));
+    		}
+    	}
+    }
+    
+    /**
+     * check if the root is full and split it
+     */
+    public void rootFullCheck() {
+    	if (root.isFull()) {
+    		if (root.isLeaf()) {
+    			INode newNode = new INode(root.getKeyV(1));
+                TTNode temp = root.split();
+                newNode.setChild(0, root);
+                newNode.setChild(1, temp);
+                root = newNode;
+                depth++;
+    		}
+    		else {
+    			INode temp = (INode) root.split();
+    			temp.promote(root, temp.getChild(1));
+    			root = temp;
+    			depth++;
+    		}
+    	}
     }
 
     /**
@@ -266,6 +257,9 @@ public class Tree {
 	 * @return the number of KVPairs in the tree
 	 */
 	public int numElements() {
+		if (root == null) {
+			return 0;
+		}
 		int results = 0;
 		LNode temp = getToFirst(root);
 		
@@ -305,4 +299,13 @@ public class Tree {
 		
 		return finals;
 	}
+	
+	/**
+	 * set root for testing purposes
+	 * @param r the new root
+	 */
+	public void setRoot(TTNode r) {
+		root = r;
+	}
+	
 }

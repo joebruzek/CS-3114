@@ -76,23 +76,27 @@ public class SearchTree {
             //process the command
             switch(key) {
                 case "insert":
-                    Pair<String, String> sPair = toPair(value);
+                	Pair<String, String> sPair = toPair(value);
                     Pair<byte[], byte[]> bPair = toByteArray(sPair);
                     MemHandle h1;
-                    h1 = mm.insert(bPair.getFirst());
+                    
                     MemHandle h2;
-                    h2 = mm.insert(bPair.getSecond());
+                    
                     if (artists.duplicate(sPair.getFirst())) {
+                    	h1 = mm.insert(bPair.getFirst());
                         artists.hashInsert(sPair.getFirst(), h1);
                         System.out.println("|" + sPair.getFirst() + "| is added to the artist database.");
                     } else {
+                    	h1 = findHandle(sPair.getFirst(), artists, mm);
                         System.out.println("|" + sPair.getFirst() + "| duplicates a record already in the artist database.");
                     }
                     if (songs.duplicate(sPair.getSecond())) {
+                    	h2 = mm.insert(bPair.getSecond());
                         songs.hashInsert(sPair.getSecond(), h2);
                         mm.increased();
                         System.out.println("|" + sPair.getSecond() + "| is added to the song database.");
                     } else {
+                    	h2 = findHandle(sPair.getSecond(), songs, mm);
                         System.out.println("|" + sPair.getSecond() + "| duplicates a record already in the song database.");
                     }
                     KVPair p1 = new KVPair(h1, h2);
@@ -185,6 +189,7 @@ public class SearchTree {
 	                		Pair<MemHandle[], int[]> pair = artists.findAll();
 	                		if (pair.getFirst().length == 0) {
 	                			System.out.println("|" + name1 + "| does not exist in the artist database.");
+	                			break;
 	                		}
 	                		String[] names = mm.getNames(pair.getFirst());
 	                		MemHandle match = null;
@@ -194,8 +199,8 @@ public class SearchTree {
                                 }
                             }
 	                		if (match == null) {
-	                			// this should never happen I don't think
-	                			System.out.println("There's something wrong with list artist");
+	                			System.out.println("|" + name1 + "| does not exist in the artist database.");
+	                			break;
 	                		} else {
 	                			MemHandle[] handles = tree.find(match);
 	                			String[] theNames = mm.getNames(handles);
@@ -208,7 +213,7 @@ public class SearchTree {
 	                		//find the MemHandle for the artist name
 	                		Pair<MemHandle[], int[]> pair1 = songs.findAll();
 	                		if (pair1.getFirst().length == 0) {
-	                			System.out.println("|" + name1 + "| does not exist in the artist database.");
+	                			System.out.println("|" + name1 + "| does not exist in the song database.");
 	                		}
 	                		String[] names1 = mm.getNames(pair1.getFirst());
 	                		MemHandle match1 = null;
@@ -218,8 +223,8 @@ public class SearchTree {
                                 }
                             }
 	                		if (match1 == null) {
-	                			// this should never happen I don't think
-	                			System.out.println("There's something wrong with list artist");
+	                			System.out.println("|" + name1 + "| does not exist in the song database.");
+	                			break;
 	                		} else {
 	                			MemHandle[] handles = tree.find(match1);
 	                			String[] theNames = mm.getNames(handles);
@@ -281,6 +286,30 @@ public class SearchTree {
         pair.setSecond(bites);
 
         return pair;
+    }
+    
+    /**
+     * find a handle for an existing value
+     * @param s the string to find
+     * @param t the table to search
+     * @param mm the memory manager
+     * @return the MemHandle, null if not exists
+     */
+    public static MemHandle findHandle(String s, HashTable t, MemoryManager mm) {
+    	Pair<MemHandle[], int[]> pair1 = t.findAll();
+		if (pair1.getFirst().length == 0) {
+			// database empty
+			return null;
+		}
+		String[] names1 = mm.getNames(pair1.getFirst());
+		MemHandle match = null;
+		for (int j = 0; j < names1.length; j++) {
+            if(names1[j].equals(s)) {
+            	match = pair1.getFirst()[j];
+            }
+        }
+    	
+    	return match;
     }
 
     /**
