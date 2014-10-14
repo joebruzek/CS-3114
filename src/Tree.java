@@ -20,11 +20,12 @@ public class Tree {
      * add a value into the tree
      * calls the recursive insert method
      * @param k the KVPair to insert
+     * @return true is insert was successful
      */
     public boolean insert(KVPair k) {
     	// if it's already in the tree
     	if (search(root, k)) return false;
-    	
+
     	if (root == null) {
     		root = new LNode(k);
     		return true;
@@ -73,17 +74,17 @@ public class Tree {
                 this.add(node.getChild(2), k);
             }
         }
-        
+
         //check to see if we filled any node
         for (int i = 0; i < 4; i++) {
 	        if (node.getChild(i) != null && node.getChild(i).isFull()) {
 	        	splitUp(node, i);
 	        }
         }
-        
+
         return null;
     }
-    
+
     /**
      * split up a node
      * @param node the node that is above the splitting node
@@ -105,7 +106,7 @@ public class Tree {
     			root.insert(temp.getKeyV(0));
     			((INode) root).promote(child, temp.getChild(1));
     		}
-    		
+
     		rootFullCheck();
     	} else {
     		if (child.isLeaf()) {
@@ -123,7 +124,7 @@ public class Tree {
     		}
     	}
     }
-    
+
     /**
      * check if the root is full and split it
      */
@@ -177,9 +178,36 @@ public class Tree {
         }
     }
 
+    /**
+     * Deletes a KVPair from the tree
+     * @param node
+     * @param k
+     */
     public void delete(TTNode node, KVPair k)
     {
         if (root.getKeyV(0) == null) return;
+        if (root.isLeaf())
+        {
+            if (root.getKeyV(0).compareTo(k) == 0)
+            {
+                if (root.getKeyV(1) == null)
+                {
+                    ((LNode)root).setKey(0, null);
+                    root.setRecs(0);
+                }
+                else
+                {
+                    ((LNode)root).setKey(0, root.getKeyV(1));
+                    ((LNode)root).setKey(1, null);
+                    root.setRecs(1);
+                }
+            }
+            else if (root.getKeyV(1).compareTo(k) == 0)
+            {
+                ((LNode)root).setKey(1, null);
+                root.setRecs(1);
+            }
+        }
         if (!search(node, k)) return;
         if (node.isLeaf())
         {
@@ -533,7 +561,7 @@ public class Tree {
 
 		return finals;
 	}
-	
+
 	/**
 	 * set root for testing purposes
 	 * @param r the new root
@@ -541,5 +569,5 @@ public class Tree {
 	public void setRoot(TTNode r) {
 		root = r;
 	}
-	
+
 }
