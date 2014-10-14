@@ -47,14 +47,14 @@ public class TreeTest extends TestCase {
             MemHandle x = new MemHandle(j + 3);
             tree.insert(new KVPair(h, x));
         }
-	    MemHandle m = new MemHandle(5);
-        MemHandle v = new MemHandle(20);
-	    tree.insert(new KVPair(m, v));
-
-	    MemHandle h = new MemHandle(3);
-        MemHandle x = new MemHandle(25);
-        tree.insert(new KVPair(h, x));
-
+	    MemHandle m = new MemHandle(18);
+        MemHandle v = new MemHandle(23);
+	    //tree.insert(new KVPair(m, v));
+        tree.delete(tree.getRoot(), new KVPair(m, v));
+	    MemHandle h = new MemHandle(27);
+        MemHandle x = new MemHandle(30);
+        //tree.insert(new KVPair(h, x));
+        tree.delete(tree.getRoot(), new KVPair(h, x));
 	    assertFalse(tree.getRoot().isLeaf());
 	    assertFalse(tree.getRoot().getChild(0).isLeaf());
 	    assertFalse(tree.getRoot().getChild(1).isLeaf());
@@ -227,7 +227,7 @@ public class TreeTest extends TestCase {
         assertFalse(tree.search(tree.getRoot(), pair));
 
 	}
-	
+
 	/**
 	 * test the getToFirst method
 	 */
@@ -236,27 +236,27 @@ public class TreeTest extends TestCase {
 		MemHandle m = new MemHandle(0);
         MemHandle v = new MemHandle(1);
 	    tree.insert(new KVPair(m, v));
-	    
+
 	    assertEquals(tree.getRoot(), tree.getToFirst(tree.getRoot()));
-	    
+
 	    MemHandle q = new MemHandle(0);
         MemHandle w = new MemHandle(2);
 	    tree.insert(new KVPair(q, w));
 	    MemHandle e = new MemHandle(0);
         MemHandle r = new MemHandle(3);
 	    tree.insert(new KVPair(e, r));
-		
+
 	    assertEquals(1, tree.getToFirst(tree.getRoot()).getKeyV(0).value().getPosition());
 	    //damn that was a long assertion statement
 	    assertEquals(1, tree.getToFirst(tree.getRoot()).numRecs());
 	}
-	
+
 	/**
 	 * test the numElements method
 	 */
 	public void testNumElements() {
 		assertEquals(0, tree.numElements());
-		
+
 		MemHandle m = new MemHandle(0);
         MemHandle v = new MemHandle(1);
 	    tree.insert(new KVPair(m, v));
@@ -266,10 +266,10 @@ public class TreeTest extends TestCase {
 	    MemHandle e = new MemHandle(0);
         MemHandle r = new MemHandle(3);
 	    tree.insert(new KVPair(e, r));
-	    
+
 	    assertEquals(3, tree.numElements());
 	}
-	
+
 	/**
 	 * test the find method
 	 */
@@ -286,11 +286,11 @@ public class TreeTest extends TestCase {
 	    MemHandle a = new MemHandle(3);
         MemHandle s = new MemHandle(300);
 	    tree.insert(new KVPair(a, s));
-	    
+
 	    assertEquals(0, tree.find(new MemHandle(50)).length);
 	    assertEquals(1, tree.find(new MemHandle(1)).length);
 	    assertEquals(10, tree.find(new MemHandle(1))[0].getPosition());
-	    
+
 	    MemHandle[] found = tree.find(new MemHandle(3));
 	    assertEquals(2, found.length);
 	    assertEquals(30, found[0].getPosition());
