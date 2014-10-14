@@ -186,6 +186,240 @@ public class Tree {
         }
     }
 
+    public void delete(TTNode node, KVPair k)
+    {
+        if (root.getKeyV(0) == null) return;
+        if (!search(node, k)) return;
+        if (node.isLeaf())
+        {
+            if (node.getKeyV(0).compareTo(k) == 0 && node.getKeyV(1) != null)
+            {
+                //If the node containing the deleted value has 2 elements
+                KVPair before = node.getKeyV(0);
+                KVPair after = node.getKeyV(1);
+                ((LNode) node).setKey(0, node.getKeyV(1));
+                ((LNode) node).setKey(1, null);
+                ((LNode) node).setRecs(1);
+                changeINodes(root, before, after);
+                return;
+            }
+            else if(node.getKeyV(1) != null && node.getKeyV(1).compareTo(k) == 0)
+            {
+                ((LNode) node).setKey(1, null);
+                ((LNode) node).setRecs(1);
+                return;
+            }
+            else if (node.getKeyV(0).compareTo(k) == 0)
+            {
+                if (((LNode) node).next() != null && ((LNode) node).next().numRecs() == 2)
+                {
+                    KVPair before = node.getKeyV(0);
+                    KVPair after = ((LNode)node).next().getKeyV(0);
+                    KVPair after2 = ((LNode) node).next().getKeyV(1);
+                    ((LNode) node).setKey(0, after);
+                    ((LNode) node).next().setKey(0, after2);
+                    ((LNode) node).next().setKey(1, null);
+                    ((LNode) node).next().setRecs(1);
+                    changeINodes(root, after, after2);
+                    changeINodes(root, before, after);
+                    return;
+                }
+                else if(((LNode) node).previous() != null && ((LNode) node).previous().numRecs() == 2)
+                {
+                    KVPair before = node.getKeyV(0);
+                    KVPair after = ((LNode)node).previous().getKeyV(1);
+                    ((LNode) node).setKey(0, after);
+                    ((LNode) node).previous().setKey(1, null);
+                    ((LNode) node).previous().setRecs(1);
+                    changeINodes(root, before, after);
+                    return;
+                }
+                else
+                {
+                    //return;
+                    deleteEmptyNode(root, k);
+                }
+            }
+        }
+        if (k.compareTo(node.getKeyV(0)) < 0) {
+            delete(node.getChild(0), k);
+        }
+        else if (node.getKeyV(1) == null) {
+            delete(node.getChild(1), k);
+        }
+        else if (k.compareTo(node.getKeyV(1)) < 0) {
+            delete(node.getChild(1), k);
+        }
+        else {
+            delete(node.getChild(2), k);
+        }
+    }
+
+    // ----------------------------------------------------------
+    /**
+     * Changes the parent nodes after deletion
+     * @param node the current node
+     * @param before the value being changed
+     * @param after the new value
+     */
+    public void changeINodes(TTNode node, KVPair before, KVPair after)
+    {
+        if (node.isLeaf()) return;
+        if (node.getKeyV(0).compareTo(before) == 0)
+        {
+            ((INode) node).setKey(0, after);
+            changeINodes(node, before, after);
+        }
+        if (node.getKeyV(1) != null && node.getKeyV(1).compareTo(before) == 0)
+        {
+            ((INode) node).setKey(1, after);
+            changeINodes(node, before, after);
+        }
+        if (before.compareTo(node.getKeyV(0)) < 0) {
+            changeINodes(node.getChild(0), before, after);
+        }
+        else if (node.getKeyV(1) == null) {
+            changeINodes(node.getChild(1), before, after);
+        }
+        else if (before.compareTo(node.getKeyV(1)) < 0) {
+            changeINodes(node.getChild(1), before, after);
+        }
+        else {
+            changeINodes(node.getChild(2), before, after);
+        }
+
+    }
+
+    /**
+     * Deletes a node that can't borrow a value
+     * @param node the current node
+     * @param k the value that is deleted
+     */
+    public void deleteEmptyNode(TTNode node, KVPair k)
+    {
+        if (node.numRecs() == 2)
+        {
+            if (node.isLeaf()) return;
+            if (node.getChild(0).isLeaf())
+            {
+                if(node.getChild(0).getKeyV(0).compareTo(k) == 0)
+                {
+                    KVPair before = node.getChild(0).getKeyV(0);
+                    KVPair after = node.getChild(1).getKeyV(0);
+                    ((INode) node).setKey(0, node.getChild(2).getKeyV(0));
+                    ((INode) node).setKey(1, null);
+                    ((LNode) node.getChild(1)).setPrevious(((LNode) node.getChild(0)).previous());
+                    if (((LNode) node.getChild(0)).previous() != null)
+                        ((LNode) node.getChild(0)).previous().setNext(((LNode) node.getChild(1)));
+                    node.setChild(0, node.getChild(1));
+                    node.setChild(1, node.getChild(2));
+                    node.setChild(2, null);
+                    node.setRecs(1);
+                    changeINodes(root, before, after);
+                    return;
+                }
+                else if(node.getChild(1).getKeyV(0).compareTo(k) == 0)
+                {
+                    KVPair before = node.getChild(1).getKeyV(0);
+                    KVPair after = node.getChild(2).getKeyV(0);
+                    ((INode) node).setKey(0, node.getChild(2).getKeyV(0));
+                    ((INode) node).setKey(1, null);
+                    ((LNode) node.getChild(2)).setPrevious(((LNode) node.getChild(1)).previous());
+                    ((LNode) node.getChild(1)).previous().setNext(((LNode) node.getChild(2)));
+                    node.setChild(1, node.getChild(2));
+                    node.setChild(2, null);
+                    node.setRecs(1);
+                    changeINodes(root, before, after);
+                    return;
+                }
+                else if(node.getChild(2).getKeyV(0).compareTo(k) == 0)
+                {
+                    KVPair before = node.getChild(2).getKeyV(0);
+                    ((INode) node).setKey(1, null);
+                    ((LNode) node.getChild(1)).setNext(((LNode) node.getChild(2)).next());
+                    if (((LNode) node.getChild(2)).next() != null)
+                        ((LNode) node.getChild(2)).next().setPrevious(((LNode) node.getChild(1)));
+                    node.setChild(2, null);
+                    node.setRecs(1);
+                    changeINodes(root, before, null);
+                    return;
+
+                }
+            }
+        }
+        else if(node.getKeyV(0).compareTo(k) == 0)
+        {
+            if (((LNode) node).previous() != null)
+                ((LNode) node).previous().setNext(((LNode) node).next());
+            if (((LNode) node).next() != null)
+                ((LNode) node).next().setPrevious(((LNode) node).previous());
+            changeINodes(root, node.getKeyV(0), null);
+            ((LNode) node).setKey(0, null);
+            return;
+        }
+        if (node.isLeaf()) return;
+        if (k.compareTo(node.getKeyV(0)) < 0) {
+            deleteEmptyNode(node.getChild(0), k);
+        }
+        else if (node.getKeyV(1) == null) {
+            deleteEmptyNode(node.getChild(1), k);
+        }
+        else if (k.compareTo(node.getKeyV(1)) < 0) {
+            deleteEmptyNode(node.getChild(1), k);
+        }
+        else {
+            deleteEmptyNode(node.getChild(2), k);
+        }
+    }
+
+    /**
+     * Not sure what this is going to do yet
+     */
+//    public void moreDelete(TTNode node, KVPair k)
+//    {
+////      if (root.getKey(0) == null) {
+////          root = root.getChild(0);
+////          return;
+////      }
+//        //fill null spots
+//        if (node.getChild(0).getKeyV(0) == null)
+//        {
+//            ((INode)node.getChild(0)).setKey(0, node.getKeyV(0));
+//            ((INode) node).setKey(0, null);
+//        }
+//        else if(node.getChild(1).getKey(0) == null)
+//        {
+//            ((INode)node.getChild(1)).setKey(0, node.getKeyV(0));
+//            ((INode) node).setKey(0, null);
+//        }
+//
+//        //join nodes with underflow
+//        if (node.getChild(0).getChild(1) == null)
+//        {
+//            ((INode)node.getChild(0)).join(node.getChild(1));
+//            node.setChild(1, null);
+//        }
+//        else if(node.getChild(1).getChild(1) == null)
+//        {
+//            ((INode)node.getChild(0)).join(node.getChild(1));
+//            moreDelete(root, k);
+//        }
+//
+//        if (k.compareTo(node.getKeyV(0)) < 0) {
+//            moreDelete(node.getChild(0), k);
+//        }
+//        else if (node.getKeyV(1) == null) {
+//            moreDelete(node.getChild(1), k);
+//        }
+//        else if (k.compareTo(node.getKeyV(1)) < 0) {
+//            moreDelete(node.getChild(1), k);
+//        }
+//        else {
+//            moreDelete(node.getChild(2), k);
+//        }
+//
+//    }
+
     /**
      * print the tree
      */
@@ -243,7 +477,7 @@ public class Tree {
 	{
 	    return depth;
 	}
-	
+
 	/**
 	 * go to the first LNode in the tree
 	 * @param node the root for this subtree
@@ -257,10 +491,10 @@ public class Tree {
 		if (node.isLeaf()) {
 			return (LNode) node;
 		}
-		
+
 		return getToFirst(node.getChild(0));
 	}
-	
+
 	/**
 	 * get the number of KVPairs in the leaves of the tree
 	 * @return the number of KVPairs in the tree
@@ -268,15 +502,15 @@ public class Tree {
 	public int numElements() {
 		int results = 0;
 		LNode temp = getToFirst(root);
-		
+
 		do {
 			results += temp.numRecs();
 			temp = temp.next();
 		} while(temp != null);
-		
+
 		return results;
 	}
-	
+
 	/**
 	 * find all the values in the tree that match a key
 	 * @param k the MemHandle key
@@ -284,9 +518,9 @@ public class Tree {
 	public MemHandle[] find(MemHandle k) {
 		MemHandle[] results = new MemHandle[numElements()];
 		int nums = 0;
-		
+
 		LNode temp = getToFirst(root);
-		
+
 		do {
 			for (int i = 0; i < temp.numRecs(); i++) {
 				if (temp.getKeyV(i).key().compareTo(k) == 0) {
@@ -296,13 +530,13 @@ public class Tree {
 			}
 			temp = temp.next();
 		} while (temp != null);
-		
+
 		// make the array the size of the results returned
 		MemHandle[] finals = new MemHandle[nums];
 		for (int i = 0; i < nums; i++) {
 			finals[i] = results[i];
 		}
-		
+
 		return finals;
 	}
 }
