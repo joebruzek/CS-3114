@@ -35,7 +35,7 @@ public class TreeTest extends TestCase {
 	/**
 	 * tests insert for multiple inserts
 	 */
-	public void testInsert()
+	public void testDelete()
 	{
 		assertNull(tree.getRoot());
 		int j = 3;
@@ -47,12 +47,15 @@ public class TreeTest extends TestCase {
             MemHandle x = new MemHandle(j + 3);
             tree.insert(new KVPair(h, x));
         }
-	    MemHandle m = new MemHandle(18);
-        MemHandle v = new MemHandle(23);
-	    //tree.insert(new KVPair(m, v));
-        tree.delete(tree.getRoot(), new KVPair(m, v));
-	    MemHandle h = new MemHandle(27);
-        MemHandle x = new MemHandle(30);
+
+	    for (int i = 2; i <= 100; i*= 3 , j *= 3) {
+	        MemHandle m = new MemHandle(i);
+	        MemHandle v = new MemHandle(i + 5);
+	        //tree.insert(new KVPair(m, v));
+	        tree.delete(tree.getRoot(), new KVPair(m, v));
+	    }
+	    MemHandle h = new MemHandle(2);
+        MemHandle x = new MemHandle(7);
         //tree.insert(new KVPair(h, x));
         tree.delete(tree.getRoot(), new KVPair(h, x));
 	    assertFalse(tree.getRoot().isLeaf());
@@ -61,7 +64,7 @@ public class TreeTest extends TestCase {
 	    tree.print(tree.getRoot(), tree.depth());
 
 	}
-	
+
 	/**
 	 * test insert on empty tree
 	 */
@@ -69,12 +72,12 @@ public class TreeTest extends TestCase {
 		MemHandle m = new MemHandle(1);
         MemHandle v = new MemHandle(5);
         tree.insert(new KVPair(m, v));
-        
+
         assertEquals(m, tree.getRoot().getKeyV(0).key());
         assertEquals(1, tree.getRoot().numRecs());
         assertTrue(tree.getRoot().isLeaf());
 	}
-	
+
 	/**
 	 * test insert in one split case
 	 */
@@ -84,7 +87,7 @@ public class TreeTest extends TestCase {
 	        MemHandle v = new MemHandle(i + 4);
 	        tree.insert(new KVPair(m, v));
 		}
-		
+
 		assertFalse(tree.getRoot().isLeaf());
 		TTNode one = tree.getRoot().getChild(0);
 		TTNode two = tree.getRoot().getChild(1);
@@ -97,7 +100,7 @@ public class TreeTest extends TestCase {
 		assertEquals(3, two.getKeyV(1).key().getPosition());
 		assertEquals(7, two.getKeyV(1).value().getPosition());
 	}
-	
+
 	/**
 	 * test inserting a duplicate into the tree
 	 */
@@ -105,10 +108,38 @@ public class TreeTest extends TestCase {
 		MemHandle m = new MemHandle(1);
         MemHandle v = new MemHandle(5);
         tree.insert(new KVPair(m, v));
-        
+
         assertFalse(tree.insert(new KVPair(m, v)));
         assertEquals(1, tree.getRoot().numRecs());
 	}
+
+	/**
+	 * Test insert and print for the correct number of nodes
+	 */
+	public void testInsert4()
+	{
+	    for (int i = 0; i < 17; i++)
+	    {
+	        MemHandle m = new MemHandle(i);
+	        MemHandle v = new MemHandle(i + 5);
+	        tree.insert(new KVPair(m, v));
+	    }
+	    tree.printTree();
+	}
+
+	/**
+     * Test insert and print for the correct number of nodes
+     */
+    public void testInsert5()
+    {
+        for (int i = 0; i < 16; i++)
+        {
+            MemHandle m = new MemHandle(i);
+            MemHandle v = new MemHandle(i + 5);
+            tree.insert(new KVPair(m, v));
+        }
+        tree.printTree();
+    }
 
 	/**
 	 * test the print and printTree methods
@@ -133,7 +164,7 @@ public class TreeTest extends TestCase {
         String whatWasPrinted = new String(baos.toByteArray());
         String[] linesOfOutput = whatWasPrinted.split(
                 System.getProperty("line.separator"));
-        assertEquals(11, linesOfOutput.length);
+        assertEquals(8, linesOfOutput.length);
         assertEquals("Printing 2-3 tree:", linesOfOutput[0]);
         assertEquals("3 8", linesOfOutput[1]);
         assertEquals("  2 7", linesOfOutput[2]);
@@ -143,7 +174,7 @@ public class TreeTest extends TestCase {
         assertEquals("    3 8", linesOfOutput[6]);
         assertEquals("    4 9 5 10", linesOfOutput[7]);
 	}
-	
+
 	/**
 	 * test the print and printTree methods
 	 * when the tree is empty
@@ -165,7 +196,7 @@ public class TreeTest extends TestCase {
         assertEquals(1, linesOfOutput.length);
         assertEquals("Printing 2-3 tree:", linesOfOutput[0]);
 	}
-	
+
 	/**
 	 * test search
 	 */
@@ -174,11 +205,11 @@ public class TreeTest extends TestCase {
         MemHandle v = new MemHandle(6);
         KVPair k = new KVPair(m, v);
 		tree.setRoot(new LNode(k));
-		
+
 		assertTrue(tree.search(tree.getRoot(), k));
         KVPair x = new KVPair(v, m);
 		assertFalse(tree.search(tree.getRoot(), x));
-		
+
 		INode root = new INode();
 		root.insert(k);
 		LNode temp = new LNode();
@@ -186,13 +217,13 @@ public class TreeTest extends TestCase {
         v = new MemHandle(6);
         k = new KVPair(m, v);
 		temp.insert(k);
-		
+
 		root.setChild(0, temp);
 		tree.setRoot(root);
 		assertTrue(tree.search(tree.getRoot(), k));
         x = new KVPair(v, m);
 		assertFalse(tree.search(tree.getRoot(), x));
-		
+
 		m = new MemHandle(0);
         v = new MemHandle(10);
         k = new KVPair(m, v);
@@ -296,7 +327,7 @@ public class TreeTest extends TestCase {
 	    assertEquals(30, found[0].getPosition());
 	    assertEquals(300, found[1].getPosition());
 	}
-	
+
 	/**
 	 * test the rootfullcheck method
 	 */
@@ -307,25 +338,25 @@ public class TreeTest extends TestCase {
 			MemHandle v = new MemHandle(i + 5);
 			root.insert(new KVPair(m, v));
 		}
-		
+
 		tree.setRoot(root);
 		tree.rootFullCheck();
 		assertEquals(2, tree.depth());
-		
+
 		LNode rooty = new LNode();
 		for (int i = 0; i < 3; i++) {
 			MemHandle m = new MemHandle(i);
 			MemHandle v = new MemHandle(i + 5);
 			rooty.insert(new KVPair(m, v));
 		}
-		
+
 		tree.setRoot(rooty);
 		tree.rootFullCheck();
 		// three because we never reset the depth after last time
 		assertEquals(3, tree.depth());
-			
+
 	}
-	
+
 	/**
 	 * test the root cases of SplitUp
 	 * when root is above leaf nodes
@@ -336,7 +367,7 @@ public class TreeTest extends TestCase {
 		INode root = new INode(new KVPair(a, s));
 		LNode one = new LNode();
 		LNode two = new LNode();
-		
+
 		MemHandle m = new MemHandle(1);
         MemHandle v = new MemHandle(10);
 	    one.insert(new KVPair(m, v));
@@ -349,21 +380,21 @@ public class TreeTest extends TestCase {
         two.insert(new KVPair(a, s));
         one.setNext(two);
         two.setPrevious(one);
-        
+
         root.setChild(0, one);
         root.setChild(1, two);
-        
+
         tree.setRoot(root);
-        
+
         tree.splitUp(tree.getRoot(), 0);
-        
+
         assertEquals(2, tree.getRoot().numRecs());
         assertEquals(1, one.numRecs());
         assertEquals(1, two.numRecs());
         assertEquals(two, one.next().next());
         assertEquals(2, one.next().numRecs());
 	}
-	
+
 	/**
 	 * test the root cases of SplitUp
 	 * when root is above Internal nodes
@@ -374,7 +405,7 @@ public class TreeTest extends TestCase {
 		INode root = new INode(new KVPair(a, s));
 		INode one = new INode();
 		INode two = new INode();
-		
+
 		MemHandle m = new MemHandle(1);
         MemHandle v = new MemHandle(10);
 	    one.insert(new KVPair(m, v));
@@ -385,33 +416,33 @@ public class TreeTest extends TestCase {
         MemHandle r = new MemHandle(30);
 	    one.insert(new KVPair(e, r));
         two.insert(new KVPair(a, s));
-        
+
         root.setChild(0, one);
         root.setChild(1, two);
-        
+
         tree.setRoot(root);
-        
+
         tree.splitUp(tree.getRoot(), 0);
-        
+
         assertEquals(2, tree.getRoot().numRecs());
         assertEquals(1, one.numRecs());
         assertEquals(1, two.numRecs());
         assertEquals(one, tree.getRoot().getChild(0));
         assertEquals(two, tree.getRoot().getChild(2));
 	}
-	
+
 	/**
 	 * test the exists method
 	 */
 	public void testExists() {
 		assertFalse(tree.exists(new MemHandle(3)));
-		
+
 		MemHandle a = new MemHandle(5);
         MemHandle s = new MemHandle(5);
 		INode root = new INode(new KVPair(a, s));
 		LNode one = new LNode();
 		LNode two = new LNode();
-		
+
 		MemHandle m = new MemHandle(1);
         MemHandle v = new MemHandle(10);
 	    one.insert(new KVPair(m, v));
@@ -424,12 +455,12 @@ public class TreeTest extends TestCase {
         two.insert(new KVPair(a, s));
         one.setNext(two);
         two.setPrevious(one);
-        
+
         root.setChild(0, one);
         root.setChild(1, two);
-        
+
         tree.setRoot(root);
-        
+
         assertTrue(tree.exists(r));
 	}
 }

@@ -194,6 +194,7 @@ public class Tree {
                 {
                     ((LNode)root).setKey(0, null);
                     root.setRecs(0);
+                    root = null;
                 }
                 else
                 {
@@ -257,6 +258,7 @@ public class Tree {
                 {
                     //return;
                     deleteEmptyNode(root, k);
+                    return;
                 }
             }
         }
@@ -284,7 +286,7 @@ public class Tree {
     public void changeINodes(TTNode node, KVPair before, KVPair after)
     {
         if (node.isLeaf()) return;
-        if (node.getKeyV(0).compareTo(before) == 0)
+        if (node.getKeyV(0) != null && node.getKeyV(0).compareTo(before) == 0)
         {
             ((INode) node).setKey(0, after);
             changeINodes(node, before, after);
@@ -366,15 +368,31 @@ public class Tree {
                 }
             }
         }
-        else if(node.getKeyV(0).compareTo(k) == 0)
+        else if(!node.isLeaf() && node.getChild(0).isLeaf())
         {
-            if (((LNode) node).previous() != null)
-                ((LNode) node).previous().setNext(((LNode) node).next());
-            if (((LNode) node).next() != null)
-                ((LNode) node).next().setPrevious(((LNode) node).previous());
-            changeINodes(root, node.getKeyV(0), null);
-            ((LNode) node).setKey(0, null);
-            return;
+            if (node.getChild(0).getKeyV(0).compareTo(k) == 0) {
+                if (((LNode) node.getChild(0)).previous() != null)
+                    ((LNode) node.getChild(0)).previous().setNext(((LNode) node.getChild(0)).next());
+                if (((LNode) node.getChild(0)).next() != null)
+                    ((LNode) node.getChild(0)).next().setPrevious(((LNode) node.getChild(0)).previous());
+                changeINodes(root, node.getChild(0).getKeyV(0), node.getChild(1).getKeyV(0));
+                node.setChild(0, node.getChild(1));
+                merge(root, node);
+                changeINodes(root, node.getKeyV(0), node.getChild(1).getKeyV(0));
+            }
+            else if (node.getChild(1).getKeyV(0).compareTo(k) == 0) {
+                if (((LNode) node.getChild(1)).previous() != null)
+                    ((LNode) node.getChild(1)).previous().setNext(((LNode) node.getChild(1)).next());
+                if (((LNode) node.getChild(1)).next() != null)
+                    ((LNode) node.getChild(1)).next().setPrevious(((LNode) node.getChild(1)).previous());
+                changeINodes(root, node.getChild(1).getKeyV(0), node.getChild(0).getKeyV(0));
+                node.setChild(1, null);
+                //((LNode) node.getChild(1)).setKey(0, null);
+                merge(root, node);
+                changeINodes(root, node.getKeyV(0), node.getChild(1).getKeyV(0));
+            }
+
+            fixNodes(root, root.getKeyV(0));
         }
         if (node.isLeaf()) return;
         if (k.compareTo(node.getKeyV(0)) < 0) {
@@ -391,6 +409,78 @@ public class Tree {
         }
     }
 
+    /**
+     * merges two nodes together on deletion
+     * @param node the current node
+     * @param merge the node being merged
+     */
+    public void merge(TTNode node, TTNode merge)
+    {
+        if(node.getChild(0) == null)
+        {
+            ((INode) node.getChild(0)).setKey(0, node.getKeyV(0));
+            merge(node.getChild(0), merge);
+        }
+        else if(node.getChild(1) == null)
+        {
+            ((INode) node.getChild(1)).setKey(0, node.getKeyV(0));
+            merge(node.getChild(1), merge);
+        }
+        else if(node.getChild(2) == null)
+        {
+            ((INode) node.getChild(2)).setKey(0, node.getKeyV(0));
+            merge(node.getChild(2), merge);
+        }
+
+
+        if (node.getChild(0) == merge && node.getChild(1).numRecs() == 1)
+        {
+            ((INode)node.getChild(0)).setKey(1, node.getChild(1).getKeyV(0));
+            node.getChild(0).setChild(1, node.getChild(1).getChild(0));
+            node.getChild(0).setChild(2, node.getChild(1).getChild(1));
+            node.getChild(0).setRecs(2);
+            node.setChild(1, node.getChild(2));
+            node.setChild(2, null);
+            return;
+        }
+        else if (node.getChild(1) == merge && node.getChild(0).numRecs() == 1)
+        {
+            ((INode)node.getChild(0)).setKey(1, node.getChild(1).getKeyV(0));
+            node.getChild(0).setChild(1, node.getChild(1).getChild(0));
+            node.getChild(0).setChild(2, node.getChild(1).getChild(1));
+            node.getChild(0).setRecs(2);
+            node.setChild(1, node.getChild(2));
+            node.setChild(2, null);
+            return;
+        }
+        if (merge.getKeyV(0).compareTo(node.getKeyV(0)) < 0) {
+            merge(node.getChild(0), merge);
+        }
+        else if (node.getKeyV(1) == null) {
+            merge(node.getChild(1), merge);
+        }
+        else if (merge.getKeyV(0).compareTo(node.getKeyV(1)) < 0) {
+            merge(node.getChild(1), merge);
+        }
+        else {
+            merge(node.getChild(2), merge);
+        }
+
+    }
+
+    /**
+     * makes the nodes proper
+     * @param node
+     * @param k
+     */
+    public void fixNodes(TTNode node, KVPair k)
+    {
+        if (node.getChild(2) == null && node.numRecs() == 2)
+        {
+            ((INode)node).setKey(0, node.getKeyV(1));
+            ((INode)node).setKey(1, null);
+        }
+    }
     /**
      * Not sure what this is going to do yet
      */
@@ -465,11 +555,14 @@ public class Tree {
 		}
 		String space = "";
 		for (int i = 0; i < node.numRecs(); i++) {
+		    if (node.getKeyV(i) != null)
+		    {
 			s.append(space);
 			s.append(node.getKeyV(i).key().getPosition());
 			s.append(" ");
 			s.append(node.getKeyV(i).value().getPosition());
 			space = " ";
+		    }
 		}
 
 		System.out.println(s.toString());
@@ -569,14 +662,14 @@ public class Tree {
 	public void setRoot(TTNode r) {
 		root = r;
 	}
-	
+
 	/**
      * find if there is any instance of a handle left in the tree
      */
     public boolean exists(MemHandle m) {
     	LNode temp = getToFirst(root);
     	if (temp == null) return false;
-    	
+
     	do {
     		for (int i = 0; i < temp.numRecs(); i++) {
     			if (temp.getKeyV(i).key().compareTo(m) == 0
@@ -586,7 +679,7 @@ public class Tree {
     		}
 			temp = temp.next();
 		} while(temp != null);
-    	
+
     	return false;
     }
 

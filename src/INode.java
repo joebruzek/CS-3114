@@ -125,12 +125,15 @@ public class INode implements TTNode
     {
     	//find the child index of node
         int index = 0;
-        while (index < this.children.length && this.getChild(index).getKeyV(0).compareTo(node.getKeyV(0)) != 0)
+        while (index < this.children.length && this.getChild(index) != node)
             index++;
-        
+
         for (int i = this.children.length - 1; i > index; i--)
         {
+            if (this.getChild(i - 1) != newNode)
+            {
             this.setChild(i, this.getChild(i - 1));
+            }
         }
         this.setChild(index + 1, newNode);
     }
