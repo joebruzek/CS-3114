@@ -30,7 +30,7 @@ public class SearchTree {
 
     /**
      * the main function for the program. Takes arguments.
-     * 
+     *
      * @param args command line arguments
      */
     public static void main(String[] args) {
@@ -58,7 +58,7 @@ public class SearchTree {
 
     /**
      * execute all the commands grabbed from the filereader
-     * 
+     *
      * @param commands he list of commands
      * @param mm the memory manager
      * @param artists the artists hash table
@@ -83,15 +83,15 @@ public class SearchTree {
                     Pair<String, String> sPair = toPair(value);
                     Pair<byte[], byte[]> bPair = toByteArray(sPair);
                     MemHandle h1;
-    
+
                     MemHandle h2;
-    
+
                     if (artists.duplicate(sPair.getFirst())) {
                         h1 = mm.insert(bPair.getFirst());
                         artists.hashInsert(sPair.getFirst(), h1);
                         System.out.println("|" + sPair.getFirst()
                                 + "| is added to the artist database.");
-                    } 
+                    }
                     else {
                         h1 = findHandle(sPair.getFirst(), artists, mm);
                         System.out
@@ -106,7 +106,7 @@ public class SearchTree {
                         mm.increased();
                         System.out.println("|" + sPair.getSecond()
                                 + "| is added to the song database.");
-                    } 
+                    }
                     else {
                         h2 = findHandle(sPair.getSecond(), songs, mm);
                         System.out
@@ -122,7 +122,7 @@ public class SearchTree {
                                 + "|,|" + sPair.getSecond() + "|),("
                                 + h1.getPosition() + "," + h2.getPosition()
                                 + ") is added to the tree.");
-                    } 
+                    }
                     else {
                         System.out.println("The KVPair (|" + sPair.getFirst()
                                 + "|,|" + sPair.getSecond() + "|),("
@@ -134,45 +134,45 @@ public class SearchTree {
                                 + "|,|" + sPair.getFirst() + "|),("
                                 + h2.getPosition() + "," + h1.getPosition()
                                 + ") is added to the tree.");
-                    } 
+                    }
                     else {
                         System.out.println("The KVPair (|" + sPair.getSecond()
                                 + "|,|" + sPair.getFirst() + "|),("
                                 + h2.getPosition() + "," + h1.getPosition()
                                 + ") duplicates a record already in the tree.");
                     }
-    
+
                     break;
                 case "remove":
                     String[] words = value.split(" ");
                     String type = words[0];
                     String name = value
                             .substring(type.length() + 1, value.length());
-    
+
                     switch (type) {
                         case "artist":
                             if (artists.searchTable(name)) {
                                 MemHandle rh = artists.hashDelete(name);
                                 mm.release(rh);
-                                
+
                                 //find and delete all
                                 MemHandle[] occur = tree.find(rh);
                                 for (int g = 0; g < occur.length; g++) {
-                                    tree.delete(tree.getRoot(), 
+                                    tree.delete(tree.getRoot(),
                                             new KVPair(rh, occur[g]));
-                                    tree.delete(tree.getRoot(), 
+                                    tree.delete(tree.getRoot(),
                                             new KVPair(occur[g], rh));
                                 }
-                                
+
                                 System.out.println("|" + name
                                         + "| is removed from the "
                                         + "artist database.");
-                                
+
                                 //see if any songs are now gone
                                 for (int g = 0; g < occur.length; g++) {
                                     if (!tree.exists(occur[g])) {
                                         String songName = mm.getString(
-                                                mm.getRecord(occur[g]), 
+                                                mm.getRecord(occur[g]),
                                                 occur[g]);
                                         songs.hashDelete(songName);
                                         mm.release(occur[g]);
@@ -181,7 +181,7 @@ public class SearchTree {
                                                 + "the song database.");
                                     }
                                 }
-                            } 
+                            }
                             else {
                                 System.out.println("|" + name
                                         + "| does not exist in the "
@@ -192,25 +192,25 @@ public class SearchTree {
                             if (songs.searchTable(name)) {
                                 MemHandle rh = songs.hashDelete(name);
                                 mm.release(rh);
-                                
+
                                 //find and delete all
                                 MemHandle[] occur = tree.find(rh);
                                 for (int g = 0; g < occur.length; g++) {
-                                    tree.delete(tree.getRoot(), 
+                                    tree.delete(tree.getRoot(),
                                             new KVPair(rh, occur[g]));
-                                    tree.delete(tree.getRoot(), 
+                                    tree.delete(tree.getRoot(),
                                             new KVPair(occur[g], rh));
                                 }
-                                
+
                                 System.out.println("|" + name
                                         + "| is removed from the "
                                         + "song database.");
-                                
+
                                 //see if any artists are now gone
                                 for (int g = 0; g < occur.length; g++) {
                                     if (!tree.exists(occur[g])) {
                                         String arName = mm.getString(
-                                                mm.getRecord(occur[g]), 
+                                                mm.getRecord(occur[g]),
                                                 occur[g]);
                                         artists.hashDelete(arName);
                                         mm.release(occur[g]);
@@ -219,7 +219,7 @@ public class SearchTree {
                                                 + "artist database.");
                                     }
                                 }
-                            } 
+                            }
                             else {
                                 System.out.println("|" + name
                                         + "| does not exist in the "
@@ -245,7 +245,7 @@ public class SearchTree {
                                 System.out.println("|" + names[j] + "| "
                                         + pair.getSecond()[j]);
                             }
-                            System.out.println("total artists: " 
+                            System.out.println("total artists: "
                                     + names.length);
                             break;
                         case "song":
@@ -288,7 +288,7 @@ public class SearchTree {
                                         + "| does not exist in the "
                                         + "artist database.");
                                 break;
-                            } 
+                            }
                             else {
                                 MemHandle[] handles = tree.find(match);
                                 String[] theNames = mm.getNames(handles);
@@ -317,7 +317,7 @@ public class SearchTree {
                                         + "| does not exist in the "
                                         + "song database.");
                                 break;
-                            } 
+                            }
                             else {
                                 MemHandle[] handles = tree.find(match1);
                                 String[] theNames = mm.getNames(handles);
@@ -339,17 +339,17 @@ public class SearchTree {
                         System.out.println("|" + sPair1.getFirst()
                                 + "| does not exist in the artist database.");
                         break;
-                    } 
+                    }
                     else if (songH == null) {
                         System.out.println("|" + sPair1.getSecond()
                                 + "| does not exist in the song database.");
                         break;
-                    } 
+                    }
                     else {
                         MemHandle[] handles = tree.find(artH);
                         for (int j = 0; j < handles.length; j++) {
                             if (handles[j].compareTo(songH) == 0) {
-                                tree.delete(tree.getRoot(), 
+                                tree.delete(tree.getRoot(),
                                         new KVPair(artH, songH));
                                 System.out.println("The KVPair (|"
                                         + sPair1.getFirst() + "|,|"
@@ -360,7 +360,7 @@ public class SearchTree {
                         MemHandle[] handlesS = tree.find(songH);
                         for (int j = 0; j < handlesS.length; j++) {
                             if (handlesS[j].compareTo(artH) == 0) {
-                                tree.delete(tree.getRoot(), 
+                                tree.delete(tree.getRoot(),
                                         new KVPair(songH, artH));
                                 System.out.println("The KVPair (|"
                                         + sPair1.getSecond() + "|,|"
@@ -383,7 +383,7 @@ public class SearchTree {
                             System.out.println("|" + sPair1.getSecond()
                                     + "| is deleted from the song database.");
                         }
-    
+
                     }
                     break;
                 default:
@@ -394,7 +394,7 @@ public class SearchTree {
 
     /**
      * get a pair of strings from a string with a <SEP> marker
-     * 
+     *
      * @param str the string to split
      * @return a pair of strings
      */
@@ -412,7 +412,7 @@ public class SearchTree {
 
     /**
      * get a byte array pair from a String pair
-     * 
+     *
      * @param str the string to process
      * @return the byte array pair
      */
@@ -444,7 +444,7 @@ public class SearchTree {
 
     /**
      * find a handle for an existing value
-     * 
+     *
      * @param s
      *            the string to find
      * @param t
@@ -472,10 +472,10 @@ public class SearchTree {
     }
 
     /**
-     * get the byte array for a string, 
+     * get the byte array for a string,
      * encoding the length into the first two
      * bytes
-     * 
+     *
      * @param str the string to convert
      * @return the byte array
      */
@@ -490,12 +490,12 @@ public class SearchTree {
 
     /**
      * get the length from the first two bytes of the byte array
-     * 
+     *
      * @param data the data byte array
      * @return the size
      */
     public static int getLength(byte[] data) {
-        return (int) ((data[1] << 8) | (data[0]));
+        return ((data[1] << 8) | (data[0]));
     }
 
 }

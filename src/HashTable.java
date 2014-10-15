@@ -26,7 +26,7 @@ public class HashTable
         this.name = name;
         size = m;
         hashTable1 = new MemHandle[size];
-        
+
         for (int i = 0; i < m; i++) {
             hashTable1[i] = new MemHandle(0);
         }
@@ -61,14 +61,6 @@ public class HashTable
         return (Math.abs(sum));
     }
 
-    // ----------------------------------------------------------
-    /**
-     * Checks is the hash table is empty.
-     * @return true if there are no elements in the table.
-     */
-    public boolean isEmpty() {
-        return numElem == 0;
-    }
 
     // ----------------------------------------------------------
     /**
@@ -102,7 +94,7 @@ public class HashTable
         int h = home(key);
         int pos = h;
 
-        for (int i = 1; hashTable1[pos] != null 
+        for (int i = 1; hashTable1[pos] != null
                 && hashTable1[pos].getKey() >= 0;
             i++) {
 
@@ -117,7 +109,7 @@ public class HashTable
             hashTable1[pos] = handle;
             hashTable1[pos].setKey(key);
             numElem++;
-            
+
             if (numElem > size / 2) {
                 resize();
             }
@@ -160,7 +152,7 @@ public class HashTable
         int h = home(key);
         int pos = h;
 
-        for (int i = 1; hashTable1[pos] != null 
+        for (int i = 1; hashTable1[pos] != null
                 && hashTable1[pos].getKey() != key; i++) {
             pos = probe(key, i);
         }
@@ -210,7 +202,7 @@ public class HashTable
                 long key = hashTable1[i].getKey();
                 int h = home(hashTable1[i].getKey());
                 int pos = h;
-                for (int j = 1; resized[pos] != null 
+                for (int j = 1; resized[pos] != null
                         && resized[pos].getKey() >= 0; j++) {
                     pos = probe(key, j);
                 }

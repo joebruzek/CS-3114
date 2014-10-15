@@ -5,13 +5,13 @@ import junit.framework.TestCase;
 
 /**
  * test the SearchTree class
- * 
+ *
  * @author jbruzek, sucram20
  * @version 2014.10.14
  */
 public class SearchTreeTest extends TestCase {
     private ArrayList<String> commands;
-    private final ByteArrayOutputStream outContent 
+    private final ByteArrayOutputStream outContent
         = new ByteArrayOutputStream();
 
     /**
@@ -38,11 +38,12 @@ public class SearchTreeTest extends TestCase {
         String[] str = new String[3];
         str[0] = "10";
         str[1] = "32";
-        str[2] = "src/reference_input3_SimpleInsertWithPrintBlocks.txt";
+        str[2] = "src/P2_Input1_Sample.txt";
         SearchTree.main(str);
 
         assertFalse(outContent.toString().equals(""));
     }
+
 
     /**
      * test the get bytes method

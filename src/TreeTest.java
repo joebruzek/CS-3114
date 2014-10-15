@@ -8,7 +8,7 @@ import junit.framework.TestCase;
 
 /**
  * test the tree class
- * 
+ *
  * @author jbruzek sucram20
  * @version 2014.10.14
  */
@@ -155,7 +155,7 @@ public class TreeTest extends TestCase {
 
         try {
             baos.flush();
-        } 
+        }
         catch (IOException e) {
             e.printStackTrace();
         }
@@ -184,7 +184,7 @@ public class TreeTest extends TestCase {
 
         try {
             baos.flush();
-        } 
+        }
         catch (IOException e) {
             e.printStackTrace();
         }
@@ -325,7 +325,7 @@ public class TreeTest extends TestCase {
         assertEquals(30, found[0].getPosition());
         assertEquals(300, found[1].getPosition());
     }
-    
+
     /**
      * test the inverse find method
      */

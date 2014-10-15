@@ -24,7 +24,7 @@ public class MemoryManager implements MemManager {
 
     /**
      * insert the info into the memory pool
-     * 
+     *
      * @param info a byte array to isert
      * @return a handle pointing to the location in memory
      */
@@ -47,7 +47,7 @@ public class MemoryManager implements MemManager {
 
     /**
      * remove info from the memory pool
-     * 
+     *
      * @param h
      *            the handle for the data
      */
@@ -60,7 +60,7 @@ public class MemoryManager implements MemManager {
 
     /**
      * get info from the memory pool
-     * 
+     *
      * @param h
      *            the handle for the data
      * @return the data
@@ -100,7 +100,7 @@ public class MemoryManager implements MemManager {
 
     /**
      * get the freeBlockList
-     * 
+     *
      * @return the freeblocklist
      */
     public FreeBlockList getBlocks() {
@@ -109,7 +109,7 @@ public class MemoryManager implements MemManager {
 
     /**
      * get dub
-     * 
+     *
      * @return dub
      */
     public boolean getDub() {
@@ -118,7 +118,7 @@ public class MemoryManager implements MemManager {
 
     /**
      * get names from an array of handles
-     * 
+     *
      * @param handles handles array
      * @return the names in an array
      */
@@ -138,19 +138,19 @@ public class MemoryManager implements MemManager {
 
     /**
      * get the length of the string from the first two bytes of the byte array
-     * 
+     *
      * @param h the memhandle to get
      * @return the length
      */
     public int getLength(MemHandle h) {
         int position = h.getPosition();
         byte[] bytes = { pool[position], pool[position + 1] };
-        return (int) ((bytes[1] << 8) | (bytes[0]));
+        return ((bytes[1] << 8) | (bytes[0]));
     }
 
     /**
      * get the string value from a byte array
-     * 
+     *
      * @param b the byte array
      * @param h the memhandle
      * @return the string value of the byte array
@@ -172,7 +172,7 @@ public class MemoryManager implements MemManager {
 
     /**
      * get the memory pool
-     * 
+     *
      * @return the pool
      */
     public byte[] getPool() {
@@ -181,7 +181,7 @@ public class MemoryManager implements MemManager {
 
     /**
      * get the size
-     * 
+     *
      * @return the size
      */
     public int getSize() {
