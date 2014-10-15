@@ -3,6 +3,7 @@
  *
  * @author jbruzek, sucram20
  * @param <T> the data type stored in the nodes
+ * @version 2014.10.14
  */
 public class DoublyLinkedList<T>
 {
@@ -136,6 +137,7 @@ public class DoublyLinkedList<T>
     
     /**
      * get the current node
+     * @return the node
      */
     public Node<T> current() {
     	return current;
@@ -143,7 +145,7 @@ public class DoublyLinkedList<T>
     
     /**
      * update the current node
-     * @param data, the new data of current
+     * @param data the new data of current
      */
     public void updateCurrent(T data) {
     	current.setData(data);

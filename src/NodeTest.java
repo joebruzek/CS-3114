@@ -4,8 +4,8 @@ import junit.framework.TestCase;
  * Tests for the Node class.
  *
  * @author  Joe Bruzek (jbruzek)
- * @author Aaron Kunzer (aaronk1)
- * @version 2013.10.03
+ * @author Marcus Stewart (sucram20)
+ * @version 2014.10.14
  */
 public class NodeTest extends TestCase {
 
@@ -36,7 +36,8 @@ public class NodeTest extends TestCase {
         Exception thrown = null;
         try {
             node1.join(node3);
-        } catch (Exception e) {
+        } 
+        catch (Exception e) {
             thrown = e;
         }
         
@@ -44,7 +45,8 @@ public class NodeTest extends TestCase {
         assertEquals("The node pointers must be null", thrown.getMessage());
         try {
             node3.join(node2);
-        } catch (Exception e) {
+        } 
+        catch (Exception e) {
             thrown = e;
         }
         assertTrue(thrown instanceof IllegalStateException);

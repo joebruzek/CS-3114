@@ -1,11 +1,34 @@
 // Memory Manager abstract class
+/**
+ * the MemManager interface
+ * 
+ * @author jbruzek sucram20
+ * @version 2014.10.14
+ */
 interface MemManager {
-  // Store a record and return a handle to it
-  public MemHandle insert(byte[] info);
+	/**
+	 * insert into the memory manager
+	 * 
+	 * @param info
+	 *            the byte array
+	 * @return the handle of the locatiomn
+	 */
+	public MemHandle insert(byte[] info);
 
-  // Release the space associated with a record
-  public void release(MemHandle h);
+	/**
+	 * release something from teh mem pool
+	 * 
+	 * @param h
+	 *            the handle to be released
+	 */
+	public void release(MemHandle h);
 
-  // Get back a copy of a stored record
-  public byte[] getRecord(MemHandle h);
+	/**
+	 * get the record from a handle
+	 * 
+	 * @param h
+	 *            the handle
+	 * @return a byte array
+	 */
+	public byte[] getRecord(MemHandle h);
 }

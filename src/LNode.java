@@ -1,10 +1,10 @@
 /**
  * Leaf node implementation for the 2-3+ tree
+ * 
  * @author jbruzek, sucram20
- *
+ * @version 2014.10.14
  */
 public class LNode implements TTNode {
-
 	private LNode next;
 	private LNode previous;
 	private int recs;
@@ -22,7 +22,9 @@ public class LNode implements TTNode {
 
 	/**
 	 * make a LNode with a left value
-	 * @param l the KVPair
+	 * 
+	 * @param l
+	 *            the KVPair
 	 */
 	public LNode(KVPair l) {
 		this.recs = 1;
@@ -33,7 +35,9 @@ public class LNode implements TTNode {
 
 	/**
 	 * set the next LNode
-	 * @param the next LNode
+	 * 
+	 * @param n the
+	 *            next LNode
 	 */
 	public void setNext(LNode n) {
 		next = n;
@@ -41,22 +45,26 @@ public class LNode implements TTNode {
 
 	/**
 	 * get the next node
+	 * 
 	 * @return the next node
 	 */
 	public LNode next() {
 		return next;
 	}
-	
+
 	/**
 	 * set the previous node
-	 * @param p the previous
+	 * 
+	 * @param p
+	 *            the previous
 	 */
 	public void setPrevious(LNode p) {
 		previous = p;
 	}
-	
+
 	/**
 	 * get the previous node
+	 * 
 	 * @return the previous
 	 */
 	public LNode previous() {
@@ -64,8 +72,8 @@ public class LNode implements TTNode {
 	}
 
 	/**
-	 * is this a leaf?
-	 * Always returns true, this is literally a leaf.
+	 * is this a leaf? Always returns true, this is literally a leaf.
+	 * 
 	 * @return true
 	 */
 	@Override
@@ -75,7 +83,9 @@ public class LNode implements TTNode {
 
 	/**
 	 * search for the KVPair and return the index
-	 * @param k the KVPair to search for
+	 * 
+	 * @param k
+	 *            the KVPair to search for
 	 * @return the index, -1 if the KVPair doesn't exist
 	 */
 	public int search(KVPair k) {
@@ -94,13 +104,16 @@ public class LNode implements TTNode {
 
 	/**
 	 * insert a KVPair into the node
-	 * @param k the E to insert
+	 * 
+	 * @param k
+	 *            the E to insert
 	 */
 	public void insert(KVPair k) {
-		//find the index to insert into
+		// find the index to insert into
 		int index = 0;
-		while (index < this.numRecs() && this.getKeyV(index).compareTo(k) < 0)
+		while (index < this.numRecs() && this.getKeyV(index).compareTo(k) < 0) {
 			++index;
+		}
 
 		// move space for the new key
 		for (int i = this.numRecs() - 1; i >= index; --i) {
@@ -132,7 +145,8 @@ public class LNode implements TTNode {
 			node.setPrevious(this);
 			node.setNext(temp);
 			temp.setPrevious(node);
-		} else {
+		} 
+		else {
 			this.setNext(node);
 			node.setPrevious(this);
 		}
@@ -141,10 +155,12 @@ public class LNode implements TTNode {
 	}
 
 	/**
-	 * set the Child.
-	 * Throws an UnsupportedOperationException
-	 * @param i the index
-	 * @param c the child
+	 * set the Child. Throws an UnsupportedOperationException
+	 * 
+	 * @param i
+	 *            the index
+	 * @param c
+	 *            the child
 	 */
 	@Override
 	public void setChild(int i, TTNode c) {
@@ -153,7 +169,9 @@ public class LNode implements TTNode {
 
 	/**
 	 * get the child
-	 * @param i the index
+	 * 
+	 * @param i
+	 *            the index
 	 * @return the child
 	 */
 	@Override
@@ -163,6 +181,7 @@ public class LNode implements TTNode {
 
 	/**
 	 * get the number of records in this node
+	 * 
 	 * @return the number of recs
 	 */
 	@Override
@@ -172,7 +191,9 @@ public class LNode implements TTNode {
 
 	/**
 	 * set the number of recs in this node
-	 * @param r the number of recs
+	 * 
+	 * @param r
+	 *            the number of recs
 	 */
 	@Override
 	public void setRecs(int r) {
@@ -182,8 +203,11 @@ public class LNode implements TTNode {
 
 	/**
 	 * set the E at the index
-	 * @param index the index to insert at
-	 * @param value the E to insert
+	 * 
+	 * @param index
+	 *            the index to insert at
+	 * @param value
+	 *            the E to insert
 	 */
 	public void setKey(int index, KVPair value) {
 		this.keys[index] = value;
@@ -191,6 +215,7 @@ public class LNode implements TTNode {
 
 	/**
 	 * is the number of recs too damn high?
+	 * 
 	 * @return too many recs
 	 */
 	@Override
@@ -200,7 +225,9 @@ public class LNode implements TTNode {
 
 	/**
 	 * get the KVPair at the index
-	 * @param i the index to get
+	 * 
+	 * @param i
+	 *            the index to get
 	 * @return the KVPair
 	 */
 	@Override

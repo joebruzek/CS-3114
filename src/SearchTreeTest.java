@@ -5,13 +5,14 @@ import junit.framework.TestCase;
 
 /**
  * test the SearchTree class
+ * 
  * @author jbruzek, sucram20
- *
+ * @version 2014.10.14
  */
 public class SearchTreeTest extends TestCase {
-
 	private ArrayList<String> commands;
-	private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+	private final ByteArrayOutputStream outContent 
+		= new ByteArrayOutputStream();
 
 	/**
 	 * set up before tests
@@ -40,69 +41,69 @@ public class SearchTreeTest extends TestCase {
 		str[2] = "src/reference_input3_SimpleInsertWithPrintBlocks.txt";
 		SearchTree.main(str);
 
-		assertTrue(!outContent.toString().equals(""));
+		assertFalse(outContent.toString().equals(""));
 	}
 
 	/**
 	 * test the get bytes method
 	 */
-    public void testGetBytes() {
-    	String test = "Length: 10";
+	public void testGetBytes() {
+		String test = "Length: 10";
 
-    	byte[] bytes = SearchTree.getBytes(test);
-    	assertEquals(12, bytes.length);
-    	assertEquals((byte) 10, bytes[0]);
-    	assertEquals((byte) 0, bytes[1]);
-    }
-
-    /**
-     * test toPair method
-     */
-    public void testToPair() {
-    	String str = "First thing<SEP>Second thing";
-    	Pair<String, String> p = SearchTree.toPair(str);
-
-    	assertEquals("First thing", p.getFirst());
-    	assertEquals("Second thing", p.getSecond());
-    }
-
-    /**
-     * test the toByteArray method
-     *
-     * implicitely test the getLength method
-     */
-    public void testToByteArray() {
-    	String str = "Length: 10<SEP>Length: 15-----";
-    	Pair<String, String> p = SearchTree.toPair(str);
-
-    	Pair<byte[], byte[]> pair = SearchTree.toByteArray(p);
-
-    	assertEquals(10, SearchTree.getLength(pair.getFirst()));
-    	assertEquals(15, SearchTree.getLength(pair.getSecond()));
-    }
+		byte[] bytes = SearchTree.getBytes(test);
+		assertEquals(12, bytes.length);
+		assertEquals((byte) 10, bytes[0]);
+		assertEquals((byte) 0, bytes[1]);
+	}
 
 	/**
-     * test the execute commands method
-     */
-    public void testExecuteCommands() {
-    	MemoryManager mm = new MemoryManager(1000);
-    	HashTable a = new HashTable(10, "Artists");
-    	HashTable b = new HashTable(10, "Songs");
-    	Tree t = new Tree();
-    	SearchTree.executeCommands(commands, mm, a, b, t);
+	 * test toPair method
+	 */
+	public void testToPair() {
+		String str = "First thing<SEP>Second thing";
+		Pair<String, String> p = SearchTree.toPair(str);
 
-    	assertEquals(1, mm.getBlocks().size());
-    	assertEquals(10, a.getSize());
-    	assertEquals(10, b.getSize());
-    }
+		assertEquals("First thing", p.getFirst());
+		assertEquals("Second thing", p.getSecond());
+	}
 
-    /**
-     * test the findHandle method
-     */
-    public void testFindHandle() {
-    	MemoryManager mm = new MemoryManager(1000);
-    	HashTable a = new HashTable(10, "Artists");
+	/**
+	 * test the toByteArray method
+	 *
+	 * implicitely test the getLength method
+	 */
+	public void testToByteArray() {
+		String str = "Length: 10<SEP>Length: 15-----";
+		Pair<String, String> p = SearchTree.toPair(str);
 
-    	assertNull(SearchTree.findHandle("Not there", a, mm));
-    }
+		Pair<byte[], byte[]> pair = SearchTree.toByteArray(p);
+
+		assertEquals(10, SearchTree.getLength(pair.getFirst()));
+		assertEquals(15, SearchTree.getLength(pair.getSecond()));
+	}
+
+	/**
+	 * test the execute commands method
+	 */
+	public void testExecuteCommands() {
+		MemoryManager mm = new MemoryManager(1000);
+		HashTable a = new HashTable(10, "Artists");
+		HashTable b = new HashTable(10, "Songs");
+		Tree t = new Tree();
+		SearchTree.executeCommands(commands, mm, a, b, t);
+
+		assertEquals(1, mm.getBlocks().size());
+		assertEquals(10, a.getSize());
+		assertEquals(10, b.getSize());
+	}
+
+	/**
+	 * test the findHandle method
+	 */
+	public void testFindHandle() {
+		MemoryManager mm = new MemoryManager(1000);
+		HashTable a = new HashTable(10, "Artists");
+
+		assertNull(SearchTree.findHandle("Not there", a, mm));
+	}
 }

@@ -4,10 +4,10 @@ import junit.framework.TestCase;
  * test the Block class
  * @author jbruzek
  * @author sucram20
- *
+ * @version 2014.10.14
  */
 public class BlockTest extends TestCase {
-	
+
 	private Block b;
 	
 	/**

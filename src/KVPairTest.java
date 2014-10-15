@@ -4,15 +4,15 @@ import org.junit.Before;
 
 /**
  * test the KVPair class
+ * 
  * @author jbruzek sucram20
- *
+ * @version 2014.10.14
  */
 public class KVPairTest extends TestCase {
-
 	private KVPair p;
-	MemHandle m;
-	MemHandle v;
-	
+	private MemHandle m;
+	private MemHandle v;
+
 	/**
 	 * set up the tests
 	 */
@@ -22,7 +22,7 @@ public class KVPairTest extends TestCase {
 		v = new MemHandle(2);
 		p = new KVPair(m, v);
 	}
-	
+
 	/**
 	 * test the toString
 	 */
@@ -31,21 +31,21 @@ public class KVPairTest extends TestCase {
 		String vs = v.toString();
 		assertEquals(ms + " " + vs, p.toString());
 	}
-	
+
 	/**
 	 * test key
 	 */
 	public void testKey() {
 		assertEquals(m, p.key());
 	}
-	
+
 	/**
 	 * test the value
 	 */
 	public void testValue() {
 		assertEquals(v, p.value());
 	}
-	
+
 	/**
 	 * test compare to when the same
 	 */
@@ -53,11 +53,11 @@ public class KVPairTest extends TestCase {
 		MemHandle a = new MemHandle(1);
 		MemHandle b = new MemHandle(2);
 		KVPair s = new KVPair(a, b);
-		
+
 		assertEquals(0, p.compareTo(s));
 		assertEquals(0, p.compareTo(a));
 	}
-	
+
 	/**
 	 * test compare to when less
 	 */
@@ -65,11 +65,11 @@ public class KVPairTest extends TestCase {
 		MemHandle a = new MemHandle(2);
 		MemHandle b = new MemHandle(2);
 		KVPair s = new KVPair(a, b);
-		
+
 		assertEquals(-1, p.compareTo(s));
 		assertEquals(-1, p.compareTo(a));
 	}
-	
+
 	/**
 	 * test compare to when greater
 	 */
@@ -77,7 +77,7 @@ public class KVPairTest extends TestCase {
 		MemHandle a = new MemHandle(0);
 		MemHandle b = new MemHandle(2);
 		KVPair s = new KVPair(a, b);
-		
+
 		assertEquals(1, p.compareTo(s));
 		assertEquals(1, p.compareTo(a));
 	}

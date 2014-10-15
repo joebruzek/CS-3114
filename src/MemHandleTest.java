@@ -4,9 +4,9 @@ import junit.framework.TestCase;
  * A test case for the MemHandle Class
  *
  * @author jbruzek, sucram20
+ * @version 2014.10.14
  */
 public class MemHandleTest extends TestCase {
-
 	private MemHandle handle;
 
 	/**

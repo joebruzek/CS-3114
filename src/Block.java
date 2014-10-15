@@ -2,9 +2,10 @@
  * block is a piece of data on the free block list
  * @author jbruzek
  * @author sucram20
+ * @version 2014.10.14
  */
 public class Block {
-	
+
 	private int position = 0;
 	private int size = 0;
 	
@@ -17,8 +18,8 @@ public class Block {
 	
 	/**
 	 * initialize the block with size and position
-	 * @param size
-	 * @param position
+	 * @param size the size
+	 * @param position the position
 	 */
 	public Block(int size, int position) {
 		this.size = size;
@@ -27,7 +28,7 @@ public class Block {
 	
 	/**
      * get the position
-     * @return
+     * @return the position
      */
     public int getPosition() {
         return position;
@@ -35,7 +36,7 @@ public class Block {
 
     /**
      * get the size
-     * @return
+     * @return the size
      */
     public int getSize() {
         return size;
@@ -43,7 +44,7 @@ public class Block {
 
     /**
      * set the position
-     * @param position
+     * @param position the position
      */
     public void setPosition(int position) {
         this.position = position;
@@ -51,7 +52,7 @@ public class Block {
 
     /**
      * set the size
-     * @param size
+     * @param size the size
      */
     public void setSize(int size) {
         this.size = size;
