@@ -195,13 +195,17 @@ public class Tree {
     }
     /**
      * Deletes a KVPair from the tree
-     * @param node
-     * @param k
+     * @param node the root
+     * @param k the KVPair
      */
     public void delete(TTNode node, KVPair k)
     {
-        if (!search(node, k)) return;
-        if (root.getKeyV(0) == null) return;
+        if (!search(node, k)) {
+            return;
+        }
+        if (root.getKeyV(0) == null) {
+            return;
+        }
         if (root.isLeaf())
         {
             if (root.getKeyV(0).compareTo(k) == 0)
@@ -240,7 +244,8 @@ public class Tree {
                 changeINodes(root, before, after);
                 return;
             }
-            else if(node.getKeyV(1) != null && node.getKeyV(1).compareTo(k) == 0)
+            else if (node.getKeyV(1) != null 
+                    && node.getKeyV(1).compareTo(k) == 0)
             {
                 ((LNode) node).setKey(1, null);
                 ((LNode) node).setRecs(1);
@@ -255,7 +260,7 @@ public class Tree {
         }
         if ((!node.isLeaf()) && node.getChild(0).isLeaf())
         {
-            if(node.numRecs() == 2)
+            if (node.numRecs() == 2)
             {
                 deleteThirdChild(node, k);
             }
@@ -283,7 +288,9 @@ public class Tree {
      */
     public void changeINodes(TTNode node, KVPair before, KVPair after)
     {
-        if (node.isLeaf()) return;
+        if (node.isLeaf()) {
+            return;
+        }
         if (node.getKeyV(0) != null && node.getKeyV(0).compareTo(before) == 0)
         {
             ((INode) node).setKey(0, after);
@@ -311,11 +318,12 @@ public class Tree {
 
     /**
      * Borrows a value from the next or previous node.
-     * @param node
+     * @param node the node
      */
     public void borrow(TTNode node)
     {
-        if(((LNode) node).previous() != null && ((LNode) node).previous().numRecs() == 2)
+        if (((LNode) node).previous() != null 
+                && ((LNode) node).previous().numRecs() == 2)
         {
             KVPair before = node.getKeyV(0);
             KVPair after = ((LNode)node).previous().getKeyV(1);
@@ -325,7 +333,8 @@ public class Tree {
             changeINodes(root, before, after);
             return;
         }
-        else if (((LNode) node).next() != null && ((LNode) node).next().numRecs() == 2)
+        else if (((LNode) node).next() != null 
+                && ((LNode) node).next().numRecs() == 2)
         {
             KVPair before = node.getKeyV(0);
             KVPair after = ((LNode)node).next().getKeyV(0);
@@ -347,41 +356,49 @@ public class Tree {
      */
     public void deleteThirdChild(TTNode node, KVPair k)
     {
-        if(node.getChild(0).getKeyV(0).compareTo(k) == 0)
+        if (node.getChild(0).getKeyV(0).compareTo(k) == 0)
         {
             KVPair before = node.getChild(0).getKeyV(0);
             KVPair after = node.getChild(1).getKeyV(0);
             ((INode) node).setKey(0, node.getChild(2).getKeyV(0));
             ((INode) node).setKey(1, null);
-            ((LNode) node.getChild(1)).setPrevious(((LNode) node.getChild(0)).previous());
-            if (((LNode) node.getChild(0)).previous() != null)
-                ((LNode) node.getChild(0)).previous().setNext(((LNode) node.getChild(1)));
+            ((LNode) node.getChild(1)).setPrevious(
+                    ((LNode) node.getChild(0)).previous());
+            if (((LNode) node.getChild(0)).previous() != null) {
+                ((LNode) node.getChild(0)).previous().setNext(
+                        ((LNode) node.getChild(1)));
+            }
             node.setChild(0, node.getChild(1));
             node.setChild(1, node.getChild(2));
             node.setChild(2, null);
             node.setRecs(1);
             changeINodes(root, before, after);
         }
-        else if(node.getChild(1).getKeyV(0).compareTo(k) == 0)
+        else if (node.getChild(1).getKeyV(0).compareTo(k) == 0)
         {
             KVPair before = node.getChild(1).getKeyV(0);
             KVPair after = node.getChild(2).getKeyV(0);
             ((INode) node).setKey(0, node.getChild(2).getKeyV(0));
             ((INode) node).setKey(1, null);
-            ((LNode) node.getChild(2)).setPrevious(((LNode) node.getChild(1)).previous());
-            ((LNode) node.getChild(1)).previous().setNext(((LNode) node.getChild(2)));
+            ((LNode) node.getChild(2)).setPrevious(
+                    ((LNode) node.getChild(1)).previous());
+            ((LNode) node.getChild(1)).previous().setNext(
+                    ((LNode) node.getChild(2)));
             node.setChild(1, node.getChild(2));
             node.setChild(2, null);
             node.setRecs(1);
             changeINodes(root, before, after);
         }
-        else if(node.getChild(2).getKeyV(0).compareTo(k) == 0)
+        else if (node.getChild(2).getKeyV(0).compareTo(k) == 0)
         {
             KVPair before = node.getChild(2).getKeyV(0);
             ((INode) node).setKey(1, null);
-            ((LNode) node.getChild(1)).setNext(((LNode) node.getChild(2)).next());
-            if (((LNode) node.getChild(2)).next() != null)
-                ((LNode) node.getChild(2)).next().setPrevious(((LNode) node.getChild(1)));
+            ((LNode) node.getChild(1)).setNext(
+                    ((LNode) node.getChild(2)).next());
+            if (((LNode) node.getChild(2)).next() != null) {
+                ((LNode) node.getChild(2)).next().setPrevious(
+                        ((LNode) node.getChild(1)));
+            }
             node.setChild(2, null);
             node.setRecs(1);
             changeINodes(root, before, null);
@@ -396,33 +413,47 @@ public class Tree {
      */
     public void deleteEmptyNode(TTNode node, KVPair k)
     {
-        if(!node.isLeaf() && node.getChild(0).isLeaf())
+        if (!node.isLeaf() && node.getChild(0).isLeaf())
         {
             if (node.getChild(0).getKeyV(0).compareTo(k) == 0) {
-                if (((LNode) node.getChild(0)).previous() != null)
-                    ((LNode) node.getChild(0)).previous().setNext(((LNode) node.getChild(0)).next());
-                if (((LNode) node.getChild(0)).next() != null)
-                    ((LNode) node.getChild(0)).next().setPrevious(((LNode) node.getChild(0)).previous());
-                changeINodes(root, node.getChild(0).getKeyV(0), node.getChild(1).getKeyV(0));
+                if (((LNode) node.getChild(0)).previous() != null) {
+                    ((LNode) node.getChild(0)).previous().setNext(
+                            ((LNode) node.getChild(0)).next());
+                }
+                if (((LNode) node.getChild(0)).next() != null) {
+                    ((LNode) node.getChild(0)).next().setPrevious(
+                            ((LNode) node.getChild(0)).previous());
+                }
+                changeINodes(root, node.getChild(0).getKeyV(0), 
+                        node.getChild(1).getKeyV(0));
                 node.setChild(0, node.getChild(1));
                 merge(root, node);
-                changeINodes(root, node.getKeyV(0), node.getChild(1).getKeyV(0));
+                changeINodes(root, node.getKeyV(0), 
+                        node.getChild(1).getKeyV(0));
             }
             else if (node.getChild(1).getKeyV(0).compareTo(k) == 0) {
-                if (((LNode) node.getChild(1)).previous() != null)
-                    ((LNode) node.getChild(1)).previous().setNext(((LNode) node.getChild(1)).next());
-                if (((LNode) node.getChild(1)).next() != null)
-                    ((LNode) node.getChild(1)).next().setPrevious(((LNode) node.getChild(1)).previous());
-                changeINodes(root, node.getChild(1).getKeyV(0), node.getChild(0).getKeyV(0));
+                if (((LNode) node.getChild(1)).previous() != null) {
+                    ((LNode) node.getChild(1)).previous().setNext(
+                            ((LNode) node.getChild(1)).next());
+                }
+                if (((LNode) node.getChild(1)).next() != null) {
+                    ((LNode) node.getChild(1)).next().setPrevious(
+                            ((LNode) node.getChild(1)).previous());
+                }
+                changeINodes(root, node.getChild(1).getKeyV(0), 
+                        node.getChild(0).getKeyV(0));
                 node.setChild(1, null);
                 //((LNode) node.getChild(1)).setKey(0, null);
                 merge(root, node);
-                changeINodes(root, node.getKeyV(0), node.getChild(1).getKeyV(0));
+                changeINodes(root, node.getKeyV(0), 
+                        node.getChild(1).getKeyV(0));
             }
 
             fixNodes(root);
         }
-        if (node.isLeaf()) return;
+        if (node.isLeaf()) {
+            return;
+        }
         if (k.compareTo(node.getKeyV(0)) < 0) {
             deleteEmptyNode(node.getChild(0), k);
         }
@@ -444,17 +475,17 @@ public class Tree {
      */
     public void merge(TTNode node, TTNode merge)
     {
-        if(node.getChild(0) == null)
+        if (node.getChild(0) == null)
         {
             ((INode) node.getChild(0)).setKey(0, node.getKeyV(0));
             merge(node.getChild(0), merge);
         }
-        else if(node.getChild(1) == null)
+        else if (node.getChild(1) == null)
         {
             ((INode) node.getChild(1)).setKey(0, node.getKeyV(0));
             merge(node.getChild(1), merge);
         }
-        else if(node.getChild(2) == null)
+        else if (node.getChild(2) == null)
         {
             ((INode) node.getChild(2)).setKey(0, node.getKeyV(0));
             merge(node.getChild(2), merge);
@@ -498,7 +529,7 @@ public class Tree {
 
     /**
      * makes the nodes proper
-     * @param node
+     * @param node the node to fix
      */
     public void fixNodes(TTNode node)
     {

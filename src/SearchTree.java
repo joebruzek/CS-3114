@@ -158,10 +158,24 @@ public class SearchTree {
                                 //find and delete all
                                 MemHandle[] occur = tree.find(rh);
                                 for (int g = 0; g < occur.length; g++) {
+                                    String arName = mm.getString(
+                                            mm.getRecord(rh),
+                                            rh);
+                                    String soName = mm.getString(
+                                            mm.getRecord(occur[g]),
+                                            occur[g]);
                                     tree.delete(tree.getRoot(),
                                             new KVPair(rh, occur[g]));
+                                    System.out.println("The KVPair (|"
+                                            + arName + "|,|"
+                                            + soName
+                                            + "|) is deleted from the tree.");
                                     tree.delete(tree.getRoot(),
                                             new KVPair(occur[g], rh));
+                                    System.out.println("The KVPair (|"
+                                            + soName + "|,|"
+                                            + arName
+                                            + "|) is deleted from the tree.");
                                 }
 
                                 System.out.println("|" + name
@@ -196,10 +210,24 @@ public class SearchTree {
                                 //find and delete all
                                 MemHandle[] occur = tree.find(rh);
                                 for (int g = 0; g < occur.length; g++) {
+                                    String soName = mm.getString(
+                                            mm.getRecord(rh),
+                                            rh);
+                                    String arName = mm.getString(
+                                            mm.getRecord(occur[g]),
+                                            occur[g]);
                                     tree.delete(tree.getRoot(),
                                             new KVPair(rh, occur[g]));
+                                    System.out.println("The KVPair (|"
+                                            + soName + "|,|"
+                                            + arName
+                                            + "|) is deleted from the tree.");
                                     tree.delete(tree.getRoot(),
                                             new KVPair(occur[g], rh));
+                                    System.out.println("The KVPair (|"
+                                            + arName + "|,|"
+                                            + soName
+                                            + "|) is deleted from the tree.");
                                 }
 
                                 System.out.println("|" + name
