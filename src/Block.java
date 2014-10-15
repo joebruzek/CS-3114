@@ -6,27 +6,27 @@
  */
 public class Block {
 
-	private int position = 0;
-	private int size = 0;
-	
-	/**
-	 * empty constructor
-	 */
-	public Block() {
-		//nothing
-	}
-	
-	/**
-	 * initialize the block with size and position
-	 * @param size the size
-	 * @param position the position
-	 */
-	public Block(int size, int position) {
-		this.size = size;
-		this.position = position;
-	}
-	
-	/**
+    private int position = 0;
+    private int size = 0;
+    
+    /**
+     * empty constructor
+     */
+    public Block() {
+        //nothing
+    }
+    
+    /**
+     * initialize the block with size and position
+     * @param size the size
+     * @param position the position
+     */
+    public Block(int size, int position) {
+        this.size = size;
+        this.position = position;
+    }
+    
+    /**
      * get the position
      * @return the position
      */

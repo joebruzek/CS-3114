@@ -7,19 +7,19 @@ import junit.framework.TestCase;
  * @version 2014.10.14
  */
 public class MemHandleTest extends TestCase {
-	private MemHandle handle;
+    private MemHandle handle;
 
-	/**
-	 * initialize the test nodes.
-	 */
-	public void setUp() {
-		handle = new MemHandle(30);
-	}
+    /**
+     * initialize the test nodes.
+     */
+    public void setUp() {
+        handle = new MemHandle(30);
+    }
 
-	/**
-	 * test the getPosition method
-	 */
-	public void testGetPosition() {
-		assertEquals(30, handle.getPosition());
-	}
+    /**
+     * test the getPosition method
+     */
+    public void testGetPosition() {
+        assertEquals(30, handle.getPosition());
+    }
 }

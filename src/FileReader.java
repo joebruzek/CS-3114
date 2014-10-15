@@ -11,55 +11,55 @@ import java.util.Scanner;
  */
 public class FileReader {
 
-	private File file;
-	private ArrayList<String> commands;
+    private File file;
+    private ArrayList<String> commands;
 
-	/**
-	 * initialize the filereader
-	 * 
-	 * @param file
-	 *            the file to read from
-	 */
-	public FileReader(File file) {
-		this.file = file;
-		commands = new ArrayList<String>();
+    /**
+     * initialize the filereader
+     * 
+     * @param file
+     *            the file to read from
+     */
+    public FileReader(File file) {
+        this.file = file;
+        commands = new ArrayList<String>();
 
-		readFile();
-	}
+        readFile();
+    }
 
-	/**
-	 * read the file and add the commands to the commands list
-	 */
-	public void readFile() {
-		Scanner sc = null;
-		try {
-			sc = new Scanner(file);
-		} 
-		catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+    /**
+     * read the file and add the commands to the commands list
+     */
+    public void readFile() {
+        Scanner sc = null;
+        try {
+            sc = new Scanner(file);
+        } 
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
-		while (sc.hasNext()) {
-			commands.add(sc.nextLine());
-		}
-	}
+        while (sc.hasNext()) {
+            commands.add(sc.nextLine());
+        }
+    }
 
-	/**
-	 * get a command at the specified index
-	 * 
-	 * @param index the index
-	 * @return the command
-	 */
-	public String getCommand(int index) {
-		return commands.get(index);
-	}
+    /**
+     * get a command at the specified index
+     * 
+     * @param index the index
+     * @return the command
+     */
+    public String getCommand(int index) {
+        return commands.get(index);
+    }
 
-	/**
-	 * get the list of commands
-	 * 
-	 * @return the commands
-	 */
-	public ArrayList<String> getCommands() {
-		return commands;
-	}
+    /**
+     * get the list of commands
+     * 
+     * @return the commands
+     */
+    public ArrayList<String> getCommands() {
+        return commands;
+    }
 }

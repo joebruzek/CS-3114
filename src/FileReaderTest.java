@@ -11,32 +11,32 @@ import junit.framework.TestCase;
  * @version 2014.10.14
  */
 public class FileReaderTest extends TestCase {
-	
-	private FileReader fr;
+    
+    private FileReader fr;
 
-	/**
-	 * set up the tests
-	 */
-	public void setUp() {
-		File file = new File("src/P1sampleInput.txt");
-		fr = new FileReader(file);
-	}
+    /**
+     * set up the tests
+     */
+    public void setUp() {
+        File file = new File("src/P1sampleInput.txt");
+        fr = new FileReader(file);
+    }
 
-	/**
-	 * test the get Commands method
-	 */
-	public void testGetCommands() {
-		ArrayList<String> commands = fr.getCommands();
+    /**
+     * test the get Commands method
+     */
+    public void testGetCommands() {
+        ArrayList<String> commands = fr.getCommands();
 
-		assertEquals(24, commands.size());
-	}
+        assertEquals(24, commands.size());
+    }
 
-	/**
-	 * test the get Command method
-	 */
-	public void testGetCommand() {
-		String command = fr.getCommand(5);
+    /**
+     * test the get Command method
+     */
+    public void testGetCommand() {
+        String command = fr.getCommand(5);
 
-		assertEquals("insert Ma Rainey<SEP>Ma Rainey's Black Bottom", command);
-	}
+        assertEquals("insert Ma Rainey<SEP>Ma Rainey's Black Bottom", command);
+    }
 }

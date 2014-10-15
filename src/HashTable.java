@@ -43,19 +43,19 @@ public class HashTable
         int intLength = s.length() / 4;
         long sum = 0;
         for (int j = 0; j < intLength; j++) {
-	        char[] c = s.substring(j * 4, (j * 4) + 4).toCharArray();
-	        long mult = 1;
-	        for (int k = 0; k < c.length; k++) {
-	            sum += c[k] * mult;
-	            mult *= 256;
-	        }
+            char[] c = s.substring(j * 4, (j * 4) + 4).toCharArray();
+            long mult = 1;
+            for (int k = 0; k < c.length; k++) {
+                sum += c[k] * mult;
+                mult *= 256;
+            }
         }
 
         char[] c = s.substring(intLength * 4).toCharArray();
         long mult = 1;
         for (int k = 0; k < c.length; k++) {
-	        sum += c[k] * mult;
-	        mult *= 256;
+            sum += c[k] * mult;
+            mult *= 256;
         }
 
         return (Math.abs(sum));
@@ -103,7 +103,7 @@ public class HashTable
         int pos = h;
 
         for (int i = 1; hashTable1[pos] != null 
-        		&& hashTable1[pos].getKey() >= 0;
+                && hashTable1[pos].getKey() >= 0;
             i++) {
 
 
@@ -114,13 +114,13 @@ public class HashTable
         }
 
         if (!searchTable(k)) {
-			hashTable1[pos] = handle;
-			hashTable1[pos].setKey(key);
-			numElem++;
-			
-			if (numElem > size / 2) {
-				resize();
-			}
+            hashTable1[pos] = handle;
+            hashTable1[pos].setKey(key);
+            numElem++;
+            
+            if (numElem > size / 2) {
+                resize();
+            }
         }
     }
 
@@ -138,7 +138,7 @@ public class HashTable
             hashTable1[pos].getKey() != key &&
                 hashTable1[pos].getKey() != -1; i++) {
             if (i == size) {
-            	return false;
+                return false;
             }
             pos = probe(key, i);
         }
@@ -161,7 +161,7 @@ public class HashTable
         int pos = h;
 
         for (int i = 1; hashTable1[pos] != null 
-        		&& hashTable1[pos].getKey() != key; i++) {
+                && hashTable1[pos].getKey() != key; i++) {
             pos = probe(key, i);
         }
         MemHandle temp = hashTable1[pos];
@@ -186,7 +186,7 @@ public class HashTable
             hashTable1[pos].getKey() != key &&
                 hashTable1[pos].getKey() != -1; i++) {
             if (i == size) {
-            	return true;
+                return true;
             }
             pos = probe(key, i);
         }
@@ -211,7 +211,7 @@ public class HashTable
                 int h = home(hashTable1[i].getKey());
                 int pos = h;
                 for (int j = 1; resized[pos] != null 
-                		&& resized[pos].getKey() >= 0; j++) {
+                        && resized[pos].getKey() >= 0; j++) {
                     pos = probe(key, j);
                 }
                 resized[pos] = hashTable1[i];

@@ -45,11 +45,11 @@ public class DoublyLinkedList<T>
      * @param data the data to be added
      */
     public void addHere(T data) {
-    	Node<T> temp = new Node<T>(data);
-    	temp.join(current.split());
-    	current.join(temp);
-    	current = temp;
-    	size++;
+        Node<T> temp = new Node<T>(data);
+        temp.join(current.split());
+        current.join(temp);
+        current = temp;
+        size++;
     }
     
     /**
@@ -57,10 +57,10 @@ public class DoublyLinkedList<T>
      * current gets set to the node in front of current
      */
     public void remove() {
-    	Node<T> temp = current.previous();
-    	temp.join(temp.split().split());
-    	current = temp;
-    	size--;
+        Node<T> temp = current.previous();
+        temp.join(temp.split().split());
+        current = temp;
+        size--;
     }
 
 
@@ -140,7 +140,7 @@ public class DoublyLinkedList<T>
      * @return the node
      */
     public Node<T> current() {
-    	return current;
+        return current;
     }
     
     /**
@@ -148,7 +148,7 @@ public class DoublyLinkedList<T>
      * @param data the new data of current
      */
     public void updateCurrent(T data) {
-    	current.setData(data);
+        current.setData(data);
     }
     
     /**
@@ -156,7 +156,7 @@ public class DoublyLinkedList<T>
      * @param node the node to set current to
      */
     public void setCurrent(Node<T> node) {
-    	current = node;
+        current = node;
     }
 
 
