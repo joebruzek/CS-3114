@@ -38,9 +38,9 @@ public class SearchTreeTest extends TestCase {
         String[] str = new String[3];
         str[0] = "10";
         str[1] = "32";
-        str[2] = "src/P2_Input1_Sample.txt";
+        str[2] = "src/reference_input12_ComplicatedInsertAndDelelte.txt";
         SearchTree.main(str);
-
+        System.out.println(outContent.toString());
         assertFalse(outContent.toString().equals(""));
     }
 

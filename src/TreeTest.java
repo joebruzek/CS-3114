@@ -46,21 +46,40 @@ public class TreeTest extends TestCase {
             MemHandle x = new MemHandle(j + 3);
             tree.insert(new KVPair(h, x));
         }
+        tree.printTree();
+        MemHandle h = new MemHandle(2);
+        MemHandle x = new MemHandle(7);
+        tree.delete(tree.getRoot(), new KVPair(h, x));
+        tree.printTree();
+        h = new MemHandle(18);
+        x = new MemHandle(23);
+        tree.delete(tree.getRoot(), new KVPair(new MemHandle(27), new MemHandle(30)));
+        tree.delete(tree.getRoot(), new KVPair(new MemHandle(18), new MemHandle(23)));
+        tree.delete(tree.getRoot(), new KVPair(new MemHandle(54), new MemHandle(59)));
+        tree.delete(tree.getRoot(), new KVPair(new MemHandle(81), new MemHandle(84)));
+        tree.delete(tree.getRoot(), new KVPair(new MemHandle(9), new MemHandle(12)));
+        tree.delete(tree.getRoot(), new KVPair(new MemHandle(6), new MemHandle(11)));
+        tree.delete(tree.getRoot(), new KVPair(new MemHandle(3), new MemHandle(6)));
+        tree.printTree();
+
 
         for (int i = 2; i <= 100; i *= 3, j *= 3) {
             MemHandle m = new MemHandle(i);
             MemHandle v = new MemHandle(i + 5);
-            // tree.insert(new KVPair(m, v));
             tree.delete(tree.getRoot(), new KVPair(m, v));
         }
-        MemHandle h = new MemHandle(2);
-        MemHandle x = new MemHandle(7);
-        // tree.insert(new KVPair(h, x));
-        tree.delete(tree.getRoot(), new KVPair(h, x));
-        assertFalse(tree.getRoot().isLeaf());
-        assertFalse(tree.getRoot().getChild(0).isLeaf());
-        assertFalse(tree.getRoot().getChild(1).isLeaf());
-        tree.print(tree.getRoot(), tree.depth());
+
+        j = 3;
+        for (int i = 2; i <= 100; i *= 3, j*= 3)
+        {
+            MemHandle m = new MemHandle(j);
+            MemHandle v = new MemHandle(j + 3);
+            tree.delete(tree.getRoot(), new KVPair(m, v));
+        }
+        //assertNull(tree.getRoot());
+//        assertNull(tree.getRoot().getChild(0).isLeaf());
+//        assertNull(tree.getRoot().getChild(1).isLeaf());
+        tree.printTree();
 
     }
 
@@ -121,7 +140,7 @@ public class TreeTest extends TestCase {
             MemHandle v = new MemHandle(i + 5);
             tree.insert(new KVPair(m, v));
         }
-        tree.printTree();
+        //tree.printTree();
         assertFalse(tree.getRoot().isLeaf());
     }
 
@@ -134,7 +153,7 @@ public class TreeTest extends TestCase {
             MemHandle v = new MemHandle(i + 5);
             tree.insert(new KVPair(m, v));
         }
-        tree.printTree();
+        //tree.printTree();
         assertFalse(tree.getRoot().isLeaf());
     }
 
