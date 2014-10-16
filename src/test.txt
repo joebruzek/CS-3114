@@ -1,0 +1,8 @@
+insert artist<SEP>song
+print tree
+insert ARTIST<SEP>SONG
+print tree
+delete ARTIST<SEP>SONG
+print tree
+delete artist<SEP>song
+print tree

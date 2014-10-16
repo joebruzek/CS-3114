@@ -361,7 +361,6 @@ public class Tree {
     {
         if (child.getKeyV(1) != null)
         {
-            System.out.println("got here");
             child.setKey(0, child.getKeyV(1));
             child.setKey(1, null);
             child.setRecs(1);
