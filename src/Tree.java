@@ -359,8 +359,16 @@ public class Tree {
      */
     public void borrow(TTNode node, LNode child, KVPair k)
     {
+        if (child.getKeyV(1) != null)
+        {
+            System.out.println("got here");
+            child.setKey(0, child.getKeyV(1));
+            child.setKey(1, null);
+            child.setRecs(1);
+            return;
+        }
         if (node.getChild(0) == child.previous() &&
-            child.previous().numRecs() == 2)
+            node.getChild(0).numRecs() == 2)
         {
             KVPair before = child.getKeyV(0);
             KVPair after = child.previous().getKeyV(1);
@@ -371,7 +379,7 @@ public class Tree {
             return;
         }
         else if(node.getChild(1) == child.previous() &&
-            child.previous().numRecs() == 2)
+            node.getChild(1).numRecs() == 2)
         {
             KVPair before = child.getKeyV(0);
             KVPair after = child.previous().getKeyV(1);
@@ -382,7 +390,7 @@ public class Tree {
             return;
         }
         else if(node.getChild(1) == child.next() &&
-            child.next().numRecs() == 2)
+            node.getChild(1).numRecs() == 2)
         {
             KVPair before = child.getKeyV(0);
             KVPair after = child.next().getKeyV(0);
@@ -396,7 +404,7 @@ public class Tree {
             return;
         }
         else if(child.next() != null &&
-            node.getChild(2) == child.next() && child.next().numRecs() == 2)
+            node.getChild(2) == child.next() && node.getChild(2).numRecs() == 2)
         {
             KVPair before = child.getKeyV(0);
             KVPair after = child.next().getKeyV(0);

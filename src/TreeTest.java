@@ -157,6 +157,19 @@ public class TreeTest extends TestCase {
         assertFalse(tree.getRoot().isLeaf());
     }
 
+    public void testDelete2()
+    {
+        tree.insert(new KVPair(new MemHandle(13), new MemHandle(0)));
+        tree.insert(new KVPair(new MemHandle(0), new MemHandle(13)));
+        tree.insert(new KVPair(new MemHandle(55), new MemHandle(39)));
+        tree.insert(new KVPair(new MemHandle(39), new MemHandle(55)));
+        tree.printTree();
+        tree.delete(tree.getRoot(), new KVPair(new MemHandle(55), new MemHandle(39)));
+        tree.delete(tree.getRoot(), new KVPair(new MemHandle(39), new MemHandle(55)));
+        //tree.delete(tree.getRoot(), new KVPair(new MemHandle(3), new MemHandle(6)));
+        tree.printTree();
+    }
+
     /**
      * test the print and printTree methods
      */
