@@ -231,9 +231,6 @@ public class SearchTree {
                                     System.out.println("|" + arName
                                         + "| is deleted from the "
                                         + "artist database.");
-                                    System.out.println("|" + soName
-                                        + "| is deleted from the "
-                                        + "song database.");
                                 }
 
                                 //see if any artists are now gone
