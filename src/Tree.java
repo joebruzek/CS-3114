@@ -423,9 +423,12 @@ public class Tree {
         else
         {
             //must merge
+
             if (node.getChild(0) == child)
             {
-                node.setChild(0, null);
+
+                ((LNode)node.getChild(1)).setPrevious(((LNode)node.getChild(0)).previous());
+                node.setChild(0, node.getChild(1));
                 ((INode) node).setKey(0, null);
                 KVPair save = node.getChild(1).getKeyV(0);
                 if (root == node)
@@ -433,11 +436,13 @@ public class Tree {
                     root = node.getChild(1);
                     return;
                 }
-                merge(root, save);
+                changeINodes(root, child.getKeyV(0), save);
+                merge1(root, save);
             }
             else
             {
-                node.setChild(1, null);
+                ((LNode)node.getChild(0)).setNext(((LNode)node.getChild(1)).next());
+                //node.setChild(0, node.getChild(1));
                 ((INode) node).setKey(0, null);
                 KVPair save = node.getChild(0).getKeyV(0);
                 if (root == node)
@@ -445,7 +450,8 @@ public class Tree {
                     root = node.getChild(0);
                     return;
                 }
-                merge(root, save);
+                changeINodes(root, child.getKeyV(0), save);
+                merge1(root, save);
             }
             return;
         }
@@ -662,6 +668,126 @@ public class Tree {
             merge(node.getChild(2), save);
         }
     }
+
+
+    public void merge1(TTNode node, KVPair save)
+    {
+        if (node == null)
+        {
+            System.out.println("got here");
+            return;
+        }
+        if (!node.isLeaf() && node.getChild(0).getKeyV(0) == null)
+        {
+            if (node.getChild(1).numRecs() == 2)
+            {
+                ((INode) node.getChild(0)).setKey(0, node.getKeyV(0));
+                ((INode) node).setKey(0, node.getChild(1).getKeyV(0));
+                node.getChild(0).setChild(1, node.getChild(1).getChild(0));
+                node.getChild(1).setChild(0, node.getChild(1).getChild(1));
+                node.getChild(1).setChild(1, node.getChild(1).getChild(2));
+                node.getChild(1).setChild(2, null);
+                node.getChild(1).setRecs(1);
+                ((INode)node.getChild(1)).setKey(0, node.getChild(1).getKeyV(2));
+                ((INode)node.getChild(1)).setKey(1, null);
+                return;
+            }
+            else
+            {
+                ((INode)node.getChild(0)).setKey(0, node.getKeyV(0));
+                ((INode)node.getChild(0)).setKey(1, node.getChild(1).getKeyV(0));
+                node.getChild(0).setRecs(2);
+                ((INode)node).setKey(0, node.getKeyV(1));
+                ((INode)node).setKey(1, null);
+                node.setRecs(1);
+                node.getChild(0).setChild(1, node.getChild(1).getChild(0));
+                node.getChild(0).setChild(2, node.getChild(1).getChild(1));
+                node.setChild(1, node.getChild(2));
+                node.setChild(2, null);
+                merge1(root, save);
+            }
+        }
+        else if(!node.isLeaf() && node.getChild(1).getKeyV(0) == null)
+        {
+            if (node.getChild(0).numRecs() == 2)
+            {
+                ((INode) node.getChild(1)).setKey(0, node.getKeyV(0));
+                ((INode) node).setKey(0, node.getChild(0).getKeyV(1));
+                //node.getChild(0).setChild(1, node.getChild(1).getChild(0));
+                node.getChild(1).setChild(1, node.getChild(1).getChild(0));
+                node.getChild(1).setChild(0, node.getChild(0).getChild(2));
+                node.getChild(0).setChild(2, null);
+                node.getChild(0).setRecs(1);
+                //((INode)node.getChild(1)).setKey(0, node.getChild(1).getKeyV(2));
+                ((INode)node.getChild(0)).setKey(1, null);
+                return;
+            }
+            else
+            {
+                ((INode)node.getChild(0)).setKey(1, node.getKeyV(0));
+                //((INode)node.getChild(0)).setKey(1, node.getChild(1).getKeyV(0));
+                node.getChild(0).setRecs(2);
+                ((INode)node).setKey(0, node.getKeyV(1));
+                ((INode)node).setKey(1, null);
+                node.setRecs(1);
+                //node.getChild(0).setChild(1, node.getChild(1).getChild(0));
+                node.getChild(0).setChild(2, node.getChild(1).getChild(0));
+                node.setChild(1, node.getChild(2));
+                node.setChild(2, null);
+                merge1(root, save);
+            }
+        }
+        else if (!node.isLeaf() && node.getChild(2) != null &&
+            node.getChild(2).getKeyV(0) == null)
+        {
+            if (node.getChild(1).numRecs() == 2)
+            {
+                ((INode) node.getChild(2)).setKey(0, node.getKeyV(1));
+                ((INode) node).setKey(1, node.getChild(1).getKeyV(1));
+                //node.getChild(0).setChild(1, node.getChild(1).getChild(0));
+                node.getChild(2).setChild(1, node.getChild(2).getChild(0));
+                node.getChild(2).setChild(0, node.getChild(1).getChild(2));
+                node.getChild(1).setChild(2, null);
+                node.getChild(0).setRecs(1);
+                //((INode)node.getChild(1)).setKey(0, node.getChild(1).getKeyV(2));
+                ((INode)node.getChild(1)).setKey(1, null);
+                return;
+            }
+            else
+            {
+                ((INode)node.getChild(1)).setKey(1, node.getKeyV(1));
+                //((INode)node.getChild(0)).setKey(1, node.getChild(1).getKeyV(0));
+                node.getChild(1).setRecs(2);
+                //((INode)node).setKey(0, node.getKeyV(1));
+                ((INode)node).setKey(1, null);
+                node.setRecs(1);
+                //node.getChild(0).setChild(1, node.getChild(1).getChild(0));
+                node.getChild(1).setChild(2, node.getChild(2).getChild(0));
+                //node.setChild(1, node.getChild(2));
+                node.setChild(2, null);
+                //merge1(root, save);
+                return;
+            }
+        }
+        if (root.getKeyV(0) == null)
+        {
+            root = root.getChild(0);
+            return;
+        }
+        if (save.compareTo(node.getKeyV(0)) < 0) {
+            merge1(node.getChild(0), save);
+        }
+        else if (node.getKeyV(1) == null) {
+            merge1(node.getChild(1), save);
+        }
+        else if (save.compareTo(node.getKeyV(1)) < 0) {
+            merge1(node.getChild(1), save);
+        }
+        else {
+            merge1(node.getChild(2), save);
+        }
+    }
+
 
     /**
      * print the tree

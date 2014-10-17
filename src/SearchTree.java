@@ -386,6 +386,7 @@ public class SearchTree {
                             }
                         }
 
+                        tree.printTree();
                         for (int j = 0; j < handlesS.length; j++) {
                             if (handlesS[j].compareTo(artH) == 0) {
                                 tree.delete(tree.getRoot(),
