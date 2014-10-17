@@ -44,4 +44,22 @@ public class BlockTest extends TestCase {
         
         assertEquals(5, b.getPosition());
     }
+    
+    /**
+     * test compare to
+     */
+    public void testCompareTo() {
+    	Block b = new Block(1, 1);
+    	Block one = new Block(1, 0);
+    	Block two = new Block(1, 1);
+    	Block three = new Block(1, 2);
+    	Block four = new Block(0, 1);
+    	Block five = new Block(2, 1);
+    	
+    	assertEquals(1, b.compareTo(one));
+    	assertEquals(1, b.compareTo(two));
+    	assertEquals(1, b.compareTo(three));
+    	assertEquals(1, b.compareTo(four));
+    	assertEquals(1, b.compareTo(five));
+    }
 }

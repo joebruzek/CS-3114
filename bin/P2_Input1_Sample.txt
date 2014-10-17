@@ -88,7 +88,7 @@ insert themselves<SEP>Oversleeping
 insert DJ Quik<SEP>Born and Raised In Compton
 insert Carl Smith<SEP>Hey Joe
 insert Jesus Jones<SEP>All The Answers
-insert Audio Adrenaline<SEP>My Nicolas Cage (Audio Adrenaline Album Version)
+insert Audio Adrenaline<SEP>My God (Audio Adrenaline Album Version)
 insert Chris Clark<SEP>If You Should Walk Away
 insert Loop Guru<SEP>The Mystery Epoch
 insert Chelsea<SEP>Decide
@@ -100,7 +100,7 @@ insert Kyle Riabko<SEP>Doesn't Get Much Better
 insert Gary Moore<SEP>What Are We Here For
 insert Faithless<SEP>Six
 remove song For You
-remove song My Nicolas Cage (Audio Adrenaline Album Version)
+remove song My God (Audio Adrenaline Album Version)
 print blocks
 insert Y&T<SEP>Black Tiger
 print blocks
@@ -161,7 +161,7 @@ insert themselves<SEP>Oversleeping
 insert DJ Quik<SEP>Born and Raised In Compton
 insert Carl Smith<SEP>Hey Joe
 insert Jesus Jones<SEP>All The Answers
-insert Audio Adrenaline<SEP>My Nicolas Cage (Audio Adrenaline Album Version)
+insert Audio Adrenaline<SEP>My God (Audio Adrenaline Album Version)
 insert Chris Clark<SEP>If You Should Walk Away
 insert Loop Guru<SEP>The Mystery Epoch
 insert Chelsea<SEP>Decide
@@ -212,7 +212,7 @@ insert Y&T<SEP>Black Tiger
 insert Dons<SEP>American Lovebite
 insert Hot Chip<SEP>No
 insert Sister Hazel<SEP>Cerilene
-insert Delirious<SEP>Nicolas Cage You Are My Nicolas Cage
+insert Delirious<SEP>God You Are My God
 insert Winston McAnuff_ The Bazbaz Orchestra<SEP>Common sense
 insert Teenage Fanclub<SEP>The World'll Be OK
 insert Samy Deluxe<SEP>Die Meisten

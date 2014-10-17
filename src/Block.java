@@ -61,6 +61,7 @@ public class Block implements Comparable<Block> {
     /**
      * compare the block to another block
      * @param o the block to compare to
+     * @return the comparable value
      */
     @Override
     public int compareTo(Block o) {
