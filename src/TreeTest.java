@@ -79,10 +79,10 @@ public class TreeTest extends TestCase {
             MemHandle v = new MemHandle(j + 3);
             tree.delete(tree.getRoot(), new KVPair(m, v));
         }
-        //assertNull(tree.getRoot());
+        assertNull(tree.getRoot());
 //        assertNull(tree.getRoot().getChild(0).isLeaf());
 //        assertNull(tree.getRoot().getChild(1).isLeaf());
-        //tree.printTree();
+//        tree.printTree();
 
     }
 
@@ -160,6 +160,10 @@ public class TreeTest extends TestCase {
         assertFalse(tree.getRoot().isLeaf());
     }
 
+    // ----------------------------------------------------------
+    /**
+     * Tests another delete case
+     */
     public void testDelete2()
     {
         tree.insert(new KVPair(new MemHandle(13), new MemHandle(0)));
@@ -171,6 +175,7 @@ public class TreeTest extends TestCase {
         tree.delete(tree.getRoot(), new KVPair(new MemHandle(39), new MemHandle(55)));
         //tree.delete(tree.getRoot(), new KVPair(new MemHandle(3), new MemHandle(6)));
         //tree.printTree();
+        assertFalse(tree.getRoot().isLeaf());
     }
 
     /**

@@ -163,24 +163,26 @@ public class SearchTree {
                                     String soName = mm.getString(
                                             mm.getRecord(occur[g]),
                                             occur[g]);
+                                    //tree.printTree();
                                     tree.delete(tree.getRoot(),
                                             new KVPair(rh, occur[g]));
                                     System.out.println("The KVPair (|"
                                             + arName + "|,|"
                                             + soName
                                             + "|) is deleted from the tree.");
+                                    //tree.printTree();
                                     tree.delete(tree.getRoot(),
                                             new KVPair(occur[g], rh));
                                     System.out.println("The KVPair (|"
                                             + soName + "|,|"
                                             + arName
                                             + "|) is deleted from the tree.");
-                                    songs.hashDelete(soName);
-                                    System.out.println("|" + arName
-                                        + "| is deleted from the "
-                                        + "artist database.");
-                                }
+                                    //tree.printTree();
 
+                                }
+                                System.out.println("|" + name
+                                    + "| is deleted from the "
+                                    + "artist database.");
                                 //see if any songs are now gone
                                 for (int g = 0; g < occur.length; g++) {
                                     if (!tree.exists(occur[g])) {
@@ -227,11 +229,11 @@ public class SearchTree {
                                             + arName + "|,|"
                                             + soName
                                             + "|) is deleted from the tree.");
-                                    artists.hashDelete(arName);
-                                    System.out.println("|" + arName
-                                        + "| is deleted from the "
-                                        + "artist database.");
+
                                 }
+                                System.out.println("|" + name
+                                    + "| is deleted from the "
+                                    + "song database.");
 
                                 //see if any artists are now gone
                                 for (int g = 0; g < occur.length; g++) {
@@ -242,7 +244,7 @@ public class SearchTree {
                                         artists.hashDelete(arName);
                                         mm.release(occur[g]);
                                         System.out.println("|" + arName
-                                                + "| is removed from the "
+                                                + "| is deleted from the "
                                                 + "artist database.");
                                     }
                                 }
@@ -386,7 +388,6 @@ public class SearchTree {
                             }
                         }
 
-                        tree.printTree();
                         for (int j = 0; j < handlesS.length; j++) {
                             if (handlesS[j].compareTo(artH) == 0) {
                                 tree.delete(tree.getRoot(),
