@@ -427,13 +427,16 @@ public class Tree {
             if (node.getChild(0) == child)
             {
 
+
                 ((LNode)node.getChild(1)).setPrevious(((LNode)node.getChild(0)).previous());
                 node.setChild(0, node.getChild(1));
+
+                node.setChild(1, null);
                 ((INode) node).setKey(0, null);
-                KVPair save = node.getChild(1).getKeyV(0);
+                KVPair save = node.getChild(0).getKeyV(0);
                 if (root == node)
                 {
-                    root = node.getChild(1);
+                    root = node.getChild(0);
                     return;
                 }
                 changeINodes(root, child.getKeyV(0), save);
@@ -450,7 +453,7 @@ public class Tree {
                     root = node.getChild(0);
                     return;
                 }
-                changeINodes(root, child.getKeyV(0), save);
+                //changeINodes(root, child.getKeyV(0), save);
                 merge1(root, save);
             }
             return;
@@ -672,11 +675,6 @@ public class Tree {
 
     public void merge1(TTNode node, KVPair save)
     {
-        if (node == null)
-        {
-            System.out.println("got here");
-            return;
-        }
         if (!node.isLeaf() && node.getChild(0).getKeyV(0) == null)
         {
             if (node.getChild(1).numRecs() == 2)
@@ -704,11 +702,18 @@ public class Tree {
                 node.getChild(0).setChild(2, node.getChild(1).getChild(1));
                 node.setChild(1, node.getChild(2));
                 node.setChild(2, null);
+                //printTree();
+                if (root.getKeyV(0) == null)
+                {
+                    root = node.getChild(0);
+                    return;
+                }
                 merge1(root, save);
             }
         }
         else if(!node.isLeaf() && node.getChild(1).getKeyV(0) == null)
         {
+
             if (node.getChild(0).numRecs() == 2)
             {
                 ((INode) node.getChild(1)).setKey(0, node.getKeyV(0));
@@ -724,6 +729,7 @@ public class Tree {
             }
             else
             {
+                System.out.println("got here");
                 ((INode)node.getChild(0)).setKey(1, node.getKeyV(0));
                 //((INode)node.getChild(0)).setKey(1, node.getChild(1).getKeyV(0));
                 node.getChild(0).setRecs(2);
@@ -734,6 +740,12 @@ public class Tree {
                 node.getChild(0).setChild(2, node.getChild(1).getChild(0));
                 node.setChild(1, node.getChild(2));
                 node.setChild(2, null);
+                if (root.getKeyV(0) == null)
+                {
+                    root = node.getChild(0);
+                    return;
+                }
+                //printTree();
                 merge1(root, save);
             }
         }
@@ -774,16 +786,28 @@ public class Tree {
             root = root.getChild(0);
             return;
         }
-        if (save.compareTo(node.getKeyV(0)) < 0) {
+//        if (node == null)
+//        {
+//            System.out.println("got here");
+//            return;
+//        }
+        if (node.getChild(0) == null)
+        {
+            printTree();
+            System.out.println("got here");
+            insert(save);
+        }
+        else if (node != null && save.compareTo(node.getKeyV(0)) < 0) {
             merge1(node.getChild(0), save);
         }
-        else if (node.getKeyV(1) == null) {
+        else if (node != null && node.getKeyV(1) == null) {
             merge1(node.getChild(1), save);
         }
-        else if (save.compareTo(node.getKeyV(1)) < 0) {
+        else if (node != null && save.compareTo(node.getKeyV(1)) < 0) {
             merge1(node.getChild(1), save);
         }
-        else {
+        else if (node != null)
+        {
             merge1(node.getChild(2), save);
         }
     }

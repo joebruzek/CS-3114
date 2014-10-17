@@ -54,8 +54,11 @@ public class TreeTest extends TestCase {
         h = new MemHandle(18);
         x = new MemHandle(23);
         tree.delete(tree.getRoot(), new KVPair(new MemHandle(27), new MemHandle(30)));
+        tree.printTree();
         tree.delete(tree.getRoot(), new KVPair(new MemHandle(18), new MemHandle(23)));
+        tree.printTree();
         tree.delete(tree.getRoot(), new KVPair(new MemHandle(54), new MemHandle(59)));
+        tree.printTree();
         tree.delete(tree.getRoot(), new KVPair(new MemHandle(81), new MemHandle(84)));
         tree.delete(tree.getRoot(), new KVPair(new MemHandle(9), new MemHandle(12)));
         tree.delete(tree.getRoot(), new KVPair(new MemHandle(6), new MemHandle(11)));
@@ -79,7 +82,7 @@ public class TreeTest extends TestCase {
         //assertNull(tree.getRoot());
 //        assertNull(tree.getRoot().getChild(0).isLeaf());
 //        assertNull(tree.getRoot().getChild(1).isLeaf());
-        tree.printTree();
+        //tree.printTree();
 
     }
 
@@ -163,11 +166,11 @@ public class TreeTest extends TestCase {
         tree.insert(new KVPair(new MemHandle(0), new MemHandle(13)));
         tree.insert(new KVPair(new MemHandle(55), new MemHandle(39)));
         tree.insert(new KVPair(new MemHandle(39), new MemHandle(55)));
-        tree.printTree();
+        //tree.printTree();
         tree.delete(tree.getRoot(), new KVPair(new MemHandle(55), new MemHandle(39)));
         tree.delete(tree.getRoot(), new KVPair(new MemHandle(39), new MemHandle(55)));
         //tree.delete(tree.getRoot(), new KVPair(new MemHandle(3), new MemHandle(6)));
-        tree.printTree();
+        //tree.printTree();
     }
 
     /**
