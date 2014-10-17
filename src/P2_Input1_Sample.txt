@@ -36,7 +36,6 @@ print song
 remove song Bukka White's first song
 print artist
 print song
-print blocks
 insert Johnny Winter<SEP>Johnny Winter's first song
 delete Another Bukka White<SEP>Bukka White's second song
 print blocks

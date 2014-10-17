@@ -4,18 +4,18 @@
  * @author sucram20
  * @version 2014.10.14
  */
-public class Block {
+public class Block implements Comparable<Block> {
 
     private int position = 0;
     private int size = 0;
-    
+
     /**
      * empty constructor
      */
     public Block() {
         //nothing
     }
-    
+
     /**
      * initialize the block with size and position
      * @param size the size
@@ -25,7 +25,7 @@ public class Block {
         this.size = size;
         this.position = position;
     }
-    
+
     /**
      * get the position
      * @return the position
@@ -56,6 +56,29 @@ public class Block {
      */
     public void setSize(int size) {
         this.size = size;
+    }
+
+    /**
+     * compare the block to another block
+     * @param o the block to compare to
+     */
+    @Override
+    public int compareTo(Block o) {
+        if (position == o.getPosition()) {
+            if (size < o.getSize()) {
+                return -1;
+            }
+            if (size > o.getSize()) {
+                return 1;
+            }
+            return 0;
+        }
+        else if (position < o.getPosition()) {
+            return -1;
+        }
+        else {
+            return 1;
+        }
     }
 
 }

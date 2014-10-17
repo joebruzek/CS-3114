@@ -1,6 +1,10 @@
+import java.util.Collections;
+import java.util.ArrayList;
+
+
 /**
  * FreeBlockList extends DoublyLinkedList to create a list of Free Blocks
- * 
+ *
  * @author jbruzek
  * @author sucram20
  * @version 2014.10.14
@@ -12,7 +16,7 @@ public class FreeBlockList extends DoublyLinkedList<Block> {
 
     /**
      * create a FreeBlockList
-     * 
+     *
      * @param size
      *            the size of the list
      */
@@ -27,10 +31,10 @@ public class FreeBlockList extends DoublyLinkedList<Block> {
     /**
      * Insert something into the memory pool, removing space from a node in the
      * free block list
-     * 
+     *
      * the name is a little counterintuitive from a FreeBlockList perspective
      * this is so that it makes more sense when called from the Memory Manager
-     * 
+     *
      * @param size1
      *            the size of the block to insert
      * @return the position of the inserted block, -1 if no position is found
@@ -50,7 +54,7 @@ public class FreeBlockList extends DoublyLinkedList<Block> {
         if (b.getSize() == size1) {
             remove();
             position = b.getPosition();
-        } 
+        }
         else { // else squeeze it in
             Block block = new Block(b.getSize() - size1, b.getPosition()
                     + size1);
@@ -63,7 +67,7 @@ public class FreeBlockList extends DoublyLinkedList<Block> {
 
     /**
      * remove a node from the list
-     * 
+     *
      * @param position
      *            the position
      * @param size1
@@ -74,16 +78,21 @@ public class FreeBlockList extends DoublyLinkedList<Block> {
 
         if (size() == 0) {
             tail();
-        } 
+        }
         else {
-            while (next().getPosition() < position && hasNext()) {
+            while (next().getPosition() < position) {
                 String filler = "NOTHING IN THE LOOP";
                 /*
                  * this just moves the current to the right position
-                 * 
+                 *
                  * ---[A NODE]-----(position)---[CURRENT]--
                  */
                 filler = filler + "webcat";
+                if (!hasNext())
+                {
+                    next();
+                    break;
+                }
             }
         }
 
@@ -98,13 +107,17 @@ public class FreeBlockList extends DoublyLinkedList<Block> {
             updateCurrent(b);
             next();
 
-        } 
+        }
         else if (next != null && position + size1 == next.getPosition()) {
             Block b = new Block(size1 + next.getSize(), position);
             updateCurrent(b);
-        } 
+        }
         else {
             previous();
+            if (data() != null && data().getPosition() > position)
+            {
+                previous();
+            }
             Block b = new Block(size1, position);
             addHere(b);
             next();
@@ -121,11 +134,36 @@ public class FreeBlockList extends DoublyLinkedList<Block> {
             remove();
             addHere(b);
         }
+//        if (position < next.getPosition())
+//        {
+//
+//        }
+        //sortList();
+    }
+
+    /**
+     * sort the list
+     */
+    public void sortList() {
+        head();
+        next();
+
+        ArrayList<Block> list = new ArrayList<Block>();
+        while (hasNext()) {
+            list.add(current().data());
+            next();
+        }
+        Collections.sort(list);
+
+        clear();
+        for (int i = 0; i < list.size(); i++) {
+            add(list.get(i));
+        }
     }
 
     /**
      * find the node that fits based on the best fit algorithm
-     * 
+     *
      * @param size1
      *            the size of the space to find
      * @return the node, null if no node is found
@@ -156,11 +194,11 @@ public class FreeBlockList extends DoublyLinkedList<Block> {
 
         if (size() == 0) {
             add(new Block(initialSize, size));
-        } 
+        }
         else if (last.getPosition() + last.getSize() == size) {
             last.setSize(last.getSize() + initialSize);
             updateCurrent(last);
-        } 
+        }
         else {
             add(new Block(initialSize, size));
         }
@@ -170,7 +208,7 @@ public class FreeBlockList extends DoublyLinkedList<Block> {
 
     /**
      * make a string representation of the free block list
-     * 
+     *
      * @return the string
      */
     public String toString() {
@@ -192,7 +230,7 @@ public class FreeBlockList extends DoublyLinkedList<Block> {
 
     /**
      * get the size of the freeBlockList
-     * 
+     *
      * @return the size
      */
     public int getSize() {

@@ -177,14 +177,11 @@ public class SearchTree {
                                             + soName + "|,|"
                                             + arName
                                             + "|) is deleted from the tree.");
-                                    //tree.printTree();
-
-                                }
-                                System.out.println("|" + name
-                                    + "| is deleted from the "
-                                    + "artist database.");
-                                //see if any songs are now gone
-                                for (int g = 0; g < occur.length; g++) {
+                                    if (!tree.exists(rh)) {
+                                        System.out.println("|" + name
+                                            + "| is deleted from the "
+                                            + "artist database.");
+                                    }
                                     if (!tree.exists(occur[g])) {
                                         String songName = mm.getString(
                                                 mm.getRecord(occur[g]),
@@ -195,6 +192,8 @@ public class SearchTree {
                                                 + "| is deleted from "
                                                 + "the song database.");
                                     }
+                                    //tree.printTree();
+
                                 }
                             }
                             else {
@@ -229,24 +228,22 @@ public class SearchTree {
                                             + arName + "|,|"
                                             + soName
                                             + "|) is deleted from the tree.");
-
-                                }
-                                System.out.println("|" + name
-                                    + "| is deleted from the "
-                                    + "song database.");
-
-                                //see if any artists are now gone
-                                for (int g = 0; g < occur.length; g++) {
+                                    if (!tree.exists(rh)) {
+                                        System.out.println("|" + name
+                                            + "| is deleted from the "
+                                            + "song database.");
+                                    }
                                     if (!tree.exists(occur[g])) {
-                                        String arName = mm.getString(
+                                        String artName = mm.getString(
                                                 mm.getRecord(occur[g]),
                                                 occur[g]);
-                                        artists.hashDelete(arName);
+                                        artists.hashDelete(artName);
                                         mm.release(occur[g]);
-                                        System.out.println("|" + arName
+                                        System.out.println("|" + artName
                                                 + "| is deleted from the "
                                                 + "artist database.");
                                     }
+
                                 }
                             }
                             else {

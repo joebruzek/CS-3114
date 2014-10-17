@@ -1,6 +1,6 @@
 /**
  * Node class is used for the doubly linked list
- * 
+ *
  * @author jbruzek sucram20
  * @version 2014.10.14
  * @param <E> the data of the node
@@ -12,7 +12,7 @@ public class Node<E> {
 
     /**
      * Constructor for the node class
-     * 
+     *
      * @param data the data to add to the node
      */
     public Node(E data) {
@@ -21,7 +21,7 @@ public class Node<E> {
 
     /**
      * get the contents of the node
-     * 
+     *
      * @return the data
      */
     public E data() {
@@ -30,7 +30,7 @@ public class Node<E> {
 
     /**
      * set the contents of the data
-     * 
+     *
      * @param data the data to set
      */
     public void setData(E data) {
@@ -39,7 +39,7 @@ public class Node<E> {
 
     /**
      * get the next node in the sequence
-     * 
+     *
      * @return the next node
      */
     public Node<E> next() {
@@ -48,7 +48,7 @@ public class Node<E> {
 
     /**
      * get the previous node in the sequence
-     * 
+     *
      * @return the previous node
      */
     public Node<E> previous() {
@@ -58,11 +58,11 @@ public class Node<E> {
     /**
      * Join this node with another node. The node passed as a parameter is
      * joined behind the current node e.g. A.join(B) creates the order A <-> B
-     * 
+     *
      * Return this node, so you can link joins.
-     * 
+     *
      * Throws IllegalStateException if the nodes cannot be joined;
-     * 
+     *
      * @param newNext the new next node
      * @return this node
      */
@@ -83,7 +83,7 @@ public class Node<E> {
     /**
      * split this node from the node in front of it. return the node that has
      * been split from this one.
-     * 
+     *
      * @return the node that has been split
      */
     public Node<E> split() {
@@ -92,8 +92,9 @@ public class Node<E> {
         }
 
         Node<E> temp = this.next();
+        this.next().previous = null;
         this.next = null;
-        temp.previous = null;
+        //temp.previous = null;
         return temp;
     }
 
